@@ -1,0 +1,11 @@
+.tmp.drivedownload/
+.tmp.driveupload/
+desktop.ini
+*.zip
+
+# Godot project cache
+new-game-project/.godot/
+
+# Exported builds and installers
+new-game-project/builds/
+

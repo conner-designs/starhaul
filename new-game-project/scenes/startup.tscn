@@ -1,0 +1,413 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/startup.gd" id="1_start"]
+
+[node name="Startup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_start")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 1)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+
+[node name="SplashPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -96.0
+offset_right = 210.0
+offset_bottom = 96.0
+
+[node name="SplashMargin" type="MarginContainer" parent="SplashPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="SplashVBox" type="VBoxContainer" parent="SplashPanel/SplashMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SplashTitle" type="Label" parent="SplashPanel/SplashMargin/SplashVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "STARHAUL"
+
+[node name="SplashSubtitle" type="Label" parent="SplashPanel/SplashMargin/SplashVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "A frontier systems build"
+
+[node name="TitlePanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -176.0
+offset_right = 240.0
+offset_bottom = 176.0
+
+[node name="TitleMargin" type="MarginContainer" parent="TitlePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="TitleVBox" type="VBoxContainer" parent="TitlePanel/TitleMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="TitlePanel/TitleMargin/TitleVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "STARHAUL"
+
+[node name="TitleSubtitle" type="Label" parent="TitlePanel/TitleMargin/TitleVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "Prospector command console"
+
+[node name="MenuButtons" type="VBoxContainer" parent="TitlePanel/TitleMargin/TitleVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="NewGameButton" type="Button" parent="TitlePanel/TitleMargin/TitleVBox/MenuButtons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+text = "NEW GAME"
+
+[node name="LoadMenuButton" type="Button" parent="TitlePanel/TitleMargin/TitleVBox/MenuButtons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+text = "LOAD"
+
+[node name="OptionsMenuButton" type="Button" parent="TitlePanel/TitleMargin/TitleVBox/MenuButtons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+text = "OPTIONS"
+
+[node name="QuitButton" type="Button" parent="TitlePanel/TitleMargin/TitleVBox/MenuButtons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+text = "QUIT"
+
+[node name="LoadPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -140.0
+offset_right = 250.0
+offset_bottom = 140.0
+
+[node name="LoadMargin" type="MarginContainer" parent="LoadPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="LoadVBox" type="VBoxContainer" parent="LoadPanel/LoadMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LoadTitle" type="Label" parent="LoadPanel/LoadMargin/LoadVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "LOAD DATA"
+
+[node name="LoadSummary" type="Label" parent="LoadPanel/LoadMargin/LoadVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "No save data."
+
+[node name="LoadButtons" type="HBoxContainer" parent="LoadPanel/LoadMargin/LoadVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="LoadGameButton" type="Button" parent="LoadPanel/LoadMargin/LoadVBox/LoadButtons"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 40)
+text = "LOAD SAVE"
+
+[node name="DeleteSaveButton" type="Button" parent="LoadPanel/LoadMargin/LoadVBox/LoadButtons"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 40)
+text = "DELETE SAVE"
+
+[node name="LoadBackButton" type="Button" parent="LoadPanel/LoadMargin/LoadVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 38)
+text = "BACK"
+
+[node name="CreditsPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -130.0
+offset_right = 240.0
+offset_bottom = 130.0
+
+[node name="CreditsMargin" type="MarginContainer" parent="CreditsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="CreditsVBox" type="VBoxContainer" parent="CreditsPanel/CreditsMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CreditsTitle" type="Label" parent="CreditsPanel/CreditsMargin/CreditsVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "CREDITS"
+
+[node name="CreditsBody" type="Label" parent="CreditsPanel/CreditsMargin/CreditsVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "Credits"
+
+[node name="CreditsCloseButton" type="Button" parent="CreditsPanel/CreditsMargin/CreditsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 38)
+text = "BACK"
+
+[node name="OptionsPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
+
+[node name="OptionsMargin" type="MarginContainer" parent="OptionsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="OptionsVBox" type="VBoxContainer" parent="OptionsPanel/OptionsMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="OptionsTitle" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "OPTIONS"
+
+[node name="OptionsTabs" type="HBoxContainer" parent="OptionsPanel/OptionsMargin/OptionsVBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+
+[node name="VisualsTabButton" type="Button" parent="OptionsPanel/OptionsMargin/OptionsVBox/OptionsTabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "VISUALS"
+
+[node name="AudioTabButton" type="Button" parent="OptionsPanel/OptionsMargin/OptionsVBox/OptionsTabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "AUDIO"
+
+[node name="GameplayTabButton" type="Button" parent="OptionsPanel/OptionsMargin/OptionsVBox/OptionsTabs"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "GAMEPLAY"
+
+[node name="VisualsSection" type="VBoxContainer" parent="OptionsPanel/OptionsMargin/OptionsVBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FullscreenCheck" type="CheckBox" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="VsyncCheck" type="CheckBox" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "VSync"
+
+[node name="ShowFpsCheck" type="CheckBox" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Show FPS"
+
+[node name="CameraZoomLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Camera Zoom"
+
+[node name="CameraZoomSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+min_value = 0.65
+max_value = 1.1
+step = 0.01
+value = 0.8
+
+[node name="BrightnessLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Brightness"
+
+[node name="BrightnessSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+min_value = 0.7
+max_value = 1.3
+step = 0.01
+value = 1.0
+
+[node name="HudScaleLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+visible = false
+text = "HUD Scale"
+
+[node name="HudScaleSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+visible = false
+min_value = 0.85
+max_value = 1.25
+step = 0.01
+value = 1.0
+
+[node name="ScreenShakeLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Screen Shake"
+
+[node name="ScreenShakeSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+max_value = 1.25
+step = 0.01
+value = 0.9
+
+[node name="ParallaxStrengthLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Parallax Strength"
+
+[node name="ParallaxStrengthSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+min_value = 0.4
+max_value = 1.4
+step = 0.01
+value = 1.0
+
+[node name="GlowStrengthLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+text = "Glow Strength"
+
+[node name="GlowStrengthSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/VisualsSection"]
+layout_mode = 2
+max_value = 1.4
+step = 0.01
+value = 1.0
+
+[node name="AudioSection" type="VBoxContainer" parent="OptionsPanel/OptionsMargin/OptionsVBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MasterVolumeLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterVolumeSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MusicVolumeLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.82
+
+[node name="SfxVolumeLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SfxVolumeSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.92
+
+[node name="UiVolumeLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+text = "UI Volume"
+
+[node name="UiVolumeSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.95
+
+[node name="EngineVolumeLabel" type="Label" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+text = "Engine Volume"
+
+[node name="EngineVolumeSlider" type="HSlider" parent="OptionsPanel/OptionsMargin/OptionsVBox/AudioSection"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.88
+
+[node name="GameplaySection" type="VBoxContainer" parent="OptionsPanel/OptionsMargin/OptionsVBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="OnboardingCheck" type="CheckBox" parent="OptionsPanel/OptionsMargin/OptionsVBox/GameplaySection"]
+layout_mode = 2
+text = "Show Flight Training"
+
+[node name="DockingPromptCheck" type="CheckBox" parent="OptionsPanel/OptionsMargin/OptionsVBox/GameplaySection"]
+layout_mode = 2
+text = "Require Docking Confirmation"
+
+[node name="OptionsBackButton" type="Button" parent="OptionsPanel/OptionsMargin/OptionsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 38)
+text = "BACK"

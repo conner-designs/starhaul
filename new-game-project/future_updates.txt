@@ -1,0 +1,382 @@
+Space Game Future Updates
+=========================
+
+1. Done Now
+-----------
+- Core ship gameplay is playable:
+  - mouse-facing flight
+  - `W` / `S` thrust
+  - `A` / `D` strafe
+  - boost
+  - fuel
+  - hull
+  - combat / operations mode split
+- Resource gameplay is live:
+  - ore
+  - crystal
+  - ice
+  - ship debris
+  - derelict ships
+  - rare resource drops
+  - node traits
+  - targeted scan
+  - world scan
+- Station gameplay is live:
+  - docking prompt and pull-in flow
+  - launch flow
+  - commodity exchange
+  - storage transfer room
+  - refinery room
+  - crafting / fabrication room
+  - shipyard
+  - training
+  - research room
+  - factions / pilot profile room
+  - mission board
+  - cargo room
+  - leaner station room copy / subtitles
+- Economy loop is live:
+  - fluctuating market prices
+  - storage expansion
+  - paid refuel
+  - paid hull repair
+  - paid missile restock
+  - refinery fees
+  - weight-based cargo
+- Missions are live:
+  - rotating offers with lifespans
+  - active mission tracking
+  - faction-issued missions
+  - rank-gated missions
+  - cross-map mission targeting
+  - combat missions
+  - refinery missions
+  - scan missions
+  - derelict recovery missions
+  - data-driven intro mission graph with forced, board-posted, and continuation steps
+- Derelict mission flow is live in placeholder form:
+  - contracts spawn a mission-specific derelict in the target map
+  - player finds it through guidance
+  - player mines the mission rare part
+  - player returns the part for turn-in
+- Combat slice is live:
+  - Blackwake enemy ships
+  - multiple hostile roles
+  - lasers
+  - missiles
+  - manual missile lock
+  - boarding / destroy prompt
+  - text-based boarding rewards
+  - loot pickups
+  - bounty desk turn-ins
+- Factions are live:
+  - editable faction registry
+  - reputation gains
+  - rank names
+  - live faction perks
+  - faction mission requirements
+  - faction service scaffolding for later
+- Progression scaffolding is live:
+  - slower pilot leveling
+  - skill point milestone schedule
+  - node-based player training tree
+  - specialization lockouts
+  - scan-data-driven research economy
+  - uploadable Data Fragments -> Research Units flow
+  - full multi-branch research tree scaffold
+  - first live research effects for industry, propulsion, systems, salvage, and combat
+- Industrial progression is live:
+  - ore refines into matching ingots
+  - crystal and ice still refine into specialist outputs
+  - scrap now refines into random basic ingots
+  - fabrication room crafts basic industrial goods from ingots and components
+  - crafting uses confirmation before fabrication
+  - refinery supports ship or station input tabs
+  - refinery returns output to the same source inventory
+  - refinery runs timed one-unit cycles with live progress
+  - refinery input / output readouts update live while processing
+- Shipyard cleanup is live:
+  - ship and combat upgrades are split into separate categories
+  - square upgrade modules are centered and use tooltip stat previews
+  - combat upgrades now include shield, hull, laser, and special weapon tiers
+- World structure is live:
+  - systems are data-driven
+  - starter system is playable
+  - current system uses a 5x5 map grid with a center solar-core map
+  - local map transitions work
+  - map control, danger, salvage bias, and resource richness affect gameplay
+  - star type influences local resource bias
+  - tactical map exists
+  - discovered-map jumping exists
+  - map jump fuel cost and cooldown exist
+- UI / UX systems are live:
+  - startup splash screens
+  - title menu
+  - load / delete save panel
+  - pause menu
+  - options menu in title and pause
+  - guided multipart onboarding mission flow
+  - onboarding offer / briefing / completion popups
+  - onboarding reminder popups
+  - station-button gold mission guidance
+  - onboarding station back-button guidance
+  - onboarding docking guidance/nav back to station
+  - onboarding mining guidance to a specific low-yield node
+  - onboarding final contract handoff popup before first real mission assignment
+  - intro mission board highlighting and auto-chained continuation missions
+  - mission tracker
+  - system feed
+  - combat widget
+  - FPS toggle and in-game FPS label
+- Lighting / presentation pass is live:
+  - reusable procedural sun system
+  - stylized sun shader body/corona/flares
+  - ambient world lighting
+  - station lighting
+  - player ship engine / cabin glow
+  - derelict and crystal node glow
+- Save / load is live.
+- Audio pass is live:
+  - menu music
+  - gameplay music
+  - UI sounds
+  - scan
+  - mining
+  - laser
+  - missile
+  - impacts
+  - pickups
+  - warning
+  - thrusters
+  - boost
+- Windows export and silent demo packaging have both been done before.
+- Startup/new-game flow polish is done:
+  - new game starts outside the station instead of inside the docking ring
+  - forced post-start combat test spawn removed
+- First balance pass is done:
+  - lower raw sale values
+  - lower some rare values
+  - higher service costs
+  - higher upgrade costs
+  - slower XP gains
+  - slower level curve
+- Focused balance tuning completed:
+  - raw mining income
+  - refinery profitability
+  - combat payout vs repair cost
+  - mission credits / XP
+  - early ship upgrade timing
+  - scan data / research flow
+
+2. Alpha Polish and Balance
+---------------------------
+- Continue bug scrubs for:
+  - mission edge cases
+  - derelict mission flow
+  - docking / launch edge cases
+  - save / load edge cases
+  - tactical map flow
+  - tracker / popup layout issues
+- Mission board rules:
+  - keep checking that delivery / turn-in contracts never exceed the player ship's current cargo weight capacity
+
+3. Next World Expansion
+-----------------------
+- Add a proper system travel / jump interface so players can move between systems instead of only using the current playable starter system.
+- Decide whether in-system travel should stay as short map transitions or move toward seamless map streaming later.
+- Add more fully playable systems beyond the current starter implementation:
+  - `Deepcore March`
+  - `Paladin Front`
+  - `Blackwake Drift`
+- Add region-specific mission boards and spawn logic per system.
+- Add more map looks and visual variants while keeping normal systems broadly readable and grounded.
+- Add rare special systems with stronger environmental stats and events.
+- Add planets to systems later.
+- Build real anomaly gameplay so anomaly world scans point to actual rare signals and events instead of explanation-only intro copy.
+- Add more export-ready platform presets once release targets are locked:
+  - Linux desktop
+  - itch.io / zip-ready packaging pass
+  - release executable branding pass
+- Later release packaging:
+  - single-file embedded executable export
+  - installer with desktop shortcut support
+
+4. Progression Expansion
+------------------------
+- Expand the current node-based training tree into a much larger long-term specialization layout.
+- Add more trees and deeper tiers so builds feel wide and highly specialized.
+- Add player ship class licensing.
+- Tie system access to ship class licensing.
+- Balance licensing around credits and certification requirements instead of faction standing.
+- Turn the research placeholder board into a real research tree with:
+  - a broad core unlock set
+  - larger horizontal branches
+  - special locked branches gained through conditions
+- Expand the live research tree deeper with more nodes, branch-specific unlocks, and clearer late-tier branching.
+- Expand refinery and fabrication progression into advanced crafted goods, high-quality sale items, ship-use components, and later interior-linked industrial modules.
+- Add research-gated fabrication recipes beyond the current starter set.
+- Add research upgrades so scrap refining can eventually produce higher-end ingots instead of only starter-grade returns.
+- Decide on a long-term skill point cap or soft-cap once the full tree size is locked.
+
+5. Faction Expansion
+--------------------
+- Tie faction standing to faction-only upgrades.
+- Tie faction standing to faction-only ships.
+- Tie faction standing to faction-only items and modules.
+- Expand bounty payouts so additional hostile factions can have their own turn-in items.
+- In expanded space, give factions their own stations / hubs with faction-specific shops and unlockables tied to reputation rank.
+- Faction-controlled stations should eventually reflect faction style, color, and identity in the station menu and presentation.
+
+6. Interior Features
+--------------------
+- Add player ship interiors.
+- Add station interiors / walkaround dock spaces.
+- Add enemy ship interiors for boarding encounters.
+
+7. Boarding and Derelict Expansion
+----------------------------------
+- Expand current text-only boarding outcomes into room/interior boarding encounters with faction-specific choices and consequences.
+- Expand derelict combat-recovery missions once real boarding/interiors are in place.
+- Let derelict contracts branch into:
+  - salvage and extraction
+  - Blackwake interference / quarantine cleanup
+  - distress beacon follow-up
+  - sealed cache recovery
+- Tie derelict recovery mission outcomes into faction standing, rare loot tables, and later boarding decisions.
+- Add later boarding state:
+  - check if final attack would cripple / destroy ship
+  - prompt `Board ship` or `Destroy`
+  - replace placeholder boarding with full boarding gameplay
+
+8. Territory and Station Control
+--------------------------------
+- Add derelict stations that can be repaired later.
+- Let the player choose which faction controls a reclaimed station.
+- Let the player help a chosen faction gain ground in a map or system.
+- Add player-influenced or faction-flip map states later.
+
+9. Audio Backlog
+----------------
+High priority
+- Station dock / interior ambience loop
+- Derelict salvage ambience and hull groan layer
+- Combat escalation layer for hostile encounters
+- Mission completion stinger
+- Rank-up / level-up stinger
+- Additional faction-flavored station ambience sets for later faction-owned docks
+
+Nice to have
+- More layered mining sound design
+- More enemy-specific ship audio
+- More transition / docking / launch stingers
+
+10. Texture Backlog
+-------------------
+High priority
+- Startup and menu art set
+  - splash screen logo treatment
+  - title screen key art / background scene
+  - main menu button icon set or accent markers
+  - save/load menu panel art pass
+  - credits screen background treatment
+  - pause / escape menu panel art pass
+- Player ship boost/flame sprite or small animated exhaust sheet
+- Combat texture set
+  - starter laser beam / muzzle flash
+  - lock-on missile sprite
+  - missile trail / smoke or glow sheet
+  - combat targeting reticle / cursor
+  - enemy target marker / hostile arrow icon
+  - explosion / hit flash sheet
+  - combat damage number style atlas or bitmap font
+- Loot pickup texture set
+  - scrap pickup
+  - circuit pickup
+  - credits pickup / token
+  - Blackwake cipher tag pickup
+- Station main texture set
+  - emissive lights/windows
+  - docking ring / decals
+- Resource node textures still needed / to improve
+  - metallic ore replacement set still needed for:
+    - Copper Ore node
+    - Titanium Ore node
+    - Cobalt Ore node
+    - Silver Ore node
+    - Gold Ore node
+    - Lindrite Ore node
+  - more cohesive salvage wreck set
+  - more polished derelict ship set
+  - any missing node variants
+- Background texture set
+  - nebula cloud textures if reintroduced later
+  - distant planet / moon sprites
+  - parallax dust / star accents
+
+UI and inventory
+- Startup / meta UI polish set
+  - custom title logo
+  - branded splash emblems
+  - menu background overlays / framing accents
+  - save slot card styling pass
+  - credits divider / header art
+  - pause menu icon accents
+- Proper inventory item icons for all resources
+  - Iron Ore
+  - Nickel Ore
+  - Copper Ore
+  - Titanium Ore
+  - Cobalt Ore
+  - Silver Ore
+  - Gold Ore
+  - Lindrite Ore
+  - Crystal Lattice
+  - Volatile Ice
+  - Ship Scrap
+  - Alloy Plate
+  - Focus Crystal
+  - Fuel Cell
+  - Circuit Bundle
+  - Iridium Core
+  - Quantum Shard
+  - Helium-3 Cache
+  - Ancient Relay
+  - Blackwake Cipher Tag
+  - Targeting Array
+  - Plasma Coil
+- Station room button icons
+  - exchange
+  - storage
+  - refinery
+  - training
+  - research
+  - factions
+  - mission board
+  - cargo hold
+- HUD icon set
+  - credits
+  - cargo
+  - fuel
+  - hull / combat integrity
+  - level / rank
+  - mission / contract
+  - combat mode / operations mode
+  - missile cooldown / lock icon
+  - FPS/readout accents if desired
+- Faction identity set
+  - Paladins logo
+  - Freeport Assembly logo
+  - Blackwake logo
+  - Deepcore Consortium logo
+  - Recovery Corps logo
+  - Pathfinder Initiative logo
+  - faction standing / rank badges
+
+Nice to have
+- Scanning pulse / scan marker effect texture
+- Combat warning / alert banner accents
+- Hull damage / scorch decal overlays for ships
+- Tactical monitor decorative frame pieces
+- Station faction menu theming kit for later faction-owned stations
+- Station interior room art for future walkaround docking scenes
+- Mission board card art / faction logos

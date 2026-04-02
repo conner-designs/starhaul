@@ -1,0 +1,1089 @@
+[gd_scene format=3]
+
+[node name="DockScreen" type="Control"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Shell" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(1280, 760)
+
+[node name="Margin" type="MarginContainer" parent="Center/Shell"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="Center/Shell/Margin"]
+theme_override_constants/separation = 16
+
+[node name="Header" type="HBoxContainer" parent="Center/Shell/Margin/VBox"]
+
+[node name="HeaderLeft" type="VBoxContainer" parent="Center/Shell/Margin/VBox/Header"]
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="Center/Shell/Margin/VBox/Header/HeaderLeft"]
+text = "ORBITAL DOCK"
+
+[node name="Subtitle" type="Label" parent="Center/Shell/Margin/VBox/Header/HeaderLeft"]
+text = "Refuel, trade, and refit your ship."
+
+[node name="CreditsPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/Header"]
+custom_minimum_size = Vector2(156, 0)
+
+[node name="CreditsMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/Header/CreditsPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="CreditsVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/Header/CreditsPanel/CreditsMargin"]
+theme_override_constants/separation = 2
+
+[node name="CreditsCaption" type="Label" parent="Center/Shell/Margin/VBox/Header/CreditsPanel/CreditsMargin/CreditsVBox"]
+text = "CREDITS"
+
+[node name="CreditsValue" type="Label" parent="Center/Shell/Margin/VBox/Header/CreditsPanel/CreditsMargin/CreditsVBox"]
+text = "90 CR"
+
+[node name="CreditsSubtext" type="Label" parent="Center/Shell/Margin/VBox/Header/CreditsPanel/CreditsMargin/CreditsVBox"]
+visible = false
+text = ""
+
+[node name="BackButton" type="Button" parent="Center/Shell/Margin/VBox/Header"]
+visible = false
+custom_minimum_size = Vector2(110, 40)
+text = "BACK"
+
+[node name="RefuelButton" type="Button" parent="Center/Shell/Margin/VBox/Header"]
+custom_minimum_size = Vector2(140, 40)
+text = "REFUEL"
+
+[node name="CloseButton" type="Button" parent="Center/Shell/Margin/VBox/Header"]
+custom_minimum_size = Vector2(120, 40)
+text = "LAUNCH"
+
+[node name="TopRow" type="HBoxContainer" parent="Center/Shell/Margin/VBox"]
+theme_override_constants/separation = 16
+
+[node name="DockStatusPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/TopRow"]
+custom_minimum_size = Vector2(270, 0)
+
+[node name="DockStatusMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/TopRow/DockStatusPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="DockStatusVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/TopRow/DockStatusPanel/DockStatusMargin"]
+theme_override_constants/separation = 4
+
+[node name="DockStatusCaption" type="Label" parent="Center/Shell/Margin/VBox/TopRow/DockStatusPanel/DockStatusMargin/DockStatusVBox"]
+text = "DOCK STATUS"
+
+[node name="DockStatusValue" type="Label" parent="Center/Shell/Margin/VBox/TopRow/DockStatusPanel/DockStatusMargin/DockStatusVBox"]
+text = "Station online"
+
+[node name="DockStatusBody" type="Label" parent="Center/Shell/Margin/VBox/TopRow/DockStatusPanel/DockStatusMargin/DockStatusVBox"]
+autowrap_mode = 3
+text = "All support services available."
+
+[node name="ShipSummaryPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/TopRow"]
+size_flags_horizontal = 3
+
+[node name="ShipSummaryMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/TopRow/ShipSummaryPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ShipSummaryVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/TopRow/ShipSummaryPanel/ShipSummaryMargin"]
+theme_override_constants/separation = 4
+
+[node name="ShipSummaryCaption" type="Label" parent="Center/Shell/Margin/VBox/TopRow/ShipSummaryPanel/ShipSummaryMargin/ShipSummaryVBox"]
+text = "SHIP SUMMARY"
+
+[node name="ShipSummaryName" type="Label" parent="Center/Shell/Margin/VBox/TopRow/ShipSummaryPanel/ShipSummaryMargin/ShipSummaryVBox"]
+text = "STARHAUL"
+
+[node name="ShipSummaryStats" type="Label" parent="Center/Shell/Margin/VBox/TopRow/ShipSummaryPanel/ShipSummaryMargin/ShipSummaryVBox"]
+autowrap_mode = 3
+text = "Speed / Cargo / Laser"
+
+[node name="PilotPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/TopRow"]
+custom_minimum_size = Vector2(250, 0)
+
+[node name="PilotMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/TopRow/PilotPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="PilotVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/TopRow/PilotPanel/PilotMargin"]
+theme_override_constants/separation = 6
+
+[node name="PilotCaption" type="Label" parent="Center/Shell/Margin/VBox/TopRow/PilotPanel/PilotMargin/PilotVBox"]
+text = "PILOT SUMMARY"
+
+[node name="PilotSummary" type="Label" parent="Center/Shell/Margin/VBox/TopRow/PilotPanel/PilotMargin/PilotVBox"]
+autowrap_mode = 3
+text = "Level and standing data syncing."
+
+[node name="PilotProfileButton" type="Button" parent="Center/Shell/Margin/VBox/TopRow/PilotPanel/PilotMargin/PilotVBox"]
+custom_minimum_size = Vector2(0, 34)
+text = "OPEN PROFILE"
+
+[node name="MainMenuPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox"]
+size_flags_vertical = 3
+
+[node name="MainMenuMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/MainMenuPanel"]
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="MainMenuCenter" type="CenterContainer" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin"]
+
+[node name="MainMenuVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter"]
+custom_minimum_size = Vector2(760, 0)
+theme_override_constants/separation = 14
+
+[node name="MainMenuCaption" type="Label" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox"]
+text = "STATION DIRECTORY"
+
+[node name="MainMenuSummaryPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox"]
+
+[node name="MainMenuSummaryMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuSummaryPanel"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="MainMenuSummary" type="Label" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuSummaryPanel/MainMenuSummaryMargin"]
+autowrap_mode = 3
+text = "Choose a room to access station services."
+
+[node name="MainMenuButtons" type="GridContainer" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox"]
+columns = 4
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 12
+
+[node name="ExchangeRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "COMMODITY EXCHANGE"
+
+[node name="StorageRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "STATION STORAGE"
+
+[node name="RefineryRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "REFINERY"
+
+[node name="CraftingRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "CRAFTING"
+
+[node name="ShipyardRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "SHIPYARD"
+
+[node name="CrewRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "CREW TRAINING"
+
+[node name="ResearchRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "RESEARCH"
+
+[node name="FactionRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "PILOT PROFILE"
+
+[node name="MissionRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "MISSION BOARD"
+
+[node name="CargoRoomButton" type="Button" parent="Center/Shell/Margin/VBox/MainMenuPanel/MainMenuMargin/MainMenuCenter/MainMenuVBox/MainMenuButtons"]
+custom_minimum_size = Vector2(0, 88)
+size_flags_horizontal = 3
+text = "CARGO HOLD"
+
+[node name="ContentRow" type="GridContainer" parent="Center/Shell/Margin/VBox"]
+visible = false
+columns = 1
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+
+[node name="MarketPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarketMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MarketVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin"]
+theme_override_constants/separation = 8
+
+[node name="MarketCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox"]
+text = "COMMODITY EXCHANGE"
+
+[node name="MarketColumns" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="CargoMarketPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CargoMarketMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/CargoMarketPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CargoMarketVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/CargoMarketPanel/CargoMarketMargin"]
+theme_override_constants/separation = 8
+
+[node name="CargoMarketCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/CargoMarketPanel/CargoMarketMargin/CargoMarketVBox"]
+text = "SHIP INVENTORY"
+
+[node name="CargoManifestScroll" type="ScrollContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/CargoMarketPanel/CargoMarketMargin/CargoMarketVBox"]
+size_flags_vertical = 3
+
+[node name="CargoManifest" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/CargoMarketPanel/CargoMarketMargin/CargoMarketVBox/CargoManifestScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="MarketStatusPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns"]
+custom_minimum_size = Vector2(280, 0)
+size_flags_vertical = 3
+
+[node name="MarketStatusMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/MarketStatusPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MarketStatusVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/MarketStatusPanel/MarketStatusMargin"]
+theme_override_constants/separation = 8
+
+[node name="MarketStatusCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/MarketStatusPanel/MarketStatusMargin/MarketStatusVBox"]
+text = "MARKET FEED"
+
+[node name="SellSummary" type="RichTextLabel" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox/MarketColumns/MarketStatusPanel/MarketStatusMargin/MarketStatusVBox"]
+bbcode_enabled = true
+size_flags_vertical = 3
+fit_content = false
+scroll_active = false
+text = "Projected sale: 0 credits"
+
+[node name="SellButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox"]
+custom_minimum_size = Vector2(0, 44)
+text = "SELL ALL CARGO"
+
+[node name="BountyTurnInButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/MarketPanel/MarketMargin/MarketVBox"]
+custom_minimum_size = Vector2(0, 40)
+text = "TURN IN BOUNTIES"
+
+[node name="StoragePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StorageMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="StorageVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin"]
+theme_override_constants/separation = 8
+
+[node name="StorageCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox"]
+text = "STATION STORAGE"
+
+[node name="StorageColumns" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="ShipStoragePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ShipStorageMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/ShipStoragePanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ShipStorageVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/ShipStoragePanel/ShipStorageMargin"]
+theme_override_constants/separation = 8
+
+[node name="ShipStorageCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/ShipStoragePanel/ShipStorageMargin/ShipStorageVBox"]
+text = "SHIP CARGO"
+
+[node name="ShipStorageSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/ShipStoragePanel/ShipStorageMargin/ShipStorageVBox"]
+text = "0 / 12 cargo"
+
+[node name="ShipStorageGrid" type="GridContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/ShipStoragePanel/ShipStorageMargin/ShipStorageVBox"]
+columns = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="ShipStorageHint" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/ShipStoragePanel/ShipStorageMargin/ShipStorageVBox"]
+autowrap_mode = 3
+text = "LMB 1  |  RMB amount  |  Shift stack"
+
+[node name="StationStoragePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StationStorageMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/StationStoragePanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StationStorageVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/StationStoragePanel/StationStorageMargin"]
+theme_override_constants/separation = 8
+
+[node name="StorageSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/StationStoragePanel/StationStorageMargin/StationStorageVBox"]
+text = "Used 0 / 8 slots"
+
+[node name="StorageGrid" type="GridContainer" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/StationStoragePanel/StationStorageMargin/StationStorageVBox"]
+columns = 4
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="StorageHint" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/StationStoragePanel/StationStorageMargin/StationStorageVBox"]
+autowrap_mode = 3
+text = "Station stacks hold 300 each."
+
+[node name="StorageExpandButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/StoragePanel/StorageMargin/StorageVBox/StorageColumns/StationStoragePanel/StationStorageMargin/StationStorageVBox"]
+custom_minimum_size = Vector2(0, 40)
+text = "BUY +4 SLOTS"
+
+[node name="RefineryPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RefineryMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="RefineryVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin"]
+theme_override_constants/separation = 8
+
+[node name="RefineryCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox"]
+text = "REFINERY"
+
+[node name="RefineryTabs" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox"]
+theme_override_constants/separation = 12
+
+[node name="RefineryShipTabButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryTabs"]
+custom_minimum_size = Vector2(176, 44)
+text = "SHIP INVENTORY"
+
+[node name="RefineryStationTabButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryTabs"]
+custom_minimum_size = Vector2(176, 44)
+text = "STATION INVENTORY"
+
+[node name="RefineryColumns" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="RefineryInventoryPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RefineryInventoryMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryInventoryPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="RefineryInventoryVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryInventoryPanel/RefineryInventoryMargin"]
+theme_override_constants/separation = 8
+
+[node name="RefineryInventoryCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryInventoryPanel/RefineryInventoryMargin/RefineryInventoryVBox"]
+text = "SHIP INVENTORY"
+
+[node name="RefineryInventoryHeader" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryInventoryPanel/RefineryInventoryMargin/RefineryInventoryVBox"]
+text = "Refinery-ready cargo loads into the input slot after amount confirmation."
+
+[node name="RefineryInventoryGrid" type="GridContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryInventoryPanel/RefineryInventoryMargin/RefineryInventoryVBox"]
+columns = 5
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="RefineryInventoryHint" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryInventoryPanel/RefineryInventoryMargin/RefineryInventoryVBox"]
+autowrap_mode = 3
+text = "Click a raw material to load an amount into the refinery."
+
+[node name="RefineryControlPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns"]
+custom_minimum_size = Vector2(580, 0)
+size_flags_vertical = 3
+
+[node name="RefineryControlMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="RefineryControlVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin"]
+theme_override_constants/separation = 8
+
+[node name="RefineryVisualCenter" type="CenterContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox"]
+size_flags_vertical = 3
+
+[node name="RefineryVisualVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter"]
+custom_minimum_size = Vector2(520, 0)
+theme_override_constants/separation = 18
+
+[node name="RefineryMachineLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox"]
+horizontal_alignment = 1
+text = "REFINERY CORE"
+
+[node name="RefineryBodyRow" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox"]
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="RefineryInputColumn" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow"]
+theme_override_constants/separation = 6
+
+[node name="RefineryInputLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryInputColumn"]
+horizontal_alignment = 1
+text = "INPUT"
+
+[node name="RefineryInputCard" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryInputColumn"]
+custom_minimum_size = Vector2(156, 156)
+focus_mode = 0
+icon_alignment = 1
+expand_icon = true
+alignment = 1
+vertical_icon_alignment = 1
+text = ""
+
+[node name="RefineryInputReadout" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryInputColumn"]
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "No input"
+
+[node name="RefineryCoreColumn" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow"]
+size_flags_vertical = 4
+theme_override_constants/separation = 14
+
+[node name="RefineryCorePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryCoreColumn"]
+custom_minimum_size = Vector2(150, 112)
+
+[node name="RefineryCoreMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryCoreColumn/RefineryCorePanel"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RefineryCoreVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryCoreColumn/RefineryCorePanel/RefineryCoreMargin"]
+theme_override_constants/separation = 6
+
+[node name="RefineryCoreIcon" type="TextureRect" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryCoreColumn/RefineryCorePanel/RefineryCoreMargin/RefineryCoreVBox"]
+custom_minimum_size = Vector2(70, 54)
+size_flags_horizontal = 4
+stretch_mode = 5
+
+[node name="RefineryCoreText" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryCoreColumn/RefineryCorePanel/RefineryCoreMargin/RefineryCoreVBox"]
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "PROCESS\nMATRIX"
+
+[node name="RefineryProgress" type="ProgressBar" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryCoreColumn"]
+custom_minimum_size = Vector2(150, 10)
+value = 35.0
+show_percentage = false
+
+[node name="RefineryOutputColumn" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow"]
+theme_override_constants/separation = 6
+
+[node name="RefineryOutputLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryOutputColumn"]
+horizontal_alignment = 1
+text = "OUTPUT"
+
+[node name="RefineryOutputCard" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryOutputColumn"]
+custom_minimum_size = Vector2(156, 156)
+focus_mode = 0
+icon_alignment = 1
+expand_icon = true
+alignment = 1
+vertical_icon_alignment = 1
+text = ""
+
+[node name="RefineryOutputReadout" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox/RefineryVisualCenter/RefineryVisualVBox/RefineryBodyRow/RefineryOutputColumn"]
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "No output"
+
+[node name="RefinerySelectedInput" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox"]
+text = "Input: none"
+
+[node name="RefinerySelectedOutput" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox"]
+text = "Output: none"
+
+[node name="RefinerySummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox"]
+size_flags_vertical = 3
+autowrap_mode = 3
+text = "Select a raw material to refine."
+
+[node name="RefineButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/RefineryPanel/RefineryMargin/RefineryVBox/RefineryColumns/RefineryControlPanel/RefineryControlMargin/RefineryControlVBox"]
+custom_minimum_size = Vector2(0, 44)
+text = "REFINE"
+
+[node name="CraftingPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CraftingMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="CraftingVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin"]
+theme_override_constants/separation = 8
+
+[node name="CraftingCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox"]
+text = "CRAFTING"
+
+[node name="CraftingSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox"]
+autowrap_mode = 3
+text = "Select a fabrication order."
+
+[node name="CraftingColumns" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="CraftingRecipePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CraftingRecipeMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingRecipePanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CraftingRecipeVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingRecipePanel/CraftingRecipeMargin"]
+theme_override_constants/separation = 8
+
+[node name="CraftingRecipeCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingRecipePanel/CraftingRecipeMargin/CraftingRecipeVBox"]
+text = "FABRICATION QUEUE"
+
+[node name="CraftingRecipeScroll" type="ScrollContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingRecipePanel/CraftingRecipeMargin/CraftingRecipeVBox"]
+size_flags_vertical = 3
+
+[node name="CraftingRecipeList" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingRecipePanel/CraftingRecipeMargin/CraftingRecipeVBox/CraftingRecipeScroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="CraftingDetailPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns"]
+custom_minimum_size = Vector2(320, 0)
+size_flags_vertical = 3
+
+[node name="CraftingDetailMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CraftingDetailVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel/CraftingDetailMargin"]
+theme_override_constants/separation = 8
+
+[node name="CraftingDetailTitle" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel/CraftingDetailMargin/CraftingDetailVBox"]
+text = "No Recipe Selected"
+
+[node name="CraftingDetailMeta" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel/CraftingDetailMargin/CraftingDetailVBox"]
+autowrap_mode = 3
+text = "Select a fabrication order to inspect its output and costs."
+
+[node name="CraftingDetailSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel/CraftingDetailMargin/CraftingDetailVBox"]
+autowrap_mode = 3
+text = "Fabrication details will appear here."
+
+[node name="CraftingDetailCosts" type="RichTextLabel" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel/CraftingDetailMargin/CraftingDetailVBox"]
+bbcode_enabled = true
+fit_content = false
+scroll_active = false
+size_flags_vertical = 3
+text = "Required materials will appear here."
+
+[node name="CraftingDetailButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/CraftingPanel/CraftingMargin/CraftingVBox/CraftingColumns/CraftingDetailPanel/CraftingDetailMargin/CraftingDetailVBox"]
+custom_minimum_size = Vector2(0, 42)
+text = "CRAFT"
+
+[node name="MissionBoardPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MissionBoardMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MissionBoardVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin"]
+theme_override_constants/separation = 8
+
+[node name="MissionBoardCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox"]
+text = "MISSION BOARD"
+
+[node name="MissionBoardSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox"]
+autowrap_mode = 3
+text = "Select a contract."
+
+[node name="MissionBoardTabs" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox"]
+theme_override_constants/separation = 8
+
+[node name="MissionAvailableButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox/MissionBoardTabs"]
+custom_minimum_size = Vector2(120, 38)
+text = "AVAILABLE"
+
+[node name="MissionActiveButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox/MissionBoardTabs"]
+custom_minimum_size = Vector2(120, 38)
+text = "ACTIVE"
+
+[node name="MissionBoardScroll" type="ScrollContainer" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox"]
+size_flags_vertical = 3
+
+[node name="MissionOfferList" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/MissionBoardPanel/MissionBoardMargin/MissionBoardVBox/MissionBoardScroll"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="ShipyardPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ShipyardMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="ShipyardVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin"]
+theme_override_constants/separation = 8
+
+[node name="ShipyardCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox"]
+text = "SHIPYARD"
+
+[node name="ShipyardInfo" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox"]
+autowrap_mode = 3
+text = "Select an upgrade."
+
+[node name="ShipyardColumns" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox"]
+size_flags_vertical = 3
+alignment = 1
+theme_override_constants/separation = 18
+
+[node name="ShipUpgradePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns"]
+custom_minimum_size = Vector2(356, 0)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+
+[node name="ShipUpgradeMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ShipUpgradeVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin"]
+theme_override_constants/separation = 10
+
+[node name="ShipCategoryLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin/ShipUpgradeVBox"]
+text = "SHIP"
+
+[node name="ShipUpgradeGrid" type="GridContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin/ShipUpgradeVBox"]
+columns = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="EngineButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin/ShipUpgradeVBox/ShipUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Engine Upgrade"
+
+[node name="CargoButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin/ShipUpgradeVBox/ShipUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Cargo Upgrade"
+
+[node name="MiningButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin/ShipUpgradeVBox/ShipUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Mining Laser Upgrade"
+
+[node name="FuelButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipUpgradePanel/ShipUpgradeMargin/ShipUpgradeVBox/ShipUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Fuel Tank Upgrade"
+
+[node name="CombatUpgradePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns"]
+custom_minimum_size = Vector2(356, 0)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+
+[node name="CombatUpgradeMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CombatUpgradeVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin"]
+theme_override_constants/separation = 10
+
+[node name="CombatCategoryLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin/CombatUpgradeVBox"]
+text = "COMBAT"
+
+[node name="CombatUpgradeGrid" type="GridContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin/CombatUpgradeVBox"]
+columns = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="ShieldButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin/CombatUpgradeVBox/CombatUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Shield Upgrade"
+
+[node name="HullButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin/CombatUpgradeVBox/CombatUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Hull Upgrade"
+
+[node name="LaserButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin/CombatUpgradeVBox/CombatUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Laser Upgrade"
+
+[node name="SpecialButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/CombatUpgradePanel/CombatUpgradeMargin/CombatUpgradeVBox/CombatUpgradeGrid"]
+custom_minimum_size = Vector2(152, 152)
+text = "Special Upgrade"
+
+[node name="ShipyardServicePanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns"]
+custom_minimum_size = Vector2(172, 0)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+
+[node name="ShipyardServiceMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipyardServicePanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ShipyardServiceVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipyardServicePanel/ShipyardServiceMargin"]
+theme_override_constants/separation = 10
+
+[node name="ServiceCategoryLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipyardServicePanel/ShipyardServiceMargin/ShipyardServiceVBox"]
+text = "SERVICE"
+
+[node name="RepairButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipyardServicePanel/ShipyardServiceMargin/ShipyardServiceVBox"]
+custom_minimum_size = Vector2(152, 152)
+text = "Hull Repairs"
+
+[node name="RestockButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ShipyardPanel/ShipyardMargin/ShipyardVBox/ShipyardColumns/ShipyardServicePanel/ShipyardServiceMargin/ShipyardServiceVBox"]
+custom_minimum_size = Vector2(152, 152)
+text = "Restock Missiles"
+
+[node name="SkillsPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SkillsMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="SkillsVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin"]
+theme_override_constants/separation = 8
+
+[node name="SkillsCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox"]
+text = "TRAINING"
+
+[node name="SkillPointsLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox"]
+text = "COMING SOON"
+
+[node name="SkillTreeHint" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox"]
+autowrap_mode = 3
+text = "Training specialization is being rebuilt for a future update."
+
+[node name="TrainingSoonCenter" type="CenterContainer" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox"]
+size_flags_vertical = 3
+
+[node name="TrainingSoonPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox/TrainingSoonCenter"]
+custom_minimum_size = Vector2(560, 260)
+
+[node name="TrainingSoonMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox/TrainingSoonCenter/TrainingSoonPanel"]
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="TrainingSoonVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox/TrainingSoonCenter/TrainingSoonPanel/TrainingSoonMargin"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="TrainingSoonTitle" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox/TrainingSoonCenter/TrainingSoonPanel/TrainingSoonMargin/TrainingSoonVBox"]
+horizontal_alignment = 1
+text = "SPECIALIZATION TRAINING"
+
+[node name="TrainingSoonText" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/SkillsPanel/SkillsMargin/SkillsVBox/TrainingSoonCenter/TrainingSoonPanel/TrainingSoonMargin/TrainingSoonVBox"]
+custom_minimum_size = Vector2(0, 96)
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text = "Coming soon.\n\nThis room is being rebuilt into a specialization and certification system for future pilots."
+
+[node name="ResearchPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ResearchMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="ResearchVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin"]
+theme_override_constants/separation = 8
+
+[node name="ResearchCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox"]
+text = "RESEARCH"
+
+[node name="ResearchHeaderRow" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox"]
+theme_override_constants/separation = 12
+
+[node name="ResearchSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow"]
+size_flags_horizontal = 3
+autowrap_mode = 3
+text = "Research board online."
+
+[node name="ResearchUploadPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow"]
+custom_minimum_size = Vector2(252, 0)
+
+[node name="ResearchUploadMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow/ResearchUploadPanel"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="ResearchUploadVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow/ResearchUploadPanel/ResearchUploadMargin"]
+theme_override_constants/separation = 4
+
+[node name="ResearchUnitsLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow/ResearchUploadPanel/ResearchUploadMargin/ResearchUploadVBox"]
+text = "Data Bank: 0 RU"
+
+[node name="ResearchCanisterLabel" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow/ResearchUploadPanel/ResearchUploadMargin/ResearchUploadVBox"]
+text = "Canister: 0 / 100 DF"
+
+[node name="ResearchUploadButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow/ResearchUploadPanel/ResearchUploadMargin/ResearchUploadVBox"]
+custom_minimum_size = Vector2(0, 34)
+text = "UPLOAD SCAN DATA"
+
+[node name="ResearchBranchBadge" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchHeaderRow"]
+horizontal_alignment = 2
+text = "INDUSTRY"
+
+[node name="ResearchTabsPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox"]
+
+[node name="ResearchTabsMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchTabsPanel"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ResearchTabs" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchTabsPanel/ResearchTabsMargin"]
+theme_override_constants/separation = 8
+
+[node name="ResearchBodyRow" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="ResearchViewportPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ResearchViewportMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchViewportPanel"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ResearchViewportVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchViewportPanel/ResearchViewportMargin"]
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="ResearchHint" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchViewportPanel/ResearchViewportMargin/ResearchViewportVBox"]
+autowrap_mode = 3
+text = "LMB drag to pan  |  Click node to focus  |  Hover to inspect"
+
+[node name="ResearchTreeFrame" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchViewportPanel/ResearchViewportMargin/ResearchViewportVBox"]
+size_flags_vertical = 3
+
+[node name="ResearchTreeScroll" type="ScrollContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchViewportPanel/ResearchViewportMargin/ResearchViewportVBox/ResearchTreeFrame"]
+size_flags_vertical = 3
+
+[node name="ResearchTreeCanvas" type="Control" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchViewportPanel/ResearchViewportMargin/ResearchViewportVBox/ResearchTreeFrame/ResearchTreeScroll"]
+custom_minimum_size = Vector2(1600, 2200)
+mouse_filter = 1
+
+[node name="ResearchInspectorPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow"]
+custom_minimum_size = Vector2(320, 0)
+size_flags_vertical = 3
+
+[node name="ResearchInspectorMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ResearchInspectorVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin"]
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="ResearchInspectorCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin/ResearchInspectorVBox"]
+text = "NODE INSPECTOR"
+
+[node name="ResearchInspectorTitle" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin/ResearchInspectorVBox"]
+autowrap_mode = 3
+text = "No node selected"
+
+[node name="ResearchInspectorMeta" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin/ResearchInspectorVBox"]
+autowrap_mode = 3
+text = "Select a node to inspect its tier, branch, and status."
+
+[node name="ResearchInspectorSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin/ResearchInspectorVBox"]
+autowrap_mode = 3
+text = "Branch overview pending."
+
+[node name="ResearchInspectorDescription" type="RichTextLabel" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin/ResearchInspectorVBox"]
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_active = false
+text = "Research briefings will appear here."
+
+[node name="ResearchUnlockButton" type="Button" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchBodyRow/ResearchInspectorPanel/ResearchInspectorMargin/ResearchInspectorVBox"]
+custom_minimum_size = Vector2(0, 38)
+text = "RESEARCH NODE"
+
+[node name="ResearchFooterPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox"]
+
+[node name="ResearchFooterMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchFooterPanel"]
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="ResearchFooterStatus" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/ResearchPanel/ResearchMargin/ResearchVBox/ResearchFooterPanel/ResearchFooterMargin"]
+autowrap_mode = 3
+text = "Select a branch tab to inspect current research lanes."
+
+[node name="FactionsPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FactionsMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="FactionsVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin"]
+theme_override_constants/separation = 8
+
+[node name="FactionsCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox"]
+text = "PILOT PROFILE"
+
+[node name="FactionsSummary" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox"]
+autowrap_mode = 3
+text = "Pilot record syncing."
+
+[node name="ProfileColumns" type="HBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox"]
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="PilotDetailPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PilotDetailMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/PilotDetailPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="PilotDetailVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/PilotDetailPanel/PilotDetailMargin"]
+theme_override_constants/separation = 8
+
+[node name="PilotDetailCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/PilotDetailPanel/PilotDetailMargin/PilotDetailVBox"]
+text = "PILOT LEVEL"
+
+[node name="PilotDetailText" type="RichTextLabel" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/PilotDetailPanel/PilotDetailMargin/PilotDetailVBox"]
+bbcode_enabled = true
+size_flags_vertical = 3
+fit_content = false
+scroll_active = true
+text = "Pilot progression unavailable."
+
+[node name="FactionDetailPanel" type="PanelContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FactionDetailMargin" type="MarginContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/FactionDetailPanel"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="FactionDetailVBox" type="VBoxContainer" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/FactionDetailPanel/FactionDetailMargin"]
+theme_override_constants/separation = 8
+
+[node name="FactionDetailCaption" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/FactionDetailPanel/FactionDetailMargin/FactionDetailVBox"]
+text = "FACTION STANDINGS"
+
+[node name="FactionList" type="RichTextLabel" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox/ProfileColumns/FactionDetailPanel/FactionDetailMargin/FactionDetailVBox"]
+bbcode_enabled = true
+size_flags_vertical = 3
+fit_content = false
+scroll_active = true
+text = "Faction standings unavailable."
+
+[node name="FactionsHint" type="Label" parent="Center/Shell/Margin/VBox/ContentRow/FactionsPanel/FactionsMargin/FactionsVBox"]
+autowrap_mode = 3
+text = "Faction standing will later unlock faction-only upgrades, ships, and items."
+
+[node name="Footer" type="HBoxContainer" parent="Center/Shell/Margin/VBox"]
+
+[node name="FooterStatus" type="Label" parent="Center/Shell/Margin/VBox/Footer"]
+size_flags_horizontal = 3
+horizontal_alignment = 1
+text = "Station concierge active"

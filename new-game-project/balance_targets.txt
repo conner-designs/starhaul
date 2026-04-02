@@ -1,0 +1,76 @@
+STARHAUL Alpha Balance Targets
+==============================
+
+Current pass goals
+------------------
+- Raw mining should keep the player solvent, not rich.
+- Refining should beat raw selling by a noticeable margin.
+- Missions should be a major source of progression.
+- Combat and derelict rewards should feel spiky and exciting, not constant.
+- Early upgrades should be earned over several station runs, not one or two.
+- Pilot leveling should feel slower and more deliberate.
+
+Target pacing
+-------------
+- First ship upgrade:
+  - target 12-18 minutes for a new player
+- First useful cargo / fuel / mining decision point:
+  - target 20-30 minutes
+- First faction rank-up:
+  - target 20-35 minutes depending on mission focus
+- First meaningful specialization in training:
+  - target 35-50 minutes
+- First strong map-travel confidence:
+  - target 45-75 minutes
+
+Economy targets
+---------------
+- Raw resource selling:
+  - low and steady income
+- Refining:
+  - should outperform raw selling enough to feel worth docking for
+- Mission payouts:
+  - should be clearly better than free mining loops
+- Rare finds:
+  - should feel uncommon and exciting
+- Boarding / derelict cache rewards:
+  - should feel like bonus spikes, not routine income
+
+Current alpha tuning notes
+--------------------------
+- Raw resource values reduced.
+- Refined values reduced slightly, but remain better than raw.
+- Rare item values reduced slightly.
+- Rare drop chances reduced across standard nodes and derelicts.
+- Refinery fees increased.
+- Bounty tag cash payout reduced.
+- Cargo, fuel, engine, and mining upgrades cost more.
+- Cargo, fuel, engine, and mining upgrade gains are smaller per tier.
+- Refuel, repair, restock, and storage expansion cost more.
+- Mining and selling XP gains are lower.
+- Mission XP conversion is lower.
+- XP needed per level is higher.
+
+Questions to answer during playtest
+-----------------------------------
+- How many full cargo runs does it take to buy:
+  - engine upgrade 1
+  - cargo upgrade 1
+  - mining upgrade 1
+  - fuel upgrade 1
+- Does refining feel worth the station trip?
+- Do rare drops feel rare enough now?
+- Do combat repairs/restocks eat too much mission profit?
+- Does level gain still feel too fast after 20-30 minutes?
+- Does the player still default to cargo upgrades first every time?
+
+Future tuning buckets
+---------------------
+- Raw mining values
+- Refinery profitability
+- Mission credit payouts
+- Mission XP payouts
+- Upgrade cost ramps
+- Fuel and support service costs
+- Combat loot and bounty desk values
+- Faction rep gain pace
