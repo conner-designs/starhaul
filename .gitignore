@@ -4,10 +4,8 @@ desktop.ini
 *.zip
 
 # Godot project cache
-.godot/
-
-# Godot 4+ specific ignores
-/android/
+new-game-project/.godot/
 
 # Exported builds and installers
-/builds/
+new-game-project/builds/
+
