@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STARHAUL Updates</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #0a0f1a;
+      color: #e6f2ff;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .panel {
+      background: #121726;
+      border: 1px solid rgba(87, 171, 245, 0.32);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    }
+    h1 {
+      margin: 0 0 12px;
+      color: #f2faff;
+      letter-spacing: 0.04em;
+    }
+    p, li, code {
+      color: #a8c7eb;
+      line-height: 1.6;
+    }
+    a {
+      color: #ebb847;
+    }
+    code {
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="panel">
+      <h1>STARHAUL Update Feed</h1>
+      <p>This site hosts the public manifest used by the custom STARHAUL installer and launcher.</p>
+      <p>Live manifest URL:</p>
+      <p><a href="./manifest.json"><code>manifest.json</code></a></p>
+      <p>Release flow:</p>
+      <ul>
+        <li>Build the Windows export locally.</li>
+        <li>Run <code>Prepare-StarhaulGitHubRelease.ps1</code>.</li>
+        <li>Upload the generated zip to a GitHub Release tag.</li>
+        <li>Commit and push the updated <code>docs/manifest.json</code>.</li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>
