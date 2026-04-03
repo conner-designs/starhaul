@@ -1,6 +1,17 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+function ConvertFrom-JsonSafe {
+    param([Parameter(Mandatory = $true)][string]$Content)
+
+    $cleanContent = $Content.Trim()
+    if ($cleanContent.Length -gt 0 -and [int][char]$cleanContent[0] -eq 0xFEFF) {
+        $cleanContent = $cleanContent.Substring(1)
+    }
+
+    $cleanContent | ConvertFrom-Json
+}
+
 function Get-InstallPaths {
     param(
         [Parameter(Mandatory = $true)][string]$Publisher,
@@ -39,7 +50,8 @@ function Read-InstallConfig {
         return $null
     }
 
-    Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
+    $rawConfig = Get-Content -LiteralPath $ConfigPath -Raw
+    ConvertFrom-JsonSafe -Content $rawConfig
 }
 
 function Write-InstallConfig {
@@ -56,7 +68,7 @@ function Get-RemoteManifest {
     param([Parameter(Mandatory = $true)][string]$ManifestUrl)
 
     $response = Invoke-WebRequest -Uri $ManifestUrl -UseBasicParsing
-    $response.Content | ConvertFrom-Json
+    ConvertFrom-JsonSafe -Content $response.Content
 }
 
 function Get-FileSha256Hex {
