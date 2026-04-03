@@ -408,6 +408,26 @@ const CRAFTING_RECIPES := [
 
 const DERELICT_PROFILES := [
 	{
+		"id": "small_hulk",
+		"name": "Small Hulk",
+		"node_name": "Small Derelict",
+		"trait_name": "Broken Shuttle",
+		"trait_description": "Compact wreck with exposed compartments and a few sealed lockers still intact.",
+		"scan_description": "Small drift hull reading weak locker signatures and a narrow boarding breach point.",
+		"rare_resource": CIRCUIT,
+		"rare_label": "Recovered Circuit",
+		"rare_chance": 0.04,
+		"amount_min": 4,
+		"amount_max": 6,
+		"scale_min": 0.86,
+		"scale_max": 1.04,
+		"cache_drops": [
+			{"kind": SCRAP, "amount_min": 1, "amount_max": 3, "weight": 0.4},
+			{"kind": CIRCUIT, "amount_min": 1, "amount_max": 1, "weight": 0.35},
+			{"kind": FUEL_CELL, "amount_min": 1, "amount_max": 1, "weight": 0.25},
+		],
+	},
+	{
 		"id": "courier_hulk",
 		"name": "Courier Hulk",
 		"node_name": "Derelict Courier",

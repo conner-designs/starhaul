@@ -29,11 +29,11 @@ Space Game Future Updates
   - refinery room
   - crafting / fabrication room
   - shipyard
-  - training
   - research room
   - factions / pilot profile room
   - mission board
   - cargo room
+  - training room placeholder / coming-soon panel
   - leaner station room copy / subtitles
 - Economy loop is live:
   - fluctuating market prices
@@ -45,7 +45,8 @@ Space Game Future Updates
   - weight-based cargo
 - Missions are live:
   - rotating offers with lifespans
-  - active mission tracking
+  - up to three active missions
+  - one tracked mission at a time
   - faction-issued missions
   - rank-gated missions
   - cross-map mission targeting
@@ -69,6 +70,11 @@ Space Game Future Updates
   - text-based boarding rewards
   - loot pickups
   - bounty desk turn-ins
+- Salvage boarding progression is live in first-pass form:
+  - `Salvage 10` unlocks small derelict boarding
+  - `Salvage 20` unlocks standard derelict boarding
+  - `Salvage 35` unlocks disabled hostile boarding
+  - derelict boarding currently uses a simple small-derelict placeholder profile
 - Factions are live:
   - editable faction registry
   - reputation gains
@@ -78,13 +84,13 @@ Space Game Future Updates
   - faction service scaffolding for later
 - Progression scaffolding is live:
   - slower pilot leveling
-  - skill point milestone schedule
-  - node-based player training tree
-  - specialization lockouts
+  - use-based skill progression
+  - field-console skills tab with per-skill progress bars
+  - mining-level ore unlock progression
   - scan-data-driven research economy
   - uploadable Data Fragments -> Research Units flow
-  - full multi-branch research tree scaffold
-  - first live research effects for industry, propulsion, systems, salvage, and combat
+  - full multi-branch research tree
+  - live research effects for industry, propulsion, systems, salvage, and combat
 - Industrial progression is live:
   - ore refines into matching ingots
   - crystal and ice still refine into specialist outputs
@@ -115,16 +121,15 @@ Space Game Future Updates
   - load / delete save panel
   - pause menu
   - options menu in title and pause
-  - guided multipart onboarding mission flow
-  - onboarding offer / briefing / completion popups
-  - onboarding reminder popups
-  - station-button gold mission guidance
-  - onboarding station back-button guidance
-  - onboarding docking guidance/nav back to station
-  - onboarding mining guidance to a specific low-yield node
-  - onboarding final contract handoff popup before first real mission assignment
+  - start-of-game onboarding begin / skip popup
   - intro mission board highlighting and auto-chained continuation missions
+  - stage popups for live intro mission steps
+  - station-button gold mission guidance
+  - station back-button guidance
+  - docking guidance/nav back to station
+  - mining guidance to a specific low-yield node
   - mission tracker
+  - shared field console with Mission / Cargo / Map / Pilot / Skills tabs
   - system feed
   - combat widget
   - FPS toggle and in-game FPS label
@@ -136,6 +141,12 @@ Space Game Future Updates
   - player ship engine / cabin glow
   - derelict and crystal node glow
 - Save / load is live.
+- Native Windows installer / updater flow is live:
+  - GitHub Pages hosts the live update manifest
+  - GitHub Releases host downloadable build zips
+  - native `StarhaulInstaller.exe` installs the game without exposing raw PowerShell
+  - desktop shortcut launches through the native updater path
+  - launch-time auto-update checks now work against the hosted manifest
 - Audio pass is live:
   - menu music
   - gameplay music
@@ -149,7 +160,7 @@ Space Game Future Updates
   - warning
   - thrusters
   - boost
-- Windows export and silent demo packaging have both been done before.
+- Windows export and GitHub release packaging have both been done before.
 - Startup/new-game flow polish is done:
   - new game starts outside the station instead of inside the docking ring
   - forced post-start combat test spawn removed
@@ -179,6 +190,8 @@ Space Game Future Updates
   - tracker / popup layout issues
 - Mission board rules:
   - keep checking that delivery / turn-in contracts never exceed the player ship's current cargo weight capacity
+- Art pass:
+  - replace the current small-derelict boarding placeholder with a dedicated small derelict art variant
 
 3. Next World Expansion
 -----------------------
@@ -195,28 +208,26 @@ Space Game Future Updates
 - Build real anomaly gameplay so anomaly world scans point to actual rare signals and events instead of explanation-only intro copy.
 - Add more export-ready platform presets once release targets are locked:
   - Linux desktop
-  - itch.io / zip-ready packaging pass
   - release executable branding pass
 - Later release packaging:
   - single-file embedded executable export
-  - installer with desktop shortcut support
+  - native installer branding / polish pass
+  - installer icon and branded window art
+  - cleaner installer / updater progress UI
+  - native uninstall support
 
 4. Progression Expansion
 ------------------------
-- Expand the current node-based training tree into a much larger long-term specialization layout.
+- Replace the current training placeholder room with a real long-term specialization layout.
 - Add more trees and deeper tiers so builds feel wide and highly specialized.
 - Add player ship class licensing.
 - Tie system access to ship class licensing.
 - Balance licensing around credits and certification requirements instead of faction standing.
-- Turn the research placeholder board into a real research tree with:
-  - a broad core unlock set
-  - larger horizontal branches
-  - special locked branches gained through conditions
 - Expand the live research tree deeper with more nodes, branch-specific unlocks, and clearer late-tier branching.
 - Expand refinery and fabrication progression into advanced crafted goods, high-quality sale items, ship-use components, and later interior-linked industrial modules.
 - Add research-gated fabrication recipes beyond the current starter set.
 - Add research upgrades so scrap refining can eventually produce higher-end ingots instead of only starter-grade returns.
-- Decide on a long-term skill point cap or soft-cap once the full tree size is locked.
+- Decide on long-term use-skill caps / soft-caps once the full progression model is locked.
 
 5. Faction Expansion
 --------------------
@@ -299,8 +310,6 @@ High priority
   - docking ring / decals
 - Resource node textures still needed / to improve
   - metallic ore replacement set still needed for:
-    - Copper Ore node
-    - Titanium Ore node
     - Cobalt Ore node
     - Silver Ore node
     - Gold Ore node
@@ -322,10 +331,6 @@ UI and inventory
   - credits divider / header art
   - pause menu icon accents
 - Proper inventory item icons for all resources
-  - Iron Ore
-  - Nickel Ore
-  - Copper Ore
-  - Titanium Ore
   - Cobalt Ore
   - Silver Ore
   - Gold Ore

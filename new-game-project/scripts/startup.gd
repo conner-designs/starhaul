@@ -3,18 +3,35 @@ extends Control
 const GAME_SCENE_PATH := "res://main.tscn"
 const MENU_MUSIC := preload("res://assets/audio/music/Menu_Music.ogg")
 const UI_CLICK_SOUND := preload("res://assets/audio/sounds/ui_click_confirm.wav")
+const TITLE_LOGO_SPRITE_SHEET := preload("res://assets/icons/Title_logo_sprite_sheet_01.png")
+const MENU_PLAYER_SHIP_TEXTURES := [
+	preload("res://assets/player/ship_01.png"),
+	preload("res://assets/player/ship_02.png"),
+]
+const MENU_FAR_SHIP_TEXTURES := [
+	preload("res://assets/objects/ships/freighter_ship_01.png"),
+	preload("res://assets/objects/ships/ship_01.png"),
+]
+const MENU_DEBRIS_TEXTURES := [
+	preload("res://assets/objects/astroid_iron_01.png"),
+	preload("res://assets/objects/astroid_iron_02.png"),
+]
+const TITLE_LOGO_FRAME_COUNT := 4
+const MENU_STARFIELD_SPAN := Vector2(2200.0, 1320.0)
 const SPLASH_STEPS := [
 	{"title": "STARHAUL", "subtitle": "A frontier systems build"},
-	{"title": "PROSPECTOR DIVISION", "subtitle": "Clearance granted for launch | Playtest update 0.1.2"},
+	{"title": "PROSPECTOR DIVISION", "subtitle": "Clearance granted for launch | Playtest update 0.1.3"},
 ]
+const TITLE_LOGO_FRAME_DURATION := 0.28
 
 @onready var canvas_modulate: CanvasModulate = $CanvasModulate
+@onready var menu_starfield_layer: Control = $MenuStarfield
 @onready var splash_panel: PanelContainer = $SplashPanel
 @onready var splash_title: Label = $SplashPanel/SplashMargin/SplashVBox/SplashTitle
 @onready var splash_subtitle: Label = $SplashPanel/SplashMargin/SplashVBox/SplashSubtitle
 @onready var title_panel: PanelContainer = $TitlePanel
 @onready var title_label: Label = $TitlePanel/TitleMargin/TitleVBox/TitleLabel
-@onready var title_subtitle: Label = $TitlePanel/TitleMargin/TitleVBox/TitleSubtitle
+@onready var title_logo: TextureRect = $TitlePanel/TitleMargin/TitleVBox/TitleLogo
 @onready var new_game_button: Button = $TitlePanel/TitleMargin/TitleVBox/MenuButtons/NewGameButton
 @onready var load_menu_button: Button = $TitlePanel/TitleMargin/TitleVBox/MenuButtons/LoadMenuButton
 @onready var options_menu_button: Button = $TitlePanel/TitleMargin/TitleVBox/MenuButtons/OptionsMenuButton
@@ -69,6 +86,17 @@ var ui_click_player: AudioStreamPlayer
 var ui_hover_player: AudioStreamPlayer
 var ui_hover_audio_block_until := 0
 var active_options_tab := "visuals"
+var title_logo_frame_sequence: Array[int] = [0, 1, 2, 3, 2, 1]
+var title_logo_sequence_index := 0
+var title_logo_frame_timer := TITLE_LOGO_FRAME_DURATION
+var title_logo_frame_width := 0
+var menu_starfield_far: Array[Dictionary] = []
+var menu_starfield_mid: Array[Dictionary] = []
+var menu_starfield_near: Array[Dictionary] = []
+var menu_background_debris: Array[Dictionary] = []
+var menu_background_ships: Array[Dictionary] = []
+var menu_far_background_ships: Array[Dictionary] = []
+var menu_starfield_focus := Vector2.ZERO
 
 
 func save_manager() -> Node:
@@ -155,9 +183,11 @@ func _ready() -> void:
 		settings_manager().set_value("gameplay", "docking_prompt", toggled)
 	)
 	title_label.text = "STARHAUL"
-	title_subtitle.text = "Prospector command console"
 	credits_body.text = "STARHAUL\n\nCreated by Josh Conner\nGame design, direction, worldbuilding, feature planning, playtesting, and production\n\nBuilt in collaboration with Codex\nProgramming support, systems implementation, UI building, iteration support, and technical polish\n\nDedicated to my loving wife Lindsey as she battles breast cancer.\n\nCurrent game slice\nMining, scanning, refining, factions, missions, combat, boarding groundwork, tactical maps, docking, saves, and station operations."
 	apply_ui_polish()
+	configure_title_logo()
+	seed_menu_starfield()
+	menu_starfield_layer.draw.connect(draw_menu_starfield_layer)
 	refresh_options_from_settings()
 	apply_visual_settings()
 	show_splash_step()
@@ -165,19 +195,26 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	update_menu_starfield(delta)
 	if splash_done:
+		update_title_logo_animation(delta)
+		menu_starfield_layer.queue_redraw()
 		return
 	if Input.is_anything_pressed():
 		show_title_menu()
+		menu_starfield_layer.queue_redraw()
 		return
 	splash_timer -= delta
 	if splash_timer > 0.0:
+		menu_starfield_layer.queue_redraw()
 		return
 	splash_index += 1
 	if splash_index >= SPLASH_STEPS.size():
 		show_title_menu()
+		menu_starfield_layer.queue_redraw()
 		return
 	show_splash_step()
+	menu_starfield_layer.queue_redraw()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -199,7 +236,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_credits()
 		get_viewport().set_input_as_handled()
 
-
 func show_splash_step() -> void:
 	var step: Dictionary = SPLASH_STEPS[splash_index]
 	splash_title.text = str(step.get("title", "STARHAUL"))
@@ -219,6 +255,7 @@ func show_title_menu() -> void:
 	load_panel.visible = false
 	credits_panel.visible = false
 	options_panel.visible = false
+	reset_title_logo_animation()
 	refresh_load_menu()
 
 
@@ -328,6 +365,7 @@ func refresh_options_labels() -> void:
 func apply_visual_settings() -> void:
 	var brightness: float = settings_manager().brightness_scalar()
 	canvas_modulate.color = Color(brightness, brightness, brightness, 1.0)
+	menu_starfield_layer.queue_redraw()
 
 
 func load_game() -> void:
@@ -458,9 +496,8 @@ func apply_ui_polish() -> void:
 		label.add_theme_font_size_override("font_size", 30)
 		label.add_theme_color_override("font_color", Color(0.95, 0.98, 1.0))
 
-	for label in [splash_subtitle, title_subtitle]:
-		label.add_theme_font_size_override("font_size", 15)
-		label.add_theme_color_override("font_color", Color(0.66, 0.78, 0.92))
+	splash_subtitle.add_theme_font_size_override("font_size", 15)
+	splash_subtitle.add_theme_color_override("font_color", Color(0.66, 0.78, 0.92))
 
 	load_summary.add_theme_font_size_override("font_size", 15)
 	load_summary.add_theme_color_override("font_color", Color(0.84, 0.9, 1.0))
@@ -475,3 +512,293 @@ func apply_ui_polish() -> void:
 
 	for button in [visuals_tab_button, audio_tab_button, gameplay_tab_button]:
 		style_button(button, Color(0.34, 0.67, 0.96))
+
+
+func configure_title_logo() -> void:
+	var atlas := AtlasTexture.new()
+	atlas.atlas = TITLE_LOGO_SPRITE_SHEET
+	title_logo.texture = atlas
+	title_logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	title_logo.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	title_logo_frame_width = int(floor(float(TITLE_LOGO_SPRITE_SHEET.get_width()) / float(TITLE_LOGO_FRAME_COUNT)))
+	title_logo.custom_minimum_size = Vector2(title_logo_frame_width, TITLE_LOGO_SPRITE_SHEET.get_height())
+	title_logo.material = null
+	reset_title_logo_animation()
+
+
+func seed_menu_starfield() -> void:
+	menu_starfield_far.clear()
+	menu_starfield_mid.clear()
+	menu_starfield_near.clear()
+	menu_background_debris.clear()
+	menu_background_ships.clear()
+	menu_far_background_ships.clear()
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	for _index in range(74):
+		menu_starfield_far.append({
+			"position": Vector2(rng.randf_range(0.0, MENU_STARFIELD_SPAN.x), rng.randf_range(0.0, MENU_STARFIELD_SPAN.y)),
+			"radius": rng.randf_range(0.7, 1.6),
+			"depth": rng.randf_range(0.16, 0.28),
+			"color": Color(0.48, 0.62, 0.82, rng.randf_range(0.26, 0.54)),
+		})
+	for _index in range(52):
+		menu_starfield_mid.append({
+			"position": Vector2(rng.randf_range(0.0, MENU_STARFIELD_SPAN.x), rng.randf_range(0.0, MENU_STARFIELD_SPAN.y)),
+			"radius": rng.randf_range(1.0, 2.2),
+			"depth": rng.randf_range(0.34, 0.5),
+			"color": Color(0.72, 0.84, 1.0, rng.randf_range(0.4, 0.8)),
+			"bloom": rng.randf() < 0.14,
+			"blink_phase": rng.randf_range(0.0, TAU),
+		})
+	for _index in range(18):
+		menu_starfield_near.append({
+			"position": Vector2(rng.randf_range(0.0, MENU_STARFIELD_SPAN.x), rng.randf_range(0.0, MENU_STARFIELD_SPAN.y)),
+			"radius": rng.randf_range(1.4, 3.1),
+			"depth": rng.randf_range(0.58, 0.82),
+			"color": Color(1.0, rng.randf_range(0.84, 0.94), rng.randf_range(0.64, 0.82), rng.randf_range(0.5, 0.92)),
+			"bloom": rng.randf() < 0.42,
+			"blink_phase": rng.randf_range(0.0, TAU),
+		})
+	for _index in range(10):
+		var debris_texture: Texture2D = MENU_DEBRIS_TEXTURES[rng.randi_range(0, MENU_DEBRIS_TEXTURES.size() - 1)]
+		menu_background_debris.append({
+			"texture": debris_texture,
+			"position": Vector2(rng.randf_range(0.0, MENU_STARFIELD_SPAN.x), rng.randf_range(0.0, MENU_STARFIELD_SPAN.y)),
+			"depth": rng.randf_range(0.26, 0.6),
+			"scale": rng.randf_range(0.45, 0.92),
+			"rotation": rng.randf_range(-PI, PI),
+			"rotation_speed": rng.randf_range(-0.07, 0.07),
+			"alpha": rng.randf_range(0.14, 0.28),
+		})
+	for _index in range(2):
+		menu_background_ships.append(build_menu_background_ship(rng))
+	for _index in range(2):
+		menu_far_background_ships.append(build_menu_far_background_ship(rng))
+
+
+func update_menu_starfield(delta: float) -> void:
+	var parallax_scalar: float = float(settings_manager().get_value("visuals", "parallax_strength"))
+	var speed_scale: float = lerpf(0.45, 1.0, clampf(parallax_scalar, 0.0, 1.0))
+	menu_starfield_focus.x = wrapf(menu_starfield_focus.x + delta * 22.0 * speed_scale, 0.0, MENU_STARFIELD_SPAN.x)
+	menu_starfield_focus.y = wrapf(menu_starfield_focus.y + delta * 6.0 * speed_scale, 0.0, MENU_STARFIELD_SPAN.y)
+	for debris_index in range(menu_background_debris.size()):
+		var debris: Dictionary = menu_background_debris[debris_index]
+		debris["rotation"] = float(debris.get("rotation", 0.0)) + float(debris.get("rotation_speed", 0.0)) * delta
+		menu_background_debris[debris_index] = debris
+	for ship_index in range(menu_background_ships.size()):
+		var ship: Dictionary = menu_background_ships[ship_index]
+		var ship_position: Vector2 = ship.get("position", Vector2.ZERO)
+		var velocity: Vector2 = ship.get("velocity", Vector2.ZERO)
+		ship_position += velocity * delta * speed_scale
+		ship["position"] = ship_position
+		ship["thruster_phase"] = float(ship.get("thruster_phase", 0.0)) + delta * 5.2
+		var screen_margin: float = 180.0
+		if ship_position.x < -screen_margin or ship_position.x > menu_starfield_layer.size.x + screen_margin or ship_position.y < -screen_margin or ship_position.y > menu_starfield_layer.size.y + screen_margin:
+			var ship_rng := RandomNumberGenerator.new()
+			ship_rng.seed = Time.get_ticks_usec() + ship_index * 9187
+			ship = build_menu_background_ship(ship_rng)
+		menu_background_ships[ship_index] = ship
+	for ship_index in range(menu_far_background_ships.size()):
+		var ship: Dictionary = menu_far_background_ships[ship_index]
+		var ship_position: Vector2 = ship.get("position", Vector2.ZERO)
+		var velocity: Vector2 = ship.get("velocity", Vector2.ZERO)
+		ship_position += velocity * delta * speed_scale * 0.68
+		ship["position"] = ship_position
+		ship["thruster_phase"] = float(ship.get("thruster_phase", 0.0)) + delta * 3.2
+		var screen_margin: float = 220.0
+		if ship_position.x < -screen_margin or ship_position.x > menu_starfield_layer.size.x + screen_margin or ship_position.y < -screen_margin or ship_position.y > menu_starfield_layer.size.y + screen_margin:
+			var ship_rng := RandomNumberGenerator.new()
+			ship_rng.seed = Time.get_ticks_usec() + ship_index * 14711 + 99
+			ship = build_menu_far_background_ship(ship_rng)
+		menu_far_background_ships[ship_index] = ship
+
+
+func draw_menu_starfield_layer() -> void:
+	draw_menu_star_layer(menu_starfield_far)
+	draw_menu_star_layer(menu_starfield_mid)
+	draw_menu_far_background_ships()
+	draw_menu_background_debris()
+	draw_menu_background_ships()
+	draw_menu_star_layer(menu_starfield_near)
+
+
+func draw_menu_star_layer(layer: Array[Dictionary]) -> void:
+	for star_variant in layer:
+		var star: Dictionary = star_variant
+		var point: Vector2 = menu_starfield_point(Vector2(star.get("position", Vector2.ZERO)), float(star.get("depth", 1.0)))
+		var base_color: Color = Color(star.get("color", Color.WHITE))
+		var radius: float = float(star.get("radius", 1.0))
+		if bool(star.get("bloom", false)):
+			menu_starfield_layer.draw_circle(point, radius * 2.8, Color(base_color.r, base_color.g, base_color.b, base_color.a * 0.12))
+			menu_starfield_layer.draw_circle(point, radius * 1.8, Color(base_color.r, base_color.g, base_color.b, base_color.a * 0.18))
+		var blink := 0.0
+		if star.has("blink_phase"):
+			blink = max(sin(Time.get_ticks_msec() / 420.0 + float(star.get("blink_phase", 0.0))), 0.0)
+		menu_starfield_layer.draw_circle(point, radius, base_color)
+		if blink > 0.92:
+			menu_starfield_layer.draw_circle(point, radius * 1.2, Color(0.9, 1.0, 0.96, 0.18 + 0.14 * blink))
+			menu_starfield_layer.draw_line(point + Vector2(-5.0, 0.0), point + Vector2(5.0, 0.0), Color(0.72, 0.92, 1.0, 0.18 * blink), 1.0)
+
+
+func draw_menu_background_debris() -> void:
+	for debris_variant in menu_background_debris:
+		var debris: Dictionary = debris_variant
+		var texture: Texture2D = debris.get("texture", null)
+		if texture == null:
+			continue
+		var point: Vector2 = menu_starfield_point(Vector2(debris.get("position", Vector2.ZERO)), float(debris.get("depth", 1.0)))
+		var debris_scale: float = float(debris.get("scale", 1.0))
+		menu_starfield_layer.draw_set_transform(point, float(debris.get("rotation", 0.0)), Vector2.ONE * debris_scale)
+		menu_starfield_layer.draw_texture(texture, -texture.get_size() * 0.5, Color(0.42, 0.56, 0.72, float(debris.get("alpha", 0.22))))
+		menu_starfield_layer.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func draw_menu_background_ships() -> void:
+	for ship_variant in menu_background_ships:
+		var ship: Dictionary = ship_variant
+		var texture: Texture2D = ship.get("texture", null)
+		if texture == null:
+			continue
+		var ship_position: Vector2 = ship.get("position", Vector2.ZERO)
+		var velocity: Vector2 = ship.get("velocity", Vector2.RIGHT)
+		var angle: float = velocity.angle() + PI
+		var ship_scale: float = float(ship.get("scale", 1.0))
+		var alpha: float = float(ship.get("alpha", 0.6))
+		var half_size: Vector2 = texture.get_size() * 0.5
+		var rear_x: float = half_size.x * 0.92
+		var thrust_alpha: float = clampf(velocity.length() / max(float(ship.get("speed_max", 95.0)), 1.0), 0.2, 0.9)
+		var thrust_length: float = 8.0 + 8.0 * thrust_alpha
+		menu_starfield_layer.draw_set_transform(ship_position, angle, Vector2.ONE * ship_scale)
+		var exhaust_center := Vector2(rear_x, 0.0)
+		var exhaust_tip := exhaust_center + Vector2(thrust_length, 0.0)
+		menu_starfield_layer.draw_line(exhaust_center, exhaust_tip, Color(1.0, 0.56, 0.2, 0.78 * thrust_alpha * alpha), 7.2)
+		menu_starfield_layer.draw_line(exhaust_center, exhaust_center + Vector2(thrust_length * 0.68, 0.0), Color(1.0, 0.84, 0.48, 0.94 * thrust_alpha * alpha), 3.8)
+		menu_starfield_layer.draw_circle(exhaust_center, 5.2, Color(0.48, 0.86, 1.0, 0.22 * thrust_alpha * alpha))
+		menu_starfield_layer.draw_circle(exhaust_tip, 4.0, Color(1.0, 0.82, 0.42, 0.34 * thrust_alpha * alpha))
+		menu_starfield_layer.draw_texture(texture, -half_size, Color(0.84, 0.92, 1.0, alpha))
+		menu_starfield_layer.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func draw_menu_far_background_ships() -> void:
+	for ship_variant in menu_far_background_ships:
+		var ship: Dictionary = ship_variant
+		var texture: Texture2D = ship.get("texture", null)
+		if texture == null:
+			continue
+		var ship_position: Vector2 = ship.get("position", Vector2.ZERO)
+		var velocity: Vector2 = ship.get("velocity", Vector2.RIGHT)
+		var angle: float = velocity.angle() + PI
+		var ship_scale: float = float(ship.get("scale", 1.0))
+		var alpha: float = float(ship.get("alpha", 0.3))
+		var half_size: Vector2 = texture.get_size() * 0.5
+		var rear_x: float = half_size.x * 0.92
+		var thrust_alpha: float = clampf(velocity.length() / max(float(ship.get("speed_max", 95.0)), 1.0), 0.2, 0.9)
+		var thrust_length: float = 8.0 + 8.0 * thrust_alpha
+		menu_starfield_layer.draw_set_transform(ship_position, angle, Vector2.ONE * ship_scale)
+		var exhaust_center := Vector2(rear_x, 0.0)
+		var exhaust_tip := exhaust_center + Vector2(thrust_length, 0.0)
+		menu_starfield_layer.draw_line(exhaust_center, exhaust_tip, Color(1.0, 0.56, 0.2, 0.56 * thrust_alpha * alpha), 4.8)
+		menu_starfield_layer.draw_line(exhaust_center, exhaust_center + Vector2(thrust_length * 0.62, 0.0), Color(1.0, 0.84, 0.48, 0.7 * thrust_alpha * alpha), 2.4)
+		menu_starfield_layer.draw_circle(exhaust_center, 3.2, Color(0.48, 0.86, 1.0, 0.14 * thrust_alpha * alpha))
+		menu_starfield_layer.draw_circle(exhaust_tip, 2.8, Color(1.0, 0.82, 0.42, 0.24 * thrust_alpha * alpha))
+		menu_starfield_layer.draw_texture(texture, -half_size, Color(0.72, 0.82, 0.94, alpha))
+		menu_starfield_layer.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+func build_menu_background_ship(rng: RandomNumberGenerator) -> Dictionary:
+	var texture: Texture2D = MENU_PLAYER_SHIP_TEXTURES[rng.randi_range(0, MENU_PLAYER_SHIP_TEXTURES.size() - 1)]
+	var viewport_size: Vector2 = menu_starfield_layer.size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		viewport_size = get_viewport_rect().size
+	if viewport_size.x <= 0.0:
+		viewport_size.x = 1280.0
+	if viewport_size.y <= 0.0:
+		viewport_size.y = 720.0
+	var margin := 160.0
+	var entry_side: int = rng.randi_range(0, 3)
+	var spawn_position := Vector2.ZERO
+	var target := Vector2.ZERO
+	match entry_side:
+		0:
+			spawn_position = Vector2(-margin, rng.randf_range(70.0, viewport_size.y - 70.0))
+			target = Vector2(viewport_size.x + margin, rng.randf_range(70.0, viewport_size.y - 70.0))
+		1:
+			spawn_position = Vector2(viewport_size.x + margin, rng.randf_range(70.0, viewport_size.y - 70.0))
+			target = Vector2(-margin, rng.randf_range(70.0, viewport_size.y - 70.0))
+		2:
+			spawn_position = Vector2(rng.randf_range(70.0, viewport_size.x - 70.0), -margin)
+			target = Vector2(rng.randf_range(70.0, viewport_size.x - 70.0), viewport_size.y + margin)
+		_:
+			spawn_position = Vector2(rng.randf_range(70.0, viewport_size.x - 70.0), viewport_size.y + margin)
+			target = Vector2(rng.randf_range(70.0, viewport_size.x - 70.0), -margin)
+	var velocity: Vector2 = (target - spawn_position).normalized() * rng.randf_range(34.0, 62.0)
+	return {
+		"texture": texture,
+		"position": spawn_position,
+		"velocity": velocity,
+		"speed_max": velocity.length(),
+		"scale": rng.randf_range(0.5, 0.82),
+		"alpha": rng.randf_range(0.3, 0.58),
+		"thruster_phase": rng.randf_range(0.0, TAU),
+	}
+
+
+func build_menu_far_background_ship(rng: RandomNumberGenerator) -> Dictionary:
+	var texture: Texture2D = MENU_FAR_SHIP_TEXTURES[rng.randi_range(0, MENU_FAR_SHIP_TEXTURES.size() - 1)]
+	var viewport_size: Vector2 = menu_starfield_layer.size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		viewport_size = get_viewport_rect().size
+	if viewport_size.x <= 0.0:
+		viewport_size.x = 1280.0
+	if viewport_size.y <= 0.0:
+		viewport_size.y = 720.0
+	var margin := 180.0
+	var move_right: bool = rng.randf() >= 0.5
+	var spawn_position := Vector2(-margin if move_right else viewport_size.x + margin, rng.randf_range(46.0, viewport_size.y * 0.42))
+	var target := Vector2(viewport_size.x + margin if move_right else -margin, rng.randf_range(46.0, viewport_size.y * 0.42))
+	var velocity := (target - spawn_position).normalized() * rng.randf_range(18.0, 30.0)
+	return {
+		"texture": texture,
+		"position": spawn_position,
+		"velocity": velocity,
+		"speed_max": velocity.length(),
+		"scale": rng.randf_range(0.28, 0.52),
+		"alpha": rng.randf_range(0.16, 0.3),
+		"thruster_phase": rng.randf_range(0.0, TAU),
+	}
+
+
+func menu_starfield_point(source_position: Vector2, depth: float) -> Vector2:
+	var adjusted_depth: float = lerpf(1.0, depth, float(settings_manager().get_value("visuals", "parallax_strength")))
+	var offset_position: Vector2 = source_position - menu_starfield_focus * adjusted_depth
+	return Vector2(
+		wrapf(offset_position.x, 0.0, MENU_STARFIELD_SPAN.x) / MENU_STARFIELD_SPAN.x * max(menu_starfield_layer.size.x, 1.0),
+		wrapf(offset_position.y, 0.0, MENU_STARFIELD_SPAN.y) / MENU_STARFIELD_SPAN.y * max(menu_starfield_layer.size.y, 1.0)
+	)
+
+
+func reset_title_logo_animation() -> void:
+	title_logo_sequence_index = 0
+	title_logo_frame_timer = TITLE_LOGO_FRAME_DURATION
+	apply_title_logo_frame()
+
+
+func update_title_logo_animation(delta: float) -> void:
+	if not title_panel.visible or title_logo.texture == null:
+		return
+	title_logo_frame_timer -= delta
+	if title_logo_frame_timer > 0.0:
+		return
+	title_logo_frame_timer = TITLE_LOGO_FRAME_DURATION
+	title_logo_sequence_index = (title_logo_sequence_index + 1) % title_logo_frame_sequence.size()
+	apply_title_logo_frame()
+
+
+func apply_title_logo_frame() -> void:
+	var atlas := title_logo.texture as AtlasTexture
+	if atlas == null:
+		return
+	var target_frame: int = title_logo_frame_sequence[title_logo_sequence_index]
+	var frame_start: int = target_frame * title_logo_frame_width
+	atlas.region = Rect2(frame_start, 0, title_logo_frame_width, TITLE_LOGO_SPRITE_SHEET.get_height())

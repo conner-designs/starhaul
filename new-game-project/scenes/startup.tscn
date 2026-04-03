@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/startup.gd" id="1_start"]
+[ext_resource type="Texture2D" path="res://assets/icons/Title_logo_sprite_sheet_01.png" id="2_title_logo"]
 
 [node name="Startup" type="Control"]
 layout_mode = 3
@@ -19,6 +20,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.03, 0.06, 1)
+
+[node name="MenuStarfield" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 
@@ -63,9 +73,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.0
+offset_left = -285.0
 offset_top = -176.0
-offset_right = 240.0
+offset_right = 285.0
 offset_bottom = 176.0
 
 [node name="TitleMargin" type="MarginContainer" parent="TitlePanel"]
@@ -80,14 +90,17 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="TitlePanel/TitleMargin/TitleVBox"]
+visible = false
 layout_mode = 2
 horizontal_alignment = 1
 text = "STARHAUL"
 
-[node name="TitleSubtitle" type="Label" parent="TitlePanel/TitleMargin/TitleVBox"]
+[node name="TitleLogo" type="TextureRect" parent="TitlePanel/TitleMargin/TitleVBox"]
+custom_minimum_size = Vector2(352, 103)
 layout_mode = 2
-horizontal_alignment = 1
-text = "Prospector command console"
+size_flags_horizontal = 4
+texture = ExtResource("2_title_logo")
+stretch_mode = 5
 
 [node name="MenuButtons" type="VBoxContainer" parent="TitlePanel/TitleMargin/TitleVBox"]
 layout_mode = 2

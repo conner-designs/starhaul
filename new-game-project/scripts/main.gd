@@ -491,7 +491,48 @@ const USE_SKILL_ORDER: Array[String] = [
 	"industry",
 	"trade",
 ]
-const MINING_STAGE_LEVEL_REQUIREMENTS: Array[int] = [0, 5, 12, 24]
+const USE_SKILL_MAX_LEVEL := 100
+const MINING_STAGE_LEVEL_REQUIREMENTS: Array[int] = [0, 5, 10, 15, 25, 35, 45, 55, 65]
+const MINING_EXTRACTION_SPEED_MILESTONES: Array[int] = [10, 30, 50, 70, 90]
+const MINING_BONUS_YIELD_MILESTONES: Array[int] = [20, 40, 60, 80, 100]
+const SURVEYING_DF_MILESTONES: Array[int] = [5, 20, 35, 50, 80]
+const SURVEYING_COOLDOWN_MILESTONES: Array[int] = [10, 25, 40, 60, 90]
+const SURVEYING_RELIABILITY_MILESTONES: Array[int] = [15, 30, 45, 70, 100]
+const COMBAT_LASER_DAMAGE_MILESTONES: Array[int] = [5, 20, 35, 50, 80]
+const COMBAT_LOCK_SPEED_MILESTONES: Array[int] = [10, 25, 40, 60, 90]
+const COMBAT_SPECIAL_COOLDOWN_MILESTONES: Array[int] = [15, 30, 45, 70, 100]
+const SALVAGE_SPEED_MILESTONES: Array[int] = [5, 20, 35, 50, 80]
+const SALVAGE_YIELD_MILESTONES: Array[int] = [10, 25, 40, 60, 90]
+const SALVAGE_CACHE_MILESTONES: Array[int] = [15, 30, 45, 70, 100]
+const INDUSTRY_REFINING_SPEED_MILESTONES: Array[int] = [5, 25, 45, 65, 85]
+const INDUSTRY_REFINING_QUALITY_MILESTONES: Array[int] = [10, 30, 50, 70, 90]
+const INDUSTRY_CRAFTING_COST_MILESTONES: Array[int] = [15, 35, 55, 75, 95]
+const INDUSTRY_REFINING_FEE_MILESTONES: Array[int] = [20, 40, 60, 80, 100]
+const TRADE_SELL_VALUE_MILESTONES: Array[int] = [5, 20, 35, 50, 80]
+const TRADE_MISSION_PAYOUT_MILESTONES: Array[int] = [10, 25, 40, 60, 90]
+const TRADE_BOUNTY_PAYOUT_MILESTONES: Array[int] = [15, 30, 45, 70, 100]
+const SALVAGE_SMALL_DERELICT_BOARDING_LEVEL := 10
+const SALVAGE_STANDARD_DERELICT_BOARDING_LEVEL := 20
+const SALVAGE_HOSTILE_BOARDING_LEVEL := 35
+const MINING_RESOURCE_UNLOCKS := [
+	{"level": 0, "label": "Iron"},
+	{"level": 5, "label": "Copper"},
+	{"level": 10, "label": "Nickel"},
+	{"level": 15, "label": "Cobalt"},
+	{"level": 25, "label": "Crystal"},
+	{"level": 35, "label": "Titanium"},
+	{"level": 45, "label": "Silver"},
+	{"level": 55, "label": "Gold"},
+	{"level": 65, "label": "Lindrite"},
+]
+const PILOTING_TRAVEL_FUEL_MILESTONES: Array[int] = [10, 25, 50, 75]
+const PILOTING_BOOST_FUEL_MILESTONES: Array[int] = [35, 60, 85]
+const PILOTING_LICENSE_MILESTONES := [
+	{"level": 20, "name": "Basic Flight License II"},
+	{"level": 40, "name": "Basic Flight License III"},
+	{"level": 70, "name": "Advanced Flight License I"},
+	{"level": 100, "name": "Advanced Flight License II"},
+]
 const USE_SKILL_DEFINITIONS := {
 	"piloting": {
 		"name": "Piloting",
@@ -499,11 +540,11 @@ const USE_SKILL_DEFINITIONS := {
 	},
 	"mining": {
 		"name": "Mining",
-		"description": "Extraction experience earned from productive mining cycles.",
+		"description": "Extraction experience earned from productive mining cycles and deeper ore access.",
 	},
 	"surveying": {
 		"name": "Surveying",
-		"description": "Field analysis earned from targeted scans and data collection.",
+		"description": "Field analysis earned from targeted scans, world sweeps, and data collection.",
 	},
 	"combat": {
 		"name": "Combat",
@@ -647,6 +688,8 @@ var tab_console_held := false
 var map_jump_cooldown := 0.0
 var ambient_hostile_event_timer := 0.0
 var pending_boarding_hostile_id := -1
+var pending_boarding_derelict_id := 0
+var pending_boarding_mode := ""
 var lock_target_id := -1
 var lock_progress := 0.0
 var last_lock_target_id := -1
@@ -793,6 +836,8 @@ func clear_current_map_entities() -> void:
 	lock_progress = 0.0
 	last_lock_target_id = -1
 	pending_boarding_hostile_id = -1
+	pending_boarding_derelict_id = 0
+	pending_boarding_mode = ""
 	combat_contract_spawn_timer = 0.0
 	ambient_hostile_event_timer = 0.0
 	if onboarding_active and next_onboarding_step_id() == "mine":
@@ -2838,6 +2883,8 @@ func apply_save_data(data: Dictionary) -> void:
 	last_lock_target_id = -1
 	shield_hit_effects.clear()
 	pending_boarding_hostile_id = -1
+	pending_boarding_derelict_id = 0
+	pending_boarding_mode = ""
 	boarding_prompt_popup.visible = false
 	dock_prompt_popup.visible = false
 	scan_mode_popup.visible = false
@@ -2953,6 +3000,480 @@ func use_skill_level(skill_id: String) -> int:
 	return int(use_skill_progress.get(skill_id, {}).get("level", 0))
 
 
+func piloting_travel_fuel_bonus() -> float:
+	var piloting_level: int = use_skill_level("piloting")
+	var unlocked_milestones := 0
+	for milestone_level in PILOTING_TRAVEL_FUEL_MILESTONES:
+		if piloting_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func piloting_boost_fuel_bonus() -> float:
+	var piloting_level: int = use_skill_level("piloting")
+	var unlocked_milestones := 0
+	for milestone_level in PILOTING_BOOST_FUEL_MILESTONES:
+		if piloting_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func piloting_license_name() -> String:
+	var piloting_level: int = use_skill_level("piloting")
+	var current_license := "Basic Flight License I"
+	for entry in PILOTING_LICENSE_MILESTONES:
+		if piloting_level >= int(entry.get("level", USE_SKILL_MAX_LEVEL)):
+			current_license = str(entry.get("name", current_license))
+	return current_license
+
+
+func next_piloting_license_text() -> String:
+	var piloting_level: int = use_skill_level("piloting")
+	for entry in PILOTING_LICENSE_MILESTONES:
+		var required_level: int = int(entry.get("level", USE_SKILL_MAX_LEVEL))
+		if piloting_level < required_level:
+			return "%s at Piloting %d" % [str(entry.get("name", "Unknown License")), required_level]
+	return "All current flight licenses earned"
+
+
+func mining_extraction_speed_bonus() -> float:
+	var mining_level: int = use_skill_level("mining")
+	var unlocked_milestones := 0
+	for milestone_level in MINING_EXTRACTION_SPEED_MILESTONES:
+		if mining_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.03
+
+
+func mining_bonus_yield_chance() -> float:
+	var mining_level: int = use_skill_level("mining")
+	var unlocked_milestones := 0
+	for milestone_level in MINING_BONUS_YIELD_MILESTONES:
+		if mining_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.015
+
+
+func current_mining_unlock_label() -> String:
+	var mining_level: int = use_skill_level("mining")
+	var current_unlock := "Iron"
+	for entry in MINING_RESOURCE_UNLOCKS:
+		if mining_level >= int(entry.get("level", 0)):
+			current_unlock = str(entry.get("label", current_unlock))
+	return current_unlock
+
+
+func next_mining_unlock_text() -> String:
+	var mining_level: int = use_skill_level("mining")
+	for entry in MINING_RESOURCE_UNLOCKS:
+		var required_level: int = int(entry.get("level", USE_SKILL_MAX_LEVEL))
+		if mining_level < required_level:
+			return "%s at Mining %d" % [str(entry.get("label", "Unknown Resource")), required_level]
+	return "All planned mining resource tiers earned"
+
+
+func next_mining_milestone_text() -> String:
+	var mining_level: int = use_skill_level("mining")
+	var next_level := USE_SKILL_MAX_LEVEL + 1
+	var next_label := "All current mining milestones earned"
+	for entry in MINING_RESOURCE_UNLOCKS:
+		var required_level: int = int(entry.get("level", USE_SKILL_MAX_LEVEL + 1))
+		if mining_level < required_level and required_level < next_level:
+			next_level = required_level
+			next_label = "%s unlock" % str(entry.get("label", "Resource"))
+	for milestone_level in MINING_EXTRACTION_SPEED_MILESTONES:
+		if mining_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+3%% extraction speed"
+	for milestone_level in MINING_BONUS_YIELD_MILESTONES:
+		if mining_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+1.5%% bonus yield chance"
+	if next_level <= USE_SKILL_MAX_LEVEL:
+		return "%s at Mining %d" % [next_label, next_level]
+	return next_label
+
+
+func surveying_df_bonus() -> float:
+	var surveying_level: int = use_skill_level("surveying")
+	var unlocked_milestones := 0
+	for milestone_level in SURVEYING_DF_MILESTONES:
+		if surveying_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.04
+
+
+func surveying_scan_cooldown_bonus() -> float:
+	var surveying_level: int = use_skill_level("surveying")
+	var unlocked_milestones := 0
+	for milestone_level in SURVEYING_COOLDOWN_MILESTONES:
+		if surveying_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.04
+
+
+func surveying_resource_sweep_reliability() -> float:
+	var surveying_level: int = use_skill_level("surveying")
+	var unlocked_milestones := 0
+	for milestone_level in SURVEYING_RELIABILITY_MILESTONES:
+		if surveying_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.04
+
+
+func next_surveying_milestone_text() -> String:
+	var surveying_level: int = use_skill_level("surveying")
+	var next_level := USE_SKILL_MAX_LEVEL + 1
+	var next_label := "All current surveying milestones earned"
+	for milestone_level in SURVEYING_DF_MILESTONES:
+		if surveying_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+4%% DF yield"
+	for milestone_level in SURVEYING_COOLDOWN_MILESTONES:
+		if surveying_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "-4%% scan cooldown"
+	for milestone_level in SURVEYING_RELIABILITY_MILESTONES:
+		if surveying_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+4%% sweep reliability"
+	if next_level <= USE_SKILL_MAX_LEVEL:
+		return "%s at Surveying %d" % [next_label, next_level]
+	return next_label
+
+
+func surveying_reliability_target(resource_filter: StringName = StringName()):
+	var best_node = null
+	var best_distance := INF
+	for child in resource_layer.get_children():
+		if resource_filter != StringName() and StringName(child.resource_type) != resource_filter:
+			continue
+		if bool(child.is_derelict_ship):
+			continue
+		var distance: float = player.global_position.distance_to(child.global_position)
+		if distance < best_distance:
+			best_distance = distance
+			best_node = child
+	return best_node
+
+
+func combat_laser_damage_bonus() -> float:
+	var combat_level: int = use_skill_level("combat")
+	var unlocked_milestones := 0
+	for milestone_level in COMBAT_LASER_DAMAGE_MILESTONES:
+		if combat_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func combat_lock_speed_bonus() -> float:
+	var combat_level: int = use_skill_level("combat")
+	var unlocked_milestones := 0
+	for milestone_level in COMBAT_LOCK_SPEED_MILESTONES:
+		if combat_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.04
+
+
+func combat_special_cooldown_bonus() -> float:
+	var combat_level: int = use_skill_level("combat")
+	var unlocked_milestones := 0
+	for milestone_level in COMBAT_SPECIAL_COOLDOWN_MILESTONES:
+		if combat_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.03
+
+
+func next_combat_milestone_text() -> String:
+	var combat_level: int = use_skill_level("combat")
+	var next_level := USE_SKILL_MAX_LEVEL + 1
+	var next_label := "All current combat milestones earned"
+	for milestone_level in COMBAT_LASER_DAMAGE_MILESTONES:
+		if combat_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+2%% laser damage"
+	for milestone_level in COMBAT_LOCK_SPEED_MILESTONES:
+		if combat_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+4%% target lock speed"
+	for milestone_level in COMBAT_SPECIAL_COOLDOWN_MILESTONES:
+		if combat_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "-3%% special cooldown"
+	if next_level <= USE_SKILL_MAX_LEVEL:
+		return "%s at Combat %d" % [next_label, next_level]
+	return next_label
+
+
+func salvage_speed_bonus() -> float:
+	var salvage_level: int = use_skill_level("salvage")
+	var unlocked_milestones := 0
+	for milestone_level in SALVAGE_SPEED_MILESTONES:
+		if salvage_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.03
+
+
+func salvage_yield_skill_bonus() -> float:
+	var salvage_level: int = use_skill_level("salvage")
+	var unlocked_milestones := 0
+	for milestone_level in SALVAGE_YIELD_MILESTONES:
+		if salvage_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func salvage_cache_quality_bonus() -> float:
+	var salvage_level: int = use_skill_level("salvage")
+	var unlocked_milestones := 0
+	for milestone_level in SALVAGE_CACHE_MILESTONES:
+		if salvage_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.03
+
+
+func industry_refining_speed_bonus() -> float:
+	var industry_level: int = use_skill_level("industry")
+	var unlocked_milestones := 0
+	for milestone_level in INDUSTRY_REFINING_SPEED_MILESTONES:
+		if industry_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.03
+
+
+func industry_refining_quality_bonus() -> float:
+	var industry_level: int = use_skill_level("industry")
+	var unlocked_milestones := 0
+	for milestone_level in INDUSTRY_REFINING_QUALITY_MILESTONES:
+		if industry_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func industry_crafting_cost_bonus() -> float:
+	var industry_level: int = use_skill_level("industry")
+	var unlocked_milestones := 0
+	for milestone_level in INDUSTRY_CRAFTING_COST_MILESTONES:
+		if industry_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.03
+
+
+func industry_refining_fee_bonus() -> float:
+	var industry_level: int = use_skill_level("industry")
+	var unlocked_milestones := 0
+	for milestone_level in INDUSTRY_REFINING_FEE_MILESTONES:
+		if industry_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func next_industry_milestone_text() -> String:
+	var industry_level: int = use_skill_level("industry")
+	var next_level := USE_SKILL_MAX_LEVEL + 1
+	var next_label := "All current industry milestones earned"
+	for milestone_level in INDUSTRY_REFINING_SPEED_MILESTONES:
+		if industry_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+3%% refining speed"
+	for milestone_level in INDUSTRY_REFINING_QUALITY_MILESTONES:
+		if industry_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+2%% refining quality"
+	for milestone_level in INDUSTRY_CRAFTING_COST_MILESTONES:
+		if industry_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "-3%% crafting cost"
+	for milestone_level in INDUSTRY_REFINING_FEE_MILESTONES:
+		if industry_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "-2%% refinery fee"
+	if next_level <= USE_SKILL_MAX_LEVEL:
+		return "%s at Industry %d" % [next_label, next_level]
+	return next_label
+
+
+func trade_sell_value_bonus() -> float:
+	var trade_level: int = use_skill_level("trade")
+	var unlocked_milestones := 0
+	for milestone_level in TRADE_SELL_VALUE_MILESTONES:
+		if trade_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func trade_mission_payout_bonus() -> float:
+	var trade_level: int = use_skill_level("trade")
+	var unlocked_milestones := 0
+	for milestone_level in TRADE_MISSION_PAYOUT_MILESTONES:
+		if trade_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func trade_bounty_payout_bonus() -> float:
+	var trade_level: int = use_skill_level("trade")
+	var unlocked_milestones := 0
+	for milestone_level in TRADE_BOUNTY_PAYOUT_MILESTONES:
+		if trade_level >= milestone_level:
+			unlocked_milestones += 1
+	return float(unlocked_milestones) * 0.02
+
+
+func next_trade_milestone_text() -> String:
+	var trade_level: int = use_skill_level("trade")
+	var next_level := USE_SKILL_MAX_LEVEL + 1
+	var next_label := "All current trade milestones earned"
+	for milestone_level in TRADE_SELL_VALUE_MILESTONES:
+		if trade_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+2%% sell value"
+	for milestone_level in TRADE_MISSION_PAYOUT_MILESTONES:
+		if trade_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+2%% mission payout"
+	for milestone_level in TRADE_BOUNTY_PAYOUT_MILESTONES:
+		if trade_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+2%% bounty payout"
+	if next_level <= USE_SKILL_MAX_LEVEL:
+		return "%s at Trade %d" % [next_label, next_level]
+	return next_label
+
+
+func next_salvage_milestone_text() -> String:
+	var salvage_level: int = use_skill_level("salvage")
+	var next_level := USE_SKILL_MAX_LEVEL + 1
+	var next_label := "All current salvage milestones earned"
+	for milestone_level in SALVAGE_SPEED_MILESTONES:
+		if salvage_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+3%% salvage speed"
+	for milestone_level in SALVAGE_YIELD_MILESTONES:
+		if salvage_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+2%% salvage yield"
+	for milestone_level in SALVAGE_CACHE_MILESTONES:
+		if salvage_level < milestone_level and milestone_level < next_level:
+			next_level = milestone_level
+			next_label = "+3%% cache quality"
+	if next_level <= USE_SKILL_MAX_LEVEL:
+		return "%s at Salvage %d" % [next_label, next_level]
+	return next_label
+
+
+func salvage_boarding_access_label() -> String:
+	var salvage_level: int = use_skill_level("salvage")
+	if salvage_level >= SALVAGE_HOSTILE_BOARDING_LEVEL:
+		return "Disabled hostiles"
+	if salvage_level >= SALVAGE_STANDARD_DERELICT_BOARDING_LEVEL:
+		return "Standard derelicts"
+	if salvage_level >= SALVAGE_SMALL_DERELICT_BOARDING_LEVEL:
+		return "Small derelicts"
+	return "No boarding access"
+
+
+func next_salvage_boarding_unlock_text() -> String:
+	var salvage_level: int = use_skill_level("salvage")
+	if salvage_level < SALVAGE_SMALL_DERELICT_BOARDING_LEVEL:
+		return "Small derelict boarding at Salvage %d" % SALVAGE_SMALL_DERELICT_BOARDING_LEVEL
+	if salvage_level < SALVAGE_STANDARD_DERELICT_BOARDING_LEVEL:
+		return "Standard derelict boarding at Salvage %d" % SALVAGE_STANDARD_DERELICT_BOARDING_LEVEL
+	if salvage_level < SALVAGE_HOSTILE_BOARDING_LEVEL:
+		return "Disabled hostile boarding at Salvage %d" % SALVAGE_HOSTILE_BOARDING_LEVEL
+	return "All current boarding unlocks earned"
+
+
+func derelict_boarding_tier(resource_node) -> int:
+	if resource_node == null or not bool(resource_node.is_derelict_ship):
+		return 0
+	return 1 if str(resource_node.derelict_profile_id) == "small_hulk" else 2
+
+
+func can_board_derelict(resource_node) -> bool:
+	var boarding_tier: int = derelict_boarding_tier(resource_node)
+	if boarding_tier <= 0:
+		return false
+	var salvage_level: int = use_skill_level("salvage")
+	if boarding_tier == 1:
+		return salvage_level >= SALVAGE_SMALL_DERELICT_BOARDING_LEVEL
+	return salvage_level >= SALVAGE_STANDARD_DERELICT_BOARDING_LEVEL
+
+
+func can_board_disabled_hostiles() -> bool:
+	return use_skill_level("salvage") >= SALVAGE_HOSTILE_BOARDING_LEVEL
+
+
+func use_skill_bonus_summary(skill_id: String) -> String:
+	match skill_id:
+		"piloting":
+			return "Travel fuel -%d%%  |  Boost fuel -%d%%  |  License %s" % [
+				int(round(piloting_travel_fuel_bonus() * 100.0)),
+				int(round(piloting_boost_fuel_bonus() * 100.0)),
+				piloting_license_name(),
+			]
+		"mining":
+			return "Ore tier: %s  |  Extraction +%d%%  |  Bonus yield +%.1f%%" % [
+				current_mining_unlock_label(),
+				int(round(mining_extraction_speed_bonus() * 100.0)),
+				mining_bonus_yield_chance() * 100.0,
+			]
+		"surveying":
+			return "DF yield +%d%%  |  Scan cooldown -%d%%  |  Sweep reliability +%d%%" % [
+				int(round(surveying_df_bonus() * 100.0)),
+				int(round(surveying_scan_cooldown_bonus() * 100.0)),
+				int(round(surveying_resource_sweep_reliability() * 100.0)),
+			]
+		"combat":
+			return "Laser damage +%d%%  |  Lock speed +%d%%  |  Special cooldown -%d%%" % [
+				int(round(combat_laser_damage_bonus() * 100.0)),
+				int(round(combat_lock_speed_bonus() * 100.0)),
+				int(round(combat_special_cooldown_bonus() * 100.0)),
+			]
+		"salvage":
+			return "Salvage speed +%d%%  |  Yield +%d%%  |  Cache quality +%d%%  |  Boarding %s" % [
+				int(round(salvage_speed_bonus() * 100.0)),
+				int(round(salvage_yield_skill_bonus() * 100.0)),
+				int(round(salvage_cache_quality_bonus() * 100.0)),
+				salvage_boarding_access_label(),
+			]
+		"industry":
+			return "Refining speed +%d%%  |  Quality +%d%%  |  Craft cost -%d%%  |  Refinery fee -%d%%" % [
+				int(round(industry_refining_speed_bonus() * 100.0)),
+				int(round(industry_refining_quality_bonus() * 100.0)),
+				int(round(industry_crafting_cost_bonus() * 100.0)),
+				int(round(industry_refining_fee_bonus() * 100.0)),
+			]
+		"trade":
+			return "Sell value +%d%%  |  Mission payout +%d%%  |  Bounty payout +%d%%" % [
+				int(round(trade_sell_value_bonus() * 100.0)),
+				int(round(trade_mission_payout_bonus() * 100.0)),
+				int(round(trade_bounty_payout_bonus() * 100.0)),
+			]
+		_:
+			return "Bonuses pending future skill pass."
+
+
+func use_skill_next_unlock_text(skill_id: String) -> String:
+	match skill_id:
+		"piloting":
+			return "Next license: %s" % next_piloting_license_text()
+		"mining":
+			return "Next milestone: %s" % next_mining_milestone_text()
+		"surveying":
+			return "Next milestone: %s" % next_surveying_milestone_text()
+		"combat":
+			return "Next milestone: %s" % next_combat_milestone_text()
+		"salvage":
+			return "Next milestone: %s  |  %s" % [next_salvage_milestone_text(), next_salvage_boarding_unlock_text()]
+		"industry":
+			return "Next milestone: %s" % next_industry_milestone_text()
+		"trade":
+			return "Next milestone: %s" % next_trade_milestone_text()
+		_:
+			return "More milestone rewards coming soon."
+
+
 func mining_level_required_for_stage(stage: int) -> int:
 	if stage <= 0:
 		return 0
@@ -2979,14 +3500,22 @@ func award_use_skill_xp(skill_id: String, amount: float, announce: bool = false)
 	if amount <= 0.0 or not use_skill_progress.has(skill_id):
 		return
 	var skill_data: Dictionary = use_skill_progress[skill_id]
+	if int(skill_data.get("level", 0)) >= USE_SKILL_MAX_LEVEL:
+		skill_data["level"] = USE_SKILL_MAX_LEVEL
+		skill_data["xp"] = 0.0
+		use_skill_progress[skill_id] = skill_data
+		return
 	skill_data["xp"] = float(skill_data.get("xp", 0.0)) + amount
 	skill_data["total_xp"] = float(skill_data.get("total_xp", 0.0)) + amount
 	var leveled_up := false
-	while float(skill_data.get("xp", 0.0)) >= use_skill_xp_to_next_level(int(skill_data.get("level", 0))):
+	while int(skill_data.get("level", 0)) < USE_SKILL_MAX_LEVEL and float(skill_data.get("xp", 0.0)) >= use_skill_xp_to_next_level(int(skill_data.get("level", 0))):
 		var current_level: int = int(skill_data.get("level", 0))
 		skill_data["xp"] = float(skill_data.get("xp", 0.0)) - use_skill_xp_to_next_level(current_level)
 		skill_data["level"] = current_level + 1
 		leveled_up = true
+	if int(skill_data.get("level", 0)) >= USE_SKILL_MAX_LEVEL:
+		skill_data["level"] = USE_SKILL_MAX_LEVEL
+		skill_data["xp"] = 0.0
 	use_skill_progress[skill_id] = skill_data
 	if leveled_up and skill_id == "mining":
 		refresh_mission_offers()
@@ -2996,7 +3525,7 @@ func award_use_skill_xp(skill_id: String, amount: float, announce: bool = false)
 
 
 func refresh_field_skills_panel() -> void:
-	field_skills_summary.text = "Tracked skills: %d  |  Combined levels: %d" % [USE_SKILL_ORDER.size(), total_use_skill_levels()]
+	field_skills_summary.text = ""
 	for skill_id in USE_SKILL_ORDER:
 		if not field_skill_rows.has(skill_id):
 			continue
@@ -3015,7 +3544,16 @@ func refresh_field_skills_panel() -> void:
 		name_label.text = str(skill_info.get("name", skill_id.capitalize()))
 		level_label.text = "L%d" % skill_level
 		progress_bar.value = clampf((skill_xp / max(xp_needed, 0.01)) * 100.0, 0.0, 100.0)
-		detail_label.text = "%s\n%.0f / %.0f progress" % [str(skill_info.get("description", "")), skill_xp, xp_needed]
+		var progress_text := "%.0f / %.0f progress" % [skill_xp, xp_needed]
+		if skill_level >= USE_SKILL_MAX_LEVEL:
+			progress_text = "MAX LEVEL"
+			progress_bar.value = 100.0
+		detail_label.text = "%s\n%s\n%s\n%s" % [
+			str(skill_info.get("description", "")),
+			use_skill_bonus_summary(skill_id),
+			use_skill_next_unlock_text(skill_id),
+			progress_text,
+		]
 		name_label.add_theme_font_size_override("font_size", 16)
 		name_label.add_theme_color_override("font_color", Color(0.95, 0.97, 1.0))
 		level_label.add_theme_font_size_override("font_size", 14)
@@ -3196,7 +3734,7 @@ func apply_ui_polish() -> void:
 	field_mission_panel_local.add_theme_stylebox_override("panel", make_panel_style(Color(0.05, 0.08, 0.12, 0.96), Color(0.95, 0.72, 0.27, 0.18), 18, 1))
 	field_cargo_panel_local.add_theme_stylebox_override("panel", make_panel_style(Color(0.05, 0.08, 0.12, 0.96), Color(0.28, 0.86, 1.0, 0.18), 18, 1))
 	field_map_panel_local.add_theme_stylebox_override("panel", make_panel_style(Color(0.04, 0.07, 0.12, 0.96), Color(0.28, 0.72, 0.96, 0.18), 18, 1))
-	field_pilot_panel_local.add_theme_stylebox_override("panel", make_panel_style(Color(0.05, 0.08, 0.12, 0.96), Color(0.32, 0.86, 0.72, 0.18), 18, 1))
+	field_pilot_panel_local.add_theme_stylebox_override("panel", make_panel_style(Color(0.04, 0.07, 0.11, 0.98), Color(0.36, 0.9, 0.76, 0.28), 20, 2))
 	field_skills_panel_local.add_theme_stylebox_override("panel", make_panel_style(Color(0.05, 0.08, 0.12, 0.96), Color(0.5, 0.82, 1.0, 0.18), 18, 1))
 	mission_popup.add_theme_stylebox_override("panel", make_panel_style(Color(0.05, 0.08, 0.12, 0.98), Color(0.95, 0.72, 0.27, 0.42), 24, 2))
 	inventory_popup.add_theme_stylebox_override("panel", make_panel_style(Color(0.05, 0.08, 0.12, 0.98), Color(0.28, 0.86, 1.0, 0.34), 24, 2))
@@ -3338,7 +3876,7 @@ func apply_ui_polish() -> void:
 	dock_credits_value.add_theme_font_size_override("font_size", 22)
 	dock_credits_value.add_theme_color_override("font_color", Color(1.0, 0.86, 0.49))
 	pilot_summary.add_theme_font_size_override("font_size", 13)
-	pilot_summary.add_theme_color_override("font_color", Color(0.7, 0.83, 0.95))
+	pilot_summary.add_theme_color_override("font_color", Color(0.9, 0.96, 1.0))
 	combat_live.add_theme_font_size_override("font_size", 12)
 	combat_live.add_theme_color_override("font_color", Color(1.0, 0.58, 0.58))
 	combat_mode_label.add_theme_font_size_override("font_size", 13)
@@ -3450,10 +3988,10 @@ func apply_ui_polish() -> void:
 	field_map_legend.add_theme_color_override("font_color", Color(0.66, 0.82, 0.94))
 	field_map_status.add_theme_font_size_override("font_size", 12)
 	field_map_status.add_theme_color_override("font_color", Color(0.92, 0.86, 0.58))
-	field_pilot_summary.add_theme_font_size_override("font_size", 14)
-	field_pilot_summary.add_theme_color_override("font_color", Color(0.84, 0.9, 0.98))
-	field_pilot_detail.add_theme_font_size_override("normal_font_size", 13)
-	field_pilot_detail.add_theme_color_override("default_color", Color(0.88, 0.94, 1.0))
+	field_pilot_summary.add_theme_font_size_override("font_size", 17)
+	field_pilot_summary.add_theme_color_override("font_color", Color(0.98, 0.99, 1.0))
+	field_pilot_detail.add_theme_font_size_override("normal_font_size", 12)
+	field_pilot_detail.add_theme_color_override("default_color", Color(0.88, 0.94, 0.99))
 	field_skills_summary.add_theme_font_size_override("font_size", 14)
 	field_skills_summary.add_theme_color_override("font_color", Color(0.84, 0.9, 0.98))
 	prompt_label.add_theme_font_size_override("font_size", 14)
@@ -3845,8 +4383,10 @@ func update_combat_prompt() -> void:
 	var target: Dictionary = targeted_hostile()
 	if pending_boarding_hostile_id != -1:
 		prompt_label.text = "Crippled hostile in range. Choose BOARD or DESTROY."
-	elif not target.is_empty() and bool(target.get("disabled", false)):
+	elif not target.is_empty() and bool(target.get("disabled", false)) and can_board_disabled_hostiles():
 		prompt_label.text = "Crippled hostile secured. Close in to decide its fate."
+	elif not target.is_empty() and bool(target.get("disabled", false)):
+		prompt_label.text = "Crippled hostile secured. Salvage Lv %d required to board." % SALVAGE_HOSTILE_BOARDING_LEVEL
 	elif not target.is_empty():
 		prompt_label.text = "Engage hostile contact. LMB fires lasers, RMB launches missiles."
 	else:
@@ -4288,6 +4828,8 @@ func disable_hostile(index: int) -> void:
 
 
 func try_prompt_boarding(hostile: Dictionary) -> void:
+	if not can_board_disabled_hostiles():
+		return
 	if player.global_position.distance_to(hostile["position"]) > float(hostile.get("radius", 24.0)) + 18.0:
 		return
 	if pending_boarding_hostile_id == int(hostile["id"]) and boarding_prompt_popup.visible:
@@ -4299,7 +4841,7 @@ func try_prompt_boarding(hostile: Dictionary) -> void:
 			continue
 		hostile_contacts[index]["boarding_announced"] = true
 		break
-	open_boarding_prompt(hostile)
+	open_hostile_boarding_prompt(hostile)
 
 
 func resolve_boarding(hostile: Dictionary) -> void:
@@ -4350,6 +4892,56 @@ func resolve_boarding(hostile: Dictionary) -> void:
 	award_use_skill_xp("salvage", max(float(scrap_amount) * 0.7, 2.0), true)
 	push_telemetry_event("Boarding action complete on %s. Recovery teams secured %s." % [hostile_display_name(hostile), bonus_message], "combat")
 	remove_hostile_by_id(hostile_id)
+	update_hud()
+
+
+func get_derelict_by_id(object_id: int):
+	if object_id == 0:
+		return null
+	for child in resource_layer.get_children():
+		if not bool(child.is_derelict_ship):
+			continue
+		if child.get_instance_id() == object_id:
+			return child
+	return null
+
+
+func resolve_derelict_boarding(resource_node) -> void:
+	if resource_node == null or not bool(resource_node.is_derelict_ship):
+		return
+	var profile: Dictionary = derelict_profile_by_id(str(resource_node.derelict_profile_id))
+	var cache_drops: Array = profile.get("cache_drops", [])
+	var secured: Array[String] = []
+	var drop_count: int = 1 + int(round(derelict_cache_bonus()))
+	for drop_index in range(drop_count):
+		if cache_drops.is_empty():
+			break
+		var total_weight := 0.0
+		for drop in cache_drops:
+			total_weight += float(drop["weight"])
+		var roll := rng.randf() * total_weight
+		var selected: Dictionary = cache_drops[0]
+		for drop in cache_drops:
+			roll -= float(drop["weight"])
+			if roll <= 0.0:
+				selected = drop
+				break
+		var item_type: Variant = selected["kind"]
+		var amount: int = rng.randi_range(int(selected["amount_min"]), int(selected["amount_max"]))
+		cargo[item_type] += amount
+		var item_name := str(get_item_definition(item_type)["name"]) if item_data.has(item_type) else str(item_type)
+		secured.append("%s x%d" % [item_name, amount])
+	var scrap_amount: int = max(rng.randi_range(2, 4) + int(round(float(resource_node.remaining_amount) * 0.4)), 2)
+	scrap_amount += int(round(float(scrap_amount) * salvage_yield_bonus()))
+	cargo[SCRAP] += scrap_amount
+	secured.insert(0, "Scrap x%d" % scrap_amount)
+	total_stats["scrap_salvaged"] += scrap_amount
+	update_mission_progress("salvage_derelict", scrap_amount)
+	update_mission_progress("intro_salvage_scrap", scrap_amount)
+	award_use_skill_xp("salvage", max(float(scrap_amount) * 0.9, 2.5), true)
+	gain_experience(max(1, int(ceil(scrap_amount * 0.7))))
+	push_telemetry_event("Boarding action complete on %s. Recovery teams secured %s." % [str(resource_node.node_name), ", ".join(secured)], "mission")
+	resource_node.queue_free()
 	update_hud()
 
 
@@ -5057,6 +5649,23 @@ func perform_resource_scan(resource_filter: StringName = StringName()) -> void:
 				filtered_resources.append(node)
 		resources = filtered_resources
 	if resources.is_empty():
+		var reliability_target = null
+		if rng.randf() < surveying_resource_sweep_reliability():
+			reliability_target = surveying_reliability_target(resource_filter)
+		if reliability_target != null:
+			var recovered_label := str(reliability_target.node_name)
+			var recovered_position: Vector2 = reliability_target.global_position
+			var sweep_label_recovered := "Resource"
+			if resource_filter != StringName():
+				sweep_label_recovered = resource_scan_mode_title(resource_filter)
+			push_telemetry_event("%s sweep returned a weak signal, but survey training recovered a distant contact: %s %s." % [
+				sweep_label_recovered,
+				recovered_label,
+				scan_bearing_text(recovered_position),
+			], "system")
+			track_scan_contact(recovered_label, recovered_position, Color(0.46, 0.88, 1.0, 0.9), -1, reliability_target.get_instance_id())
+			update_mission_progress("scan_resources", 1)
+			return
 		if resource_filter == StringName():
 			push_telemetry_event("Resource sweep returned empty space. No viable extraction fields nearby.", "system")
 		else:
@@ -5415,7 +6024,7 @@ func award_scan_data_fragments(scan_target: Dictionary) -> void:
 		return
 	var scan_count: int = int(claimed_scan_data.get(claim_key, 0))
 	var fragment_amount: int = max(base_fragment_amount + 3 - scan_count, 1)
-	var data_multiplier: float = 1.0 + research_effect_total("research_scan_data_bonus") + research_effect_total("research_uplink_suite")
+	var data_multiplier: float = 1.0 + research_effect_total("research_scan_data_bonus") + research_effect_total("research_uplink_suite") + surveying_df_bonus()
 	if claim_key.begins_with("derelict:"):
 		data_multiplier += research_effect_total("research_derelict_scan_bonus")
 	if claim_key.begins_with("station:") or claim_key.begins_with("sun:"):
@@ -6003,10 +6612,26 @@ func confirm_docking_prompt() -> void:
 	begin_docking_sequence()
 
 
-func open_boarding_prompt(hostile: Dictionary) -> void:
+func open_hostile_boarding_prompt(hostile: Dictionary) -> void:
+	pending_boarding_mode = "hostile"
 	pending_boarding_hostile_id = int(hostile.get("id", -1))
+	pending_boarding_derelict_id = 0
 	boarding_prompt_title.text = "CRIPPLED %s" % hostile_display_name(hostile).to_upper()
 	boarding_prompt_info.text = "The hostile hull is drifting dead in space. Board for salvage or destroy it from range."
+	boarding_prompt_board_button.text = "BOARD"
+	boarding_prompt_destroy_button.text = "DESTROY"
+	boarding_prompt_popup.visible = true
+	hide_tooltip()
+
+
+func open_derelict_boarding_prompt(resource_node) -> void:
+	pending_boarding_mode = "derelict"
+	pending_boarding_hostile_id = -1
+	pending_boarding_derelict_id = resource_node.get_instance_id()
+	boarding_prompt_title.text = "BOARD %s" % str(resource_node.node_name).to_upper()
+	boarding_prompt_info.text = "The derelict breach point is accessible. Board now for a direct recovery sweep or leave it for external salvage."
+	boarding_prompt_board_button.text = "BOARD"
+	boarding_prompt_destroy_button.text = "LEAVE"
 	boarding_prompt_popup.visible = true
 	hide_tooltip()
 
@@ -6014,19 +6639,31 @@ func open_boarding_prompt(hostile: Dictionary) -> void:
 func close_boarding_prompt() -> void:
 	boarding_prompt_popup.visible = false
 	pending_boarding_hostile_id = -1
+	pending_boarding_derelict_id = 0
+	pending_boarding_mode = ""
 
 
 func confirm_boarding_action() -> void:
+	var boarding_mode := pending_boarding_mode
 	var hostile := get_hostile_by_id(pending_boarding_hostile_id)
+	var derelict = get_derelict_by_id(pending_boarding_derelict_id)
 	close_boarding_prompt()
-	if hostile.is_empty():
-		return
-	resolve_boarding(hostile)
+	if boarding_mode == "hostile":
+		if hostile.is_empty():
+			return
+		resolve_boarding(hostile)
+	elif boarding_mode == "derelict":
+		if derelict == null:
+			return
+		resolve_derelict_boarding(derelict)
 
 
 func confirm_destroy_boarding_target() -> void:
+	var boarding_mode := pending_boarding_mode
 	var hostile := get_hostile_by_id(pending_boarding_hostile_id)
 	close_boarding_prompt()
+	if boarding_mode != "hostile":
+		return
 	if hostile.is_empty():
 		return
 	destroy_disabled_hostile(int(hostile["id"]))
@@ -6364,7 +7001,7 @@ func station_service_discount(service_type: String) -> float:
 func current_scan_cooldown_duration() -> float:
 	var multipliers := [1.0, 0.96, 0.9, 0.84, 0.78, 0.72]
 	var base_duration: float = SCAN_COOLDOWN_DURATION * multipliers[faction_rank_index("pathfinder_initiative")]
-	var research_bonus: float = research_effect_total("research_scan_cooldown_bonus") + research_effect_total("research_systems_trim") + research_effect_total("research_uplink_suite")
+	var research_bonus: float = research_effect_total("research_scan_cooldown_bonus") + research_effect_total("research_systems_trim") + research_effect_total("research_uplink_suite") + surveying_scan_cooldown_bonus()
 	return base_duration * max(1.0 - research_bonus, 0.45)
 
 
@@ -6433,29 +7070,73 @@ func build_faction_summary_text() -> String:
 
 
 func build_pilot_summary_text() -> String:
-	return "Level %d / %d  |  Top standing: %s" % [level, MAX_PLAYER_LEVEL, top_faction_summary()]
+	return "Level %d / %d\n%s\n%s" % [level, MAX_PLAYER_LEVEL, piloting_license_name(), top_faction_summary()]
 
 
 func build_pilot_detail_text() -> String:
 	var xp_needed: int = experience_to_next_level()
 	var xp_remaining: int = max(xp_needed - experience, 0)
-	var xp_line := "Experience: %d / %d" % [experience, xp_needed]
-	var next_line := "To next level: %d" % xp_remaining
+	var xp_line := "%d / %d XP" % [experience, xp_needed]
+	var next_line := "%d XP to next level" % xp_remaining
+	var divider := "[color=#2b5166]────────────────────────[/color]"
 	if level >= MAX_PLAYER_LEVEL:
-		xp_line = "Experience: MAX LEVEL REACHED"
-		next_line = "To next level: N/A"
+		xp_line = "MAX LEVEL REACHED"
+		next_line = "No further level gains"
 	var lines: Array[String] = [
-		"[b]Pilot Level %d[/b]" % level,
+		"[b][color=#f3f7ff]PILOT PROFILE[/color][/b]",
+		"Level %d" % level,
+		piloting_license_name(),
 		xp_line,
 		next_line,
 		"Skill points ready: %d" % skill_points,
-		"",
-		"[b]Command Profile[/b]",
+		divider,
+		"[b][color=#95d8ff]COMMAND[/color][/b]",
 		"Top standing: %s" % top_faction_summary(),
-		"Ship cargo limit: %s" % format_weight(ship_stats["cargo_capacity"]),
-		"Fuel capacity: %.0f" % ship_stats["fuel_capacity"],
 		"Hull integrity: %d / %d" % [player_hull, player_hull_cap()],
+		"Fuel capacity: %.0f" % ship_stats["fuel_capacity"],
+		"Cargo limit: %s" % format_weight(ship_stats["cargo_capacity"]),
 		"Scanner cooldown: %.1fs" % current_scan_cooldown_duration(),
+		divider,
+		"[b][color=#95d8ff]FLIGHT[/color][/b]",
+		"Piloting level: %d" % use_skill_level("piloting"),
+		"Travel fuel use: -%d%%" % int(round(piloting_travel_fuel_bonus() * 100.0)),
+		"Boost fuel use: -%d%%" % int(round(piloting_boost_fuel_bonus() * 100.0)),
+		"Next flight license: %s" % next_piloting_license_text(),
+		divider,
+		"[b][color=#95d8ff]FIELD SPECIALTIES[/color][/b]",
+		"[color=#ffe29a]Mining[/color]  L%d" % use_skill_level("mining"),
+		"Ore tier: %s" % current_mining_unlock_label(),
+		"Extraction speed: +%d%%" % int(round(mining_extraction_speed_bonus() * 100.0)),
+		"Bonus yield chance: +%.1f%%" % (mining_bonus_yield_chance() * 100.0),
+		"",
+		"[color=#ffe29a]Surveying[/color]  L%d" % use_skill_level("surveying"),
+		"DF yield: +%d%%" % int(round(surveying_df_bonus() * 100.0)),
+		"Scan cooldown: -%d%%" % int(round(surveying_scan_cooldown_bonus() * 100.0)),
+		"Sweep reliability: +%d%%" % int(round(surveying_resource_sweep_reliability() * 100.0)),
+		"",
+		"[color=#ffe29a]Salvage[/color]  L%d" % use_skill_level("salvage"),
+		"Salvage speed: +%d%%" % int(round(salvage_speed_bonus() * 100.0)),
+		"Salvage yield: +%d%%" % int(round(salvage_yield_skill_bonus() * 100.0)),
+		"Cache quality: +%d%%" % int(round(salvage_cache_quality_bonus() * 100.0)),
+		"Boarding access: %s" % salvage_boarding_access_label(),
+		divider,
+		"[b][color=#95d8ff]COMBAT & STATION[/color][/b]",
+		"[color=#ffe29a]Combat[/color]  L%d" % use_skill_level("combat"),
+		"Laser damage: +%d%%" % int(round(combat_laser_damage_bonus() * 100.0)),
+		"Target lock speed: +%d%%" % int(round(combat_lock_speed_bonus() * 100.0)),
+		"Special cooldown: -%d%%" % int(round(combat_special_cooldown_bonus() * 100.0)),
+		"",
+		"[color=#ffe29a]Industry[/color]  L%d" % use_skill_level("industry"),
+		"Refining speed: +%d%%" % int(round(industry_refining_speed_bonus() * 100.0)),
+		"Refining quality: +%d%%" % int(round(industry_refining_quality_bonus() * 100.0)),
+		"Crafting cost: -%d%%" % int(round(industry_crafting_cost_bonus() * 100.0)),
+		"Refinery fee: -%d%%" % int(round(industry_refining_fee_bonus() * 100.0)),
+		"",
+		"[color=#ffe29a]Trade[/color]  L%d" % use_skill_level("trade"),
+		"Sell value: +%d%%" % int(round(trade_sell_value_bonus() * 100.0)),
+		"Mission payout: +%d%%" % int(round(trade_mission_payout_bonus() * 100.0)),
+		"Bounty payout: +%d%%" % int(round(trade_bounty_payout_bonus() * 100.0)),
+		divider,
 		next_skill_point_level_text(),
 	]
 	return "\n".join(lines)
@@ -6578,11 +7259,11 @@ func prospector_rare_bonus() -> float:
 
 
 func fuel_burn_reduction() -> float:
-	return clampf(skill_node_effect_total("fuel_burn_reduction") + research_effect_total("research_systems_trim"), 0.0, 0.65)
+	return clampf(skill_node_effect_total("fuel_burn_reduction") + research_effect_total("research_systems_trim") + piloting_travel_fuel_bonus(), 0.0, 0.65)
 
 
 func boost_burn_reduction() -> float:
-	return clampf(skill_node_effect_total("boost_burn_reduction") + research_effect_total("research_boost_efficiency"), 0.0, 0.65)
+	return clampf(skill_node_effect_total("boost_burn_reduction") + research_effect_total("research_boost_efficiency") + piloting_boost_fuel_bonus(), 0.0, 0.65)
 
 
 func map_jump_cost_reduction() -> float:
@@ -6590,11 +7271,11 @@ func map_jump_cost_reduction() -> float:
 
 
 func sale_price_skill_bonus() -> float:
-	return skill_node_effect_total("sale_price_bonus")
+	return skill_node_effect_total("sale_price_bonus") + trade_sell_value_bonus()
 
 
 func mission_credit_skill_bonus() -> float:
-	return skill_node_effect_total("mission_credit_bonus")
+	return skill_node_effect_total("mission_credit_bonus") + trade_mission_payout_bonus()
 
 
 func mission_rep_skill_bonus() -> int:
@@ -6602,11 +7283,20 @@ func mission_rep_skill_bonus() -> int:
 
 
 func refinery_fee_discount_bonus() -> float:
-	return clampf(skill_node_effect_total("refinery_fee_discount"), 0.0, 0.55)
+	return clampf(skill_node_effect_total("refinery_fee_discount") + industry_refining_fee_bonus(), 0.0, 0.55)
+
+
+func current_refinery_cycle_duration() -> float:
+	return max(2.0 * (1.0 - industry_refining_speed_bonus()), 0.75)
+
+
+func crafting_credit_cost(recipe: Dictionary) -> int:
+	var base_cost: int = int(recipe.get("credit_cost", 0))
+	return max(int(round(float(base_cost) * max(1.0 - industry_crafting_cost_bonus(), 0.4))), 0)
 
 
 func salvage_yield_bonus() -> float:
-	return skill_node_effect_total("salvage_yield_bonus") + research_effect_total("research_salvage_yield_bonus") + research_effect_total("research_salvage_vectors") + research_effect_total("research_priority_reclamation")
+	return skill_node_effect_total("salvage_yield_bonus") + research_effect_total("research_salvage_yield_bonus") + research_effect_total("research_salvage_vectors") + research_effect_total("research_priority_reclamation") + salvage_yield_skill_bonus()
 
 
 func boarding_loot_bonus() -> float:
@@ -6614,16 +7304,16 @@ func boarding_loot_bonus() -> float:
 
 
 func derelict_cache_bonus() -> float:
-	return skill_node_effect_total("derelict_cache_bonus") + research_effect_total("research_derelict_cache_bonus") + research_effect_total("research_salvage_vectors") + research_effect_total("research_priority_reclamation")
+	return skill_node_effect_total("derelict_cache_bonus") + research_effect_total("research_derelict_cache_bonus") + research_effect_total("research_salvage_vectors") + research_effect_total("research_priority_reclamation") + salvage_cache_quality_bonus()
 
 
 func combat_lock_time() -> float:
-	var lock_bonus: float = skill_node_effect_total("lock_speed_bonus") + research_effect_total("research_combat_lock_bonus") + research_effect_total("research_tactical_net")
+	var lock_bonus: float = skill_node_effect_total("lock_speed_bonus") + research_effect_total("research_combat_lock_bonus") + research_effect_total("research_tactical_net") + combat_lock_speed_bonus()
 	return COMBAT_LOCK_TIME * max(1.0 - lock_bonus, 0.35)
 
 
 func missile_cooldown_duration() -> float:
-	var cooldown_bonus: float = skill_node_effect_total("missile_cooldown_reduction") + research_effect_total("research_missile_cooldown_bonus") + research_effect_total("research_tactical_net")
+	var cooldown_bonus: float = skill_node_effect_total("missile_cooldown_reduction") + research_effect_total("research_missile_cooldown_bonus") + research_effect_total("research_tactical_net") + combat_special_cooldown_bonus()
 	return SPECIAL_MISSILE_COOLDOWN * max(1.0 - cooldown_bonus, 0.4)
 
 
@@ -6637,7 +7327,8 @@ func player_shield_cap() -> float:
 
 
 func player_laser_damage() -> int:
-	return int(round(PRIMARY_LASER_DAMAGE + float(ship_stats.get("laser_damage_bonus", 0.0))))
+	var laser_damage_bonus: float = float(ship_stats.get("laser_damage_bonus", 0.0))
+	return int(round((PRIMARY_LASER_DAMAGE + laser_damage_bonus) * (1.0 + combat_laser_damage_bonus())))
 
 
 func player_special_damage() -> int:
@@ -6656,7 +7347,7 @@ func player_shield_visual_radius() -> float:
 
 
 func bounty_value_bonus() -> float:
-	return skill_node_effect_total("bounty_bonus") + research_effect_total("research_bounty_bonus")
+	return skill_node_effect_total("bounty_bonus") + research_effect_total("research_bounty_bonus") + trade_bounty_payout_bonus()
 
 
 func build_skill_tree_hint_text() -> String:
@@ -7659,8 +8350,11 @@ func handle_intro_mission_completion(mission_index: int = current_mission_index)
 	var newly_unlocked_titles: Array[String] = intro_newly_unlocked_board_titles(finished_id)
 	complete_intro_mission(finished_mission, true)
 	remove_active_mission_at(mission_index)
-	mission_board_view = "available"
-	refresh_mission_offers()
+	mission_board_view = "active" if has_active_mission() else "available"
+	if mission_board_view == "available":
+		refresh_mission_offers()
+	else:
+		refresh_mission_board()
 	if not follow_up_id.is_empty():
 		var follow_up_template: Dictionary = intro_mission_template_by_id(follow_up_id)
 		if not follow_up_template.is_empty() and not intro_mission_completed(follow_up_id):
@@ -7968,8 +8662,11 @@ func turn_in_active_mission(mission_index: int = current_mission_index) -> void:
 	last_status_message = "Mission turned in. Reward: %d credits, +%d %s rep." % [reward_credits, rep_reward, faction_name(faction_id)]
 	push_telemetry_event("%s contract turned in. +%d rep secured." % [faction_name(faction_id), rep_reward], "mission")
 	remove_active_mission_at(mission_index)
-	mission_board_view = "available"
-	refresh_mission_offers()
+	mission_board_view = "active" if has_active_mission() else "available"
+	if mission_board_view == "available":
+		refresh_mission_offers()
+	else:
+		refresh_mission_board()
 	update_hud()
 
 
@@ -8265,7 +8962,7 @@ func refinery_job_output_counts(item_type: StringName, refine_amount: int) -> Di
 		output_counts[output_type] = total_output
 		return output_counts
 	for output_index in range(total_output):
-		var rolled_output: StringName = StringName(random_outputs[rng.randi_range(0, random_outputs.size() - 1)])
+		var rolled_output: StringName = roll_refinery_output(recipe, item_type)
 		output_counts[rolled_output] = int(output_counts.get(rolled_output, 0)) + 1
 	return output_counts
 
@@ -8300,6 +8997,17 @@ func refinery_output_summary_text(output_counts: Dictionary) -> String:
 	return ", ".join(parts)
 
 
+func roll_refinery_output(recipe: Dictionary, input_type: StringName) -> StringName:
+	var random_outputs: Array = recipe.get("random_outputs", [])
+	if random_outputs.is_empty():
+		return StringName(recipe.get("output", StringName()))
+	var rolled_output: StringName = StringName(random_outputs[rng.randi_range(0, random_outputs.size() - 1)])
+	if input_type == SCRAP and rolled_output == IRON_INGOT and rng.randf() < industry_refining_quality_bonus():
+		var premium_outputs: Array[StringName] = [NICKEL_INGOT, COPPER_INGOT]
+		rolled_output = premium_outputs[rng.randi_range(0, premium_outputs.size() - 1)]
+	return rolled_output
+
+
 func refinery_output_queue_for_batch(item_type: StringName, refine_amount: int) -> Array[Dictionary]:
 	var queue: Array[Dictionary] = []
 	if refine_amount <= 0:
@@ -8321,7 +9029,7 @@ func refinery_output_queue_for_batch(item_type: StringName, refine_amount: int) 
 			queue[bonus_slot][output_type] = int(queue[bonus_slot].get(output_type, 0)) + 1
 		return queue
 	for output_index in range(total_output):
-		var rolled_output: StringName = StringName(random_outputs[rng.randi_range(0, random_outputs.size() - 1)])
+		var rolled_output: StringName = roll_refinery_output(recipe, item_type)
 		var target_slot: int = output_index % refine_amount
 		queue[target_slot][rolled_output] = int(queue[target_slot].get(rolled_output, 0)) + 1
 	return queue
@@ -8619,9 +9327,10 @@ func refresh_refinery_controls() -> void:
 		refine_button.disabled = true
 	else:
 		refine_button.disabled = false
-	refinery_summary.text = "%d CR each  |  %d CR total  |  %s" % [
+	refinery_summary.text = "%d CR each  |  %d CR total  |  %.1fs cycle  |  %s" % [
 		fee_each,
 		total_fee,
+		current_refinery_cycle_duration(),
 		destination_line,
 	]
 	refine_button.text = "REFINE (%d CR)" % total_fee
@@ -8722,7 +9431,7 @@ func crafting_recipe_cost_plain_lines(recipe: Dictionary) -> Array[String]:
 func can_craft_recipe(recipe: Dictionary) -> Dictionary:
 	if not is_station_in_range():
 		return {"ok": false, "reason": "Move closer to the station before crafting."}
-	var credit_cost: int = int(recipe.get("credit_cost", 0))
+	var credit_cost: int = crafting_credit_cost(recipe)
 	if credits < credit_cost:
 		return {"ok": false, "reason": "Need %d more credits for fabrication." % [credit_cost - credits]}
 	for cost_variant in recipe.get("costs", []):
@@ -8783,6 +9492,7 @@ func refresh_crafting_panel() -> void:
 	var selected_recipe: Dictionary = selected_crafting_recipe()
 	var output_type: StringName = StringName(selected_recipe.get("output", StringName()))
 	var output_count: int = int(selected_recipe.get("output_count", 1))
+	var fabrication_fee: int = crafting_credit_cost(selected_recipe)
 	var craft_check: Dictionary = can_craft_recipe(selected_recipe)
 	crafting_summary.text = "%d recipe%s  |  Storage %d / %d" % [recipes.size(), "s" if recipes.size() != 1 else "", station_storage.size(), station_storage_capacity]
 	crafting_detail_title.text = str(selected_recipe.get("title", "Recipe"))
@@ -8790,7 +9500,7 @@ func refresh_crafting_panel() -> void:
 		str(selected_recipe.get("summary", "Fabrication order")),
 		str(get_item_definition(output_type).get("name", output_type)),
 		output_count,
-		int(selected_recipe.get("credit_cost", 0)),
+		fabrication_fee,
 	]
 	crafting_detail_summary.text = str(selected_recipe.get("description", ""))
 	crafting_detail_costs.text = "[b]Required materials[/b]\n%s" % "\n".join(crafting_recipe_cost_lines(selected_recipe))
@@ -8816,7 +9526,7 @@ func open_selected_crafting_confirmation() -> void:
 		"recipe_id": str(recipe.get("id", "")),
 	}
 	transfer_popup_title.text = "CRAFT %s" % str(get_item_definition(output_type).get("name", output_type))
-	transfer_popup_info.text = "Confirm fabrication order.\n%s" % "\n".join(crafting_recipe_cost_plain_lines(recipe))
+	transfer_popup_info.text = "Confirm fabrication order.\nFee: %d CR\n%s" % [crafting_credit_cost(recipe), "\n".join(crafting_recipe_cost_plain_lines(recipe))]
 	transfer_amount.visible = false
 	transfer_popup.visible = true
 	hide_tooltip()
@@ -8840,7 +9550,7 @@ func craft_recipe_by_id(recipe_id: String) -> void:
 	var stored_amount: int = add_item_to_station_storage(output_type, output_count)
 	if stored_amount < output_count:
 		cargo[output_type] += output_count - stored_amount
-	credits -= int(recipe.get("credit_cost", 0))
+	credits -= crafting_credit_cost(recipe)
 	award_use_skill_xp("industry", max(float(output_count) * 1.5, 1.5), true)
 	last_status_message = "Fabricated %s x%d." % [str(get_item_definition(output_type).get("name", output_type)), output_count]
 	push_telemetry_event("Fabrication complete: %s x%d." % [str(get_item_definition(output_type).get("name", output_type)), output_count], "sale")
@@ -9358,6 +10068,12 @@ func node_requires_higher_mining_stage(resource_node) -> bool:
 	return int(resource_node.required_mining_stage) > current_mining_stage()
 
 
+func is_salvage_resource_node(resource_node) -> bool:
+	if resource_node == null:
+		return false
+	return StringName(resource_node.resource_type) == SCRAP or bool(resource_node.is_derelict_ship)
+
+
 func pick_resource_texture_variant(template: Dictionary) -> Dictionary:
 	var textures: Array = template.get("textures", [])
 	if textures.is_empty():
@@ -9384,9 +10100,9 @@ func handle_resource_gathering(delta: float) -> void:
 				if tracked_position != null:
 					prompt_label.text = "Tracked scan contact: %s  |  %s" % [str(tracked_scan_contact.get("label", "Unknown")), scan_bearing_text(tracked_position)]
 				else:
-					prompt_label.text = "Hold RMB to mine, LMB to scan, Q to world scan, and Shift to boost."
+					prompt_label.text = "Hold RMB to mine or salvage, LMB to scan, Q to world scan, and Shift to boost."
 			else:
-				prompt_label.text = "Hold RMB to mine, LMB to scan, Q to world scan, and Shift to boost."
+				prompt_label.text = "Hold RMB to mine or salvage, LMB to scan, Q to world scan, and Shift to boost."
 		cargo_full_alert_active = false
 		return
 
@@ -9411,12 +10127,25 @@ func handle_resource_gathering(delta: float) -> void:
 			update_hud()
 		return
 
-	prompt_label.text = "Hold RMB to mine %s." % nearby_resource.node_name
+	if bool(nearby_resource.is_derelict_ship) and can_board_derelict(nearby_resource):
+		prompt_label.text = "Derelict in range. Press E to board or hold RMB to salvage."
+		if Input.is_action_just_pressed("interact") and not boarding_prompt_popup.visible and not is_any_overlay_open():
+			open_derelict_boarding_prompt(nearby_resource)
+			return
+	elif is_salvage_resource_node(nearby_resource):
+		prompt_label.text = "Hold RMB to salvage %s." % nearby_resource.node_name
+	else:
+		prompt_label.text = "Hold RMB to mine %s." % nearby_resource.node_name
 
 	if not Input.is_action_pressed("mine"):
 		return
 
-	var harvest: Dictionary = nearby_resource.harvest(delta, ship_stats["mining_power"], mining_units_available, prospector_rare_bonus())
+	var work_power: float = ship_stats["mining_power"]
+	var work_bonus_yield: float = prospector_rare_bonus() + mining_bonus_yield_chance()
+	if is_salvage_resource_node(nearby_resource):
+		work_power += salvage_speed_bonus()
+		work_bonus_yield = salvage_yield_bonus()
+	var harvest: Dictionary = nearby_resource.harvest(delta, work_power, mining_units_available, work_bonus_yield)
 	if harvest.is_empty():
 		return
 
@@ -9762,7 +10491,8 @@ func refine_selected_input() -> void:
 		return
 	var recipe: Dictionary = refinery_recipes[selected_refinery_input]
 	var total_fee_discount: float = min(refinery_fee_discount_bonus() + research_refinery_fee_discount_bonus(), 0.55)
-	var total_fee := int(round(refine_amount * int(recipe["fee"]) * max(1.0 - total_fee_discount, 0.45)))
+	var fee_each: int = int(round(discounted_cost(int(recipe["fee"]), "refinery") * max(1.0 - total_fee_discount, 0.45)))
+	var total_fee := refine_amount * fee_each
 	if credits < total_fee:
 		last_status_message = "Need %d more credits for refinery fees." % [total_fee - credits]
 		push_telemetry_event("Insufficient credits for refinery service.", "warning")
@@ -9795,6 +10525,7 @@ func refine_selected_input() -> void:
 	refinery_job_pending_outputs = planned_output_counts
 	refinery_job_active = true
 	refinery_job_timer = 0.0
+	refinery_job_duration = current_refinery_cycle_duration()
 	refinery_last_output_source = selected_refinery_source
 	refinery_progress.value = 0.0
 	last_status_message = "Refinery queue started for %s x%d." % [str(get_item_definition(selected_refinery_input).get("name", selected_refinery_input)), refine_amount]
@@ -9979,7 +10710,7 @@ func recalculate_ship_stats() -> void:
 	ship_stats["speed"] = (300.0 + upgrades["engine"] * 45.0) * speed_multiplier
 	ship_stats["acceleration"] = (650.0 + upgrades["engine"] * 95.0) * acceleration_multiplier
 	ship_stats["cargo_capacity"] = 120.0 + upgrades["cargo"] * 16.0 + skill_node_effect_total("cargo_capacity_bonus")
-	ship_stats["mining_power"] = 1.0 + upgrades["mining"] * 0.34 + mining_power_skill_bonus()
+	ship_stats["mining_power"] = 1.0 + upgrades["mining"] * 0.34 + mining_power_skill_bonus() + mining_extraction_speed_bonus()
 	ship_stats["fuel_capacity"] = (120.0 + upgrades["fuel"] * 30.0) * fuel_multiplier
 	ship_stats["shield_bonus"] = float(upgrades["shield"]) * 5.0
 	ship_stats["hull_bonus"] = float(upgrades["hull"]) * 7.0

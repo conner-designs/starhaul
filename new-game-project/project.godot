@@ -15,17 +15,17 @@ run/main_scene="res://scenes/startup.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SaveManager="*res://scripts/save_manager.gd"
+SettingsManager="*res://scripts/settings_manager.gd"
+
 [display]
 
 window/size/viewport_width=1600
 window/size/viewport_height=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-
-[autoload]
-
-SaveManager="*res://scripts/save_manager.gd"
-SettingsManager="*res://scripts/settings_manager.gd"
 
 [input]
 
