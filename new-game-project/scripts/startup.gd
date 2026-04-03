@@ -5,7 +5,7 @@ const MENU_MUSIC := preload("res://assets/audio/music/Menu_Music.ogg")
 const UI_CLICK_SOUND := preload("res://assets/audio/sounds/ui_click_confirm.wav")
 const SPLASH_STEPS := [
 	{"title": "STARHAUL", "subtitle": "A frontier systems build"},
-	{"title": "PROSPECTOR DIVISION", "subtitle": "Clearance granted for launch | Playtest update 0.1.1"},
+	{"title": "PROSPECTOR DIVISION", "subtitle": "Clearance granted for launch | Playtest update 0.1.2"},
 ]
 
 @onready var canvas_modulate: CanvasModulate = $CanvasModulate
