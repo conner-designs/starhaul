@@ -237,6 +237,7 @@ namespace Starhaul.Updater
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
             );
+            form.Close();
         }
 
         private void RunLaunchMode()
@@ -247,7 +248,7 @@ namespace Starhaul.Updater
             if (IsUpdateRequired(manifest, config))
             {
                 config = InstallManifestRelease(manifest);
-                CopyLauncherBinary();
+                RefreshLauncherBinaryAfterUpdate();
             }
 
             var entryExecutable = config != null && !string.IsNullOrWhiteSpace(config.EntryExecutable)
@@ -365,6 +366,19 @@ namespace Starhaul.Updater
         {
             EnsureDirectory(_paths.Root);
             File.Copy(_selfPath, _paths.LauncherPath, true);
+        }
+
+        private void RefreshLauncherBinaryAfterUpdate()
+        {
+            var selfFullPath = Path.GetFullPath(_selfPath);
+            var launcherFullPath = Path.GetFullPath(_paths.LauncherPath);
+
+            if (string.Equals(selfFullPath, launcherFullPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            CopyLauncherBinary();
         }
 
         private void CreateDesktopShortcut()
