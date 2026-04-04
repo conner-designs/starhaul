@@ -25,7 +25,7 @@ image = SubResource("Image_4c57u")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vivmo"]
 shader = ExtResource("3_4c57u")
-shader_parameter/time_scale = 710.4228216667527
+shader_parameter/time_scale = 7491.500249892383
 shader_parameter/corona_color = Color(1, 0.72, 0.28, 0.95)
 shader_parameter/inner_radius = 0.34
 shader_parameter/outer_radius = 0.92
@@ -48,7 +48,7 @@ image = SubResource("Image_efxa6")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_074og"]
 shader = ExtResource("4_efxa6")
-shader_parameter/time_scale = 710.4228216667527
+shader_parameter/time_scale = 7491.500249892383
 shader_parameter/core_color = Color(1, 0.95, 0.78, 1)
 shader_parameter/mid_color = Color(1, 0.66, 0.3, 1)
 shader_parameter/edge_color = Color(0.96, 0.2, 0.04, 1)
@@ -168,6 +168,62 @@ shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
 shader_parameter/edge_fade = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kq58d"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_seu75"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.9981181592561273
+shader_parameter/wobble = 14168.279609615716
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 0.88)
+shader_parameter/edge_fade = 0.6506586442603555
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_htxhm"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.3569215326316472
+shader_parameter/wobble = 15850.499788065521
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 0.88)
+shader_parameter/edge_fade = 0.8750774635789235
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jq2sk"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4k2k6"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0rl1p"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ok6jj"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_facbu"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b1qrp"]
 shader = ExtResource("5_dg77c")
 shader_parameter/life_t = 0.0
 shader_parameter/wobble = 0.0
@@ -295,6 +351,49 @@ polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
 [node name="@Polygon2D@18816" type="Polygon2D" parent="SunRoot/Flares" unique_id=780154958]
 visible = false
 material = SubResource("ShaderMaterial_kq58d")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@21807" type="Polygon2D" parent="SunRoot/Flares" unique_id=515079219]
+visible = false
+material = SubResource("ShaderMaterial_seu75")
+position = Vector2(91.30728, 102.13707)
+rotation = 0.8413238
+polygon = PackedVector2Array(0, -7.9878345, 29.415781, 0, 0, 7.9878345)
+
+[node name="@Polygon2D@21808" type="Polygon2D" parent="SunRoot/Flares" unique_id=1208554611]
+material = SubResource("ShaderMaterial_htxhm")
+position = Vector2(65.345726, -120.41153)
+rotation = 5.2096
+polygon = PackedVector2Array(0, -8.065531, 49.870842, 0, 0, 8.065531)
+
+[node name="@Polygon2D@21809" type="Polygon2D" parent="SunRoot/Flares" unique_id=1565670088]
+visible = false
+material = SubResource("ShaderMaterial_jq2sk")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@21810" type="Polygon2D" parent="SunRoot/Flares" unique_id=334602439]
+visible = false
+material = SubResource("ShaderMaterial_4k2k6")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@21811" type="Polygon2D" parent="SunRoot/Flares" unique_id=1131259135]
+visible = false
+material = SubResource("ShaderMaterial_0rl1p")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@21812" type="Polygon2D" parent="SunRoot/Flares" unique_id=1484247022]
+visible = false
+material = SubResource("ShaderMaterial_ok6jj")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@21813" type="Polygon2D" parent="SunRoot/Flares" unique_id=1954939042]
+visible = false
+material = SubResource("ShaderMaterial_facbu")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@21814" type="Polygon2D" parent="SunRoot/Flares" unique_id=1684496131]
+visible = false
+material = SubResource("ShaderMaterial_b1qrp")
 polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
 
 [node name="Resources" type="Node2D" parent="." unique_id=1870580805]
@@ -688,12 +787,18 @@ layout_mode = 2
 text = "BRIEF"
 horizontal_alignment = 2
 
-[node name="GuidedMissionPopupStep" type="Label" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=2100216008]
+[node name="GuidedMissionPopupStep" type="RichTextLabel" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=2100216008]
 layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 text = "Step"
 
-[node name="GuidedMissionPopupBody" type="Label" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=1664319728]
+[node name="GuidedMissionPopupBody" type="RichTextLabel" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=1664319728]
 layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 text = "Body"
 autowrap_mode = 3
 
@@ -825,13 +930,19 @@ text = "ACTIVE CONTRACTS"
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="FieldMissionDescription" type="Label" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=896418392]
+[node name="FieldMissionDescription" type="RichTextLabel" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=896418392]
 layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 text = "Mission details."
 autowrap_mode = 3
 
-[node name="FieldMissionProgress" type="Label" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=1475742990]
+[node name="FieldMissionProgress" type="RichTextLabel" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=1475742990]
 layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
 text = "Progress"
 autowrap_mode = 3
 

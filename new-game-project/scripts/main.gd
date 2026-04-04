@@ -189,8 +189,8 @@ const ONBOARDING_STEP_DATA := STARHAUL_DATA_LIB.ONBOARDING_STEP_DATA
 @onready var guided_mission_popup_vbox: VBoxContainer = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox
 @onready var guided_mission_popup_title: Label = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupHeader/GuidedMissionPopupTitle
 @onready var guided_mission_popup_badge: Label = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupHeader/GuidedMissionPopupBadge
-@onready var guided_mission_popup_step: Label = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupStep
-@onready var guided_mission_popup_body: Label = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupBody
+@onready var guided_mission_popup_step: RichTextLabel = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupStep
+@onready var guided_mission_popup_body: RichTextLabel = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupBody
 @onready var guided_mission_popup_secondary_button: Button = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupButtonsCenter/GuidedMissionPopupButtons/GuidedMissionPopupSecondaryButton
 @onready var guided_mission_popup_primary_button: Button = $HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox/GuidedMissionPopupButtonsCenter/GuidedMissionPopupButtons/GuidedMissionPopupPrimaryButton
 @onready var dock_screen: Control = $HUD/DockScreen
@@ -325,8 +325,8 @@ const ONBOARDING_STEP_DATA := STARHAUL_DATA_LIB.ONBOARDING_STEP_DATA
 @onready var field_mission_name: Label = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionName
 @onready var field_mission_list_title: Label = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionListTitle
 @onready var field_mission_list: VBoxContainer = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionList
-@onready var field_mission_description: Label = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionDescription
-@onready var field_mission_progress: Label = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionProgress
+@onready var field_mission_description: RichTextLabel = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionDescription
+@onready var field_mission_progress: RichTextLabel = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionProgress
 @onready var field_mission_rewards: Label = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox/FieldMissionRewards
 @onready var field_cargo_summary: Label = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldCargoPanel/FieldCargoMargin/FieldCargoVBox/FieldCargoSummary
 @onready var field_cargo_grid: GridContainer = $HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldCargoPanel/FieldCargoMargin/FieldCargoVBox/FieldCargoGridCenter/FieldCargoGrid
@@ -466,8 +466,14 @@ var onboarding_mine_target_id := -1
 var pending_onboarding_mission_offer_index := -1
 var pending_intro_popup_complete_mission_id := ""
 var onboarding_move_progress := 0.0
+var intro_flight_stage := ""
+var intro_flight_stage_progress := 0.0
+var intro_flight_stage_grace := 0.0
+var intro_flight_last_mouse_position := Vector2.ZERO
+var intro_flight_last_rotation := 0.0
 const ONBOARDING_REMINDER_DELAY := 20.0
 const ONBOARDING_MOVE_REQUIRED_TIME := 1.6
+const INTRO_FLIGHT_STAGE_GRACE_TIME := 0.45
 var return_to_dock_on_popup_close := false
 var current_dock_room := ""
 var pending_transfer := {}
@@ -950,8 +956,8 @@ func place_player_for_new_game_start() -> void:
 func nearest_station_dock_plan(start_position: Vector2) -> Dictionary:
 	var left_berth: Vector2 = station.global_position + Vector2(-92.0, 0.0)
 	var right_berth: Vector2 = station.global_position + Vector2(92.0, 0.0)
-	var left_approach: Vector2 = station.global_position + Vector2(-190.0, 0.0)
-	var right_approach: Vector2 = station.global_position + Vector2(190.0, 0.0)
+	var left_approach: Vector2 = station.global_position + Vector2(-280.0, 0.0)
+	var right_approach: Vector2 = station.global_position + Vector2(280.0, 0.0)
 	if start_position.distance_to(left_approach) <= start_position.distance_to(right_approach):
 		return {
 			"approach": left_approach,
@@ -965,9 +971,36 @@ func nearest_station_dock_plan(start_position: Vector2) -> Dictionary:
 	}
 
 
+func resolved_map_entry_position(new_coord: Vector2i, requested_entry: Vector2, previous_coord: Vector2i) -> Vector2:
+	var resolved_entry: Vector2 = requested_entry
+	var target_map: Dictionary = current_system_data.get("maps", {}).get(map_key(new_coord), {})
+	var has_station: bool = bool(target_map.get("has_station", false))
+	if not has_station:
+		return resolved_entry
+	var station_position: Vector2 = Vector2(target_map.get("station_position", Vector2.ZERO))
+	var needs_station_offset: bool = requested_entry == Vector2.ZERO or requested_entry.distance_to(station_position) < 260.0
+	if not needs_station_offset:
+		return resolved_entry
+	var map_delta: Vector2i = new_coord - previous_coord
+	var offset_direction := Vector2.ZERO
+	if map_delta != Vector2i.ZERO:
+		offset_direction = Vector2(float(map_delta.x), float(map_delta.y)).normalized()
+	elif requested_entry != Vector2.ZERO:
+		offset_direction = (requested_entry - station_position).normalized()
+	if offset_direction == Vector2.ZERO:
+		offset_direction = Vector2(0.0, -1.0)
+	var arrival_offset: Vector2 = offset_direction * 320.0
+	resolved_entry = station_position + arrival_offset
+	return Vector2(
+		clampf(resolved_entry.x, -MAP_HALF_SPAN + 120.0, MAP_HALF_SPAN - 120.0),
+		clampf(resolved_entry.y, -MAP_HALF_SPAN + 120.0, MAP_HALF_SPAN - 120.0)
+	)
+
+
 func transition_to_map(new_coord: Vector2i, entry_position: Vector2) -> void:
+	var previous_coord: Vector2i = current_map_coord
 	current_map_coord = new_coord
-	player.global_position = entry_position
+	player.global_position = resolved_map_entry_position(new_coord, entry_position, previous_coord)
 	player.reset_camera_to_ship()
 	if new_coord != primary_station_map_coord():
 		update_mission_progress("intro_fly_new_map", 1)
@@ -2043,8 +2076,8 @@ func should_show_onboarding_completion_popup() -> bool:
 func open_guided_mission_popup(title_text: String, badge_text: String, step_text: String, body_text: String, primary_text: String, secondary_text: String = "", mode: String = "") -> void:
 	guided_mission_popup_title.text = title_text
 	guided_mission_popup_badge.text = badge_text
-	guided_mission_popup_step.text = step_text
-	guided_mission_popup_body.text = body_text
+	guided_mission_popup_step.text = format_guided_popup_text(step_text)
+	guided_mission_popup_body.text = format_guided_popup_text(body_text)
 	guided_mission_popup_primary_button.text = primary_text
 	guided_mission_popup_secondary_button.visible = not secondary_text.is_empty()
 	guided_mission_popup_secondary_button.text = secondary_text
@@ -2056,6 +2089,29 @@ func open_guided_mission_popup(title_text: String, badge_text: String, step_text
 	call_deferred("resize_guided_mission_popup_to_content")
 	hide_tooltip()
 	update_hud()
+
+
+func control_hint_markup(control_name: String) -> String:
+	var chip_text: String = "\u00A0%s\u00A0" % control_name.strip_edges()
+	return "[color=#f0c45a][bgcolor=#231a09][b]%s[/b][/bgcolor][/color]" % chip_text
+
+
+func control_hint_plain(control_name: String) -> String:
+	return "[ %s ]" % control_name
+
+
+func format_guided_popup_text(text: String) -> String:
+	var formatted: String = text
+	for control_name in ["TAB", "SHIFT", "LMB", "RMB", "Q", "E", "W", "A", "S", "D"]:
+		formatted = formatted.replace("<%s>" % control_name, control_hint_markup(control_name))
+	return formatted
+
+
+func format_plain_control_tokens(text: String) -> String:
+	var formatted: String = text
+	for control_name in ["TAB", "SHIFT", "LMB", "RMB", "Q", "E", "W", "A", "S", "D"]:
+		formatted = formatted.replace("<%s>" % control_name, control_hint_plain(control_name))
+	return formatted
 
 
 func close_guided_mission_popup() -> void:
@@ -2195,6 +2251,8 @@ func assign_mission_from_offer(offer_index: int) -> void:
 	if is_intro_mission(mission):
 		mission = configure_intro_mission_instance(mission)
 		apply_intro_mission_start_grants(mission)
+		if str(mission.get("id", "")) == "intro_tab_menu":
+			intro_tab_visits.clear()
 	else:
 		mission["target_system_id"] = current_system_id
 		mission["target_map_coord"] = pick_mission_target_map(mission)
@@ -2215,7 +2273,7 @@ func assign_mission_from_offer(offer_index: int) -> void:
 	last_status_message = "Accepted %s contract: %s." % [faction_name(str(current_mission.get("faction", ""))), current_mission["short_name"]]
 	push_telemetry_event("%s contract accepted: %s. Target map: %s." % [faction_name(str(current_mission.get("faction", ""))), current_mission["short_name"], mission_map_label(current_mission)], "mission")
 	if bool(current_mission.get("important", false)):
-		if bool(current_mission.get("intro_complete_on_continue", false)):
+		if is_intro_mission(current_mission) and bool(current_mission.get("intro_complete_on_continue", false)):
 			pending_intro_popup_complete_mission_id = str(current_mission.get("id", ""))
 			open_intro_stage_popup(
 				current_mission,
@@ -2224,6 +2282,15 @@ func assign_mission_from_offer(offer_index: int) -> void:
 				str(current_mission.get("intro_accept_body", current_mission.get("description", ""))),
 				str(current_mission.get("intro_accept_primary", "UNDERSTOOD")),
 				"intro_complete"
+			)
+		elif is_intro_mission(current_mission):
+			open_intro_stage_popup(
+				current_mission,
+				str(current_mission.get("intro_start_badge", "IMPORTANT")),
+				str(current_mission.get("intro_start_step", "Mission accepted")),
+				str(current_mission.get("intro_start_body", "%s\n\nTarget: %s" % [str(current_mission.get("description", "")), mission_target_label(current_mission)])),
+				str(current_mission.get("intro_start_primary", "CONTINUE")),
+				"intro_stage"
 			)
 		else:
 			open_intro_stage_popup(
@@ -4312,12 +4379,54 @@ func handle_flight_systems(delta: float) -> void:
 	var boost_allowed := moving and current_fuel > 0.0 and boost_pressed
 
 	if str(current_mission.get("id", "")) == "intro_flight_controls":
-		if moving:
-			onboarding_move_progress = min(onboarding_move_progress + delta, ONBOARDING_MOVE_REQUIRED_TIME)
-			if onboarding_move_progress >= ONBOARDING_MOVE_REQUIRED_TIME:
-				update_mission_progress("intro_move", 1)
+		if intro_flight_stage.is_empty():
+			set_intro_flight_stage("mouse", false)
+		var popup_blocking: bool = guided_mission_popup.visible
+		if popup_blocking:
+			intro_flight_stage_progress = 0.0
+			intro_flight_last_mouse_position = get_viewport().get_mouse_position() if get_viewport() != null else intro_flight_last_mouse_position
+			intro_flight_last_rotation = player.rotation
+		elif intro_flight_stage_grace > 0.0:
+			intro_flight_stage_grace = max(intro_flight_stage_grace - delta, 0.0)
+			intro_flight_stage_progress = 0.0
+			intro_flight_last_mouse_position = get_viewport().get_mouse_position() if get_viewport() != null else intro_flight_last_mouse_position
+			intro_flight_last_rotation = player.rotation
 		else:
-			onboarding_move_progress = max(onboarding_move_progress - delta * 0.5, 0.0)
+			match intro_flight_stage:
+				"mouse":
+					var rotation_delta: float = abs(wrapf(player.rotation - intro_flight_last_rotation, -PI, PI))
+					if rotation_delta >= 0.03:
+						intro_flight_stage_progress = min(intro_flight_stage_progress + delta, 0.7)
+					else:
+						intro_flight_stage_progress = max(intro_flight_stage_progress - delta * 0.6, 0.0)
+					intro_flight_last_rotation = player.rotation
+					if intro_flight_stage_progress >= 0.7:
+						advance_intro_flight_stage("thrust")
+				"thrust":
+					var thrust_ok: bool = Input.is_action_pressed("move_up") or Input.is_action_pressed("move_down")
+					if thrust_ok:
+						intro_flight_stage_progress = min(intro_flight_stage_progress + delta, 0.8)
+					else:
+						intro_flight_stage_progress = max(intro_flight_stage_progress - delta * 0.5, 0.0)
+					if intro_flight_stage_progress >= 0.8:
+						advance_intro_flight_stage("strafe")
+				"strafe":
+					var strafe_ok: bool = Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")
+					if strafe_ok:
+						intro_flight_stage_progress = min(intro_flight_stage_progress + delta, 0.8)
+					else:
+						intro_flight_stage_progress = max(intro_flight_stage_progress - delta * 0.5, 0.0)
+					if intro_flight_stage_progress >= 0.8:
+						advance_intro_flight_stage("boost")
+				"boost":
+					if boost_allowed:
+						intro_flight_stage_progress = min(intro_flight_stage_progress + delta, 1.0)
+					else:
+						intro_flight_stage_progress = max(intro_flight_stage_progress - delta * 0.4, 0.0)
+					if intro_flight_stage_progress >= 1.0:
+						advance_intro_flight_stage("")
+	else:
+		reset_intro_flight_controls_state()
 
 	player.set_boost_active(boost_allowed)
 	player.set_fuel_limited(current_fuel <= 0.0)
@@ -4777,6 +4886,8 @@ func update_hostiles(delta: float) -> void:
 
 func should_disable_hostile(hostile: Dictionary, damage: int) -> bool:
 	if bool(hostile.get("disabled", false)):
+		return false
+	if not can_board_disabled_hostiles():
 		return false
 	var remaining_hull: int = int(hostile["hull"]) - damage
 	var critical_hull: int = int(ceil(float(hostile["max_hull"]) * 0.18))
@@ -6242,6 +6353,7 @@ func restore_dock_after_popup() -> void:
 func apply_field_console_tab_styles() -> void:
 	for button in [field_mission_tab_button, field_cargo_tab_button, field_map_tab_button, field_pilot_tab_button, field_skills_tab_button]:
 		style_button_secondary(button)
+		button.tooltip_text = ""
 	var active_button: Button = field_mission_tab_button
 	match field_console_tab:
 		"cargo":
@@ -6255,6 +6367,91 @@ func apply_field_console_tab_styles() -> void:
 	active_button.add_theme_stylebox_override("normal", make_panel_style(Color(0.18, 0.24, 0.31, 0.98), Color(0.98, 0.8, 0.42, 0.48), 14, 2))
 	active_button.add_theme_stylebox_override("hover", make_panel_style(Color(0.2, 0.27, 0.35, 0.98), Color(1.0, 0.84, 0.5, 0.6), 14, 2))
 	active_button.add_theme_stylebox_override("pressed", make_panel_style(Color(0.15, 0.21, 0.27, 0.98), Color(0.98, 0.76, 0.36, 0.62), 14, 2))
+	for tab_name in intro_required_field_console_tabs(current_mission):
+		var guided_button: Button = field_console_tab_button_for(tab_name)
+		if guided_button == null:
+			continue
+		if guided_button == active_button:
+			guided_button.tooltip_text = "Required by the tracked intro mission"
+			continue
+		guided_button.add_theme_stylebox_override("normal", make_panel_style(Color(0.15, 0.2, 0.28, 0.98), Color(1.0, 0.8, 0.36, 0.72), 14, 2))
+		guided_button.add_theme_stylebox_override("hover", make_panel_style(Color(0.18, 0.24, 0.32, 0.98), Color(1.0, 0.84, 0.44, 0.82), 14, 2))
+		guided_button.add_theme_stylebox_override("pressed", make_panel_style(Color(0.13, 0.18, 0.24, 0.98), Color(0.98, 0.78, 0.34, 0.88), 14, 2))
+		guided_button.tooltip_text = "Required by the tracked intro mission"
+
+
+func field_console_tab_button_for(tab_name: String) -> Button:
+	match tab_name:
+		"mission":
+			return field_mission_tab_button
+		"cargo":
+			return field_cargo_tab_button
+		"map":
+			return field_map_tab_button
+		"pilot":
+			return field_pilot_tab_button
+		"skills":
+			return field_skills_tab_button
+	return null
+
+
+func intro_required_field_console_tabs(mission: Dictionary) -> Array[String]:
+	if mission.is_empty() or not is_intro_mission(mission):
+		return []
+	match str(mission.get("id", "")):
+		"intro_tab_menu":
+			return ["mission", "cargo", "map", "pilot", "skills"]
+		"intro_ship_cargo":
+			return ["cargo"]
+		"intro_map", "intro_fly_new_map", "intro_jump_back_station":
+			return ["map"]
+		"intro_leveling":
+			return ["skills"]
+	return []
+
+
+func intro_tracker_guidance_text(mission: Dictionary) -> String:
+	if mission.is_empty() or not is_intro_mission(mission):
+		return mission_direction_text(mission)
+	match str(mission.get("id", "")):
+		"intro_tab_menu":
+			return "Do: Leave station, press <TAB>, then visit Mission, Cargo, Map, Pilot, Skills"
+		"intro_ship_cargo":
+			return "Do: Press <TAB> and open Cargo"
+		"intro_map":
+			return "Do: Press <TAB> and open Map"
+		"intro_fly_new_map":
+			return "Do: Back out of Map, return to flight, then cross the edge into a neighboring sector"
+		"intro_jump_back_station":
+			return "Do: Press <TAB>, open Map, then click the station sector tile"
+		"intro_leveling":
+			return "Do: Press <TAB> and open Skills"
+		"intro_ship_scan":
+			return "Do: Aim at a nearby target and press <LMB>"
+		"intro_world_scan":
+			return "Do: Hold <Q> to open the world scan menu"
+		"intro_scan_resources":
+			return "Do: Hold <Q>, choose Resources, then pick a resource type"
+		"intro_scan_derelicts":
+			return "Do: Hold <Q> and choose Derelicts"
+		"intro_scan_hostiles":
+			return "Do: Hold <Q> and choose Hostiles"
+		"intro_salvage":
+			return "Do: Fly to the wreck and hold <RMB>"
+		"intro_research":
+			return "Do: Back out to the station main menu, then open Research"
+		_:
+			return "Do: %s" % mission_direction_text(mission)
+
+
+func intro_tracker_objective_text(mission: Dictionary) -> String:
+	if mission.is_empty():
+		return ""
+	var objective: String = str(mission.get("description", "")).strip_edges()
+	var target: String = mission_target_label(mission).strip_edges()
+	if target.is_empty():
+		return "Objective: %s" % objective
+	return "Objective: %s\nTarget: %s" % [objective, target]
 
 
 func refresh_field_console() -> void:
@@ -7979,27 +8176,83 @@ func mission_target_label(mission: Dictionary) -> String:
 
 
 func mission_direction_text(mission: Dictionary) -> String:
-	match str(mission.get("id", "")):
+	var intro_id: String = str(mission.get("id", ""))
+	var is_docked: bool = dock_screen.visible
+	match intro_id:
+		"intro_flight_controls":
+			match intro_flight_stage:
+				"mouse":
+					return "Move mouse  |  Aim the ship"
+				"thrust":
+					return "Press W or S  |  Test thrust"
+				"strafe":
+					return "Press A or D  |  Test strafe"
+				"boost":
+					return "Hold Shift while moving  |  Boost"
+				_:
+					return "Use flight controls  |  Move the ship"
 		"intro_tab_menu":
-			return "Open field console  |  Visit each tab once"
+			if is_docked:
+				return "Leave station  |  Press TAB in flight"
+			return "Press TAB  |  Visit all field tabs"
+		"intro_mining":
+			if is_docked:
+				return "Leave station  |  Find an iron asteroid"
+			return "Hold RMB  |  Mine iron ore"
 		"intro_ship_cargo":
-			return "Open field console  |  Cargo tab"
+			if is_docked:
+				return "Leave station  |  Press TAB in flight"
+			return "Press TAB  |  Open Cargo"
+		"intro_ship_scan":
+			if is_docked:
+				return "Leave station  |  Scan in flight"
+			return "Aim at target  |  Press LMB to scan"
+		"intro_world_scan":
+			if is_docked:
+				return "Leave station  |  Hold Q in flight"
+			return "Hold Q  |  Open world scan menu"
+		"intro_map":
+			if is_docked:
+				return "Leave station  |  Press TAB in flight"
+			return "Press TAB  |  Open Map"
+		"intro_fly_new_map":
+			if is_docked:
+				return "Leave station  |  Fly to sector edge"
+			return "Fly to map edge  |  Enter adjacent sector"
+		"intro_jump_back_station":
+			if is_docked:
+				return "Leave station  |  Press TAB in flight"
+			return "Press TAB  |  Click station sector tile"
+		"intro_leveling":
+			if is_docked:
+				return "Leave station  |  Press TAB in flight"
+			return "Press TAB  |  Open Skills"
+		"intro_combat_controls":
+			if is_docked:
+				return "Leave station  |  Arm weapons in flight"
+			return "Toggle combat mode  |  Arm weapons"
 		"intro_scan_hostiles":
+			if is_docked:
+				return "Leave station  |  Hold Q in flight"
 			return "Hold Q  |  Hostile sweep"
 		"intro_first_combat":
 			return "Engage marked hostile  |  Destroy target"
-		"intro_map":
-			return "Open field console  |  Map tab"
-		"intro_leveling":
-			return "Open field console  |  Skills tab"
-		"intro_world_scan":
-			return "Hold Q  |  Open world scan menu"
 		"intro_scan_resources":
+			if is_docked:
+				return "Leave station  |  Hold Q in flight"
 			return "Hold Q  |  Resource sweep"
 		"intro_scan_derelicts":
+			if is_docked:
+				return "Leave station  |  Hold Q in flight"
 			return "Hold Q  |  Derelict sweep"
 		"intro_bounty_anomalies":
+			if is_docked:
+				return "Leave station  |  Hold Q in flight"
 			return "Hold Q  |  Bounty or anomaly sweep"
+		"intro_salvage":
+			if is_docked:
+				return "Leave station  |  Fly to marked wreck"
+			return "Hold RMB  |  Salvage wreck"
 	var station_room: String = mission_target_station_room(mission)
 	if dock_screen.visible and not station_room.is_empty():
 		if current_dock_room == "":
@@ -8244,10 +8497,13 @@ func start_intro_mission_from_template(template: Dictionary, badge_text: String,
 	active_missions.append(mission)
 	set_tracked_mission_index(active_missions.size() - 1)
 	mission_board_view = "active"
-	var popup_body: String = body_text
+	var popup_badge: String = badge_text if not badge_text.is_empty() else str(mission.get("intro_start_badge", "IMPORTANT"))
+	var popup_step: String = step_text if not step_text.is_empty() else str(mission.get("intro_start_step", str(mission.get("short_name", "Introduction Mission"))))
+	var popup_body: String = body_text if not body_text.is_empty() else str(mission.get("intro_start_body", ""))
+	var popup_primary: String = str(mission.get("intro_start_primary", "CONTINUE"))
 	if popup_body.is_empty():
 		popup_body = "%s\n\nTarget: %s" % [str(current_mission.get("description", "")), mission_target_label(current_mission)]
-	open_intro_stage_popup(current_mission, badge_text, step_text, popup_body)
+	open_intro_stage_popup(current_mission, popup_badge, popup_step, popup_body, popup_primary)
 	update_hud()
 
 
@@ -8320,6 +8576,76 @@ func open_intro_stage_popup(mission: Dictionary, badge_text: String, step_text: 
 	)
 
 
+func reset_intro_flight_controls_state() -> void:
+	intro_flight_stage = ""
+	intro_flight_stage_progress = 0.0
+	intro_flight_stage_grace = 0.0
+	intro_flight_last_mouse_position = get_viewport().get_mouse_position() if get_viewport() != null else Vector2.ZERO
+	intro_flight_last_rotation = player.rotation if player != null else 0.0
+	onboarding_move_progress = 0.0
+
+
+func intro_flight_stage_popup_body(stage_id: String) -> String:
+	match stage_id:
+		"mouse":
+			return "Start by moving the mouse around for a moment. Your ship aims where you point it, so take a second to feel how the nose tracks your cursor before touching the thrusters."
+		"thrust":
+			return "Now test forward and reverse thrust. Press <W> to push ahead, then <S> to slow or back off. This is your basic line control for travel and positioning."
+		"strafe":
+			return "Next, test lateral movement. Press <A> and <D> to strafe left and right. Strafing helps with mining approaches, station clearance, and combat positioning."
+		"boost":
+			return "Last step: hold <SHIFT> while moving to boost. Give it a real burst so you can feel the speed change and fuel use. Once that is done, you will be sent back to the station mission board."
+		_:
+			return ""
+
+
+func intro_flight_stage_popup_step(stage_id: String) -> String:
+	match stage_id:
+		"mouse":
+			return "Stage 1  |  Mouse movement"
+		"thrust":
+			return "Stage 1  |  W / S thrust check"
+		"strafe":
+			return "Stage 1  |  A / D strafe check"
+		"boost":
+			return "Stage 1  |  Boost check"
+		_:
+			return "Stage 1  |  Flight check"
+
+
+func open_intro_flight_stage_popup(stage_id: String) -> void:
+	if current_mission.is_empty() or str(current_mission.get("id", "")) != "intro_flight_controls":
+		return
+	open_intro_stage_popup(
+		current_mission,
+		"FORCED",
+		intro_flight_stage_popup_step(stage_id),
+		intro_flight_stage_popup_body(stage_id),
+		"CONTINUE",
+		"intro_stage"
+	)
+
+
+func set_intro_flight_stage(stage_id: String, show_popup: bool = true) -> void:
+	intro_flight_stage = stage_id
+	intro_flight_stage_progress = 0.0
+	intro_flight_stage_grace = INTRO_FLIGHT_STAGE_GRACE_TIME
+	intro_flight_last_mouse_position = get_viewport().get_mouse_position() if get_viewport() != null else Vector2.ZERO
+	intro_flight_last_rotation = player.rotation if player != null else 0.0
+	if show_popup:
+		open_intro_flight_stage_popup(stage_id)
+
+
+func advance_intro_flight_stage(next_stage: String) -> void:
+	if next_stage.is_empty():
+		intro_flight_stage = ""
+		intro_flight_stage_progress = 0.0
+		intro_flight_stage_grace = 0.0
+		update_mission_progress("intro_move", 1)
+		return
+	set_intro_flight_stage(next_stage, true)
+
+
 func begin_intro_mission_flow() -> void:
 	onboarding_offer_pending = false
 	onboarding_declined = false
@@ -8329,12 +8655,8 @@ func begin_intro_mission_flow() -> void:
 	credits += welcome_reward
 	total_stats["credits_earned"] += welcome_reward
 	close_guided_mission_popup()
-	start_intro_mission_from_template(
-		intro_mission_template_by_id("intro_flight_controls"),
-		"FORCED",
-		"Stage 1  |  Flight check",
-		"Welcome aboard. Complete a short movement check to prove the ship is under control and clear the lane for the next introduction mission."
-	)
+	start_intro_mission_from_template(intro_mission_template_by_id("intro_flight_controls"), "", "", "")
+	set_intro_flight_stage("mouse", false)
 	refresh_mission_offers()
 
 
@@ -8372,17 +8694,17 @@ func handle_intro_mission_completion(mission_index: int = current_mission_index)
 					"intro_stage"
 				)
 			else:
-				var step_text: String = "Continuation mission"
-				if bool(finished_mission.get("intro_forced", false)) and follow_up_id == "intro_head_to_board":
-					step_text = "Stage 2  |  Report to station"
+				var intro_prefix: String = "%s complete." % str(finished_mission.get("short_name", "Introduction Mission"))
+				var follow_up_body: String = str(follow_up_template.get("intro_start_body", ""))
+				if not follow_up_body.is_empty():
+					follow_up_body = "%s\n\n%s" % [intro_prefix, follow_up_body]
+				else:
+					follow_up_body = "%s\n\n%s" % [intro_prefix, str(follow_up_template.get("description", ""))]
 				start_intro_mission_from_template(
 					follow_up_template,
-					"CONTINUATION" if not bool(finished_mission.get("intro_forced", false)) else "FORCED",
-					step_text,
-					"%s complete. Next stage online.\n\n%s" % [
-						str(finished_mission.get("short_name", "Introduction Mission")),
-						str(follow_up_template.get("description", "")),
-					]
+					"",
+					"",
+					follow_up_body
 				)
 				return
 	if finished_id == "intro_head_to_board":
@@ -8390,7 +8712,17 @@ func handle_intro_mission_completion(mission_index: int = current_mission_index)
 			"MISSION BOARD UNLOCKED",
 			"INTRO",
 			"Introduction contracts available",
-			"The important introduction missions are now posted at the top of the mission board in gold. Missions with blue follow-ups will roll directly into the next stage as soon as you finish them.",
+			"The important introduction missions are now posted at the top of the mission board in gold. Take them in the order you want, but remember this rule: any contract that tells you to press <TAB>, scan, or use flight controls must be done after you undock and return to space.",
+			"CONTINUE",
+			"",
+			"intro_stage"
+		)
+	elif finished_id == "intro_tab_menu":
+		open_guided_mission_popup(
+			str(finished_mission.get("short_name", "Introduction Mission")),
+			"COMPLETE",
+			"Scanning missions posted",
+			"%s complete. Scanning missions are now available on the mission board." % str(finished_mission.get("short_name", "Introduction Mission")),
 			"CONTINUE",
 			"",
 			"intro_stage"
@@ -8413,8 +8745,8 @@ func handle_intro_mission_completion(mission_index: int = current_mission_index)
 		open_guided_mission_popup(
 			str(finished_mission.get("short_name", "Introduction Mission")),
 			"COMPLETE",
-			"Mission archived",
-			"%s complete. That introduction mission has been removed from the board." % str(finished_mission.get("short_name", "Introduction Mission")),
+			"Mission complete",
+			"%s complete. Check the mission board for the next introduction contract." % str(finished_mission.get("short_name", "Introduction Mission")),
 			"CONTINUE",
 			"",
 			"intro_stage"
@@ -8762,7 +9094,7 @@ func add_mission_card(mission: Dictionary, offer_index: int, active_card: bool) 
 		text_column.add_child(faction_line)
 
 		var description := Label.new()
-		description.text = mission["description"]
+		description.text = format_plain_control_tokens(str(mission["description"]))
 		description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		description.add_theme_font_size_override("font_size", 13)
 		description.add_theme_color_override("font_color", Color(0.72, 0.82, 0.92))
@@ -10879,12 +11211,22 @@ func update_hud() -> void:
 	rebuild_field_mission_list()
 	if has_active_mission():
 		field_mission_name.text = "TRACKED MISSION"
-		field_mission_description.text = "[%s] %s" % [faction_name(str(current_mission.get("faction", ""))), current_mission["description"]]
-		field_mission_progress.text = "Progress %s  |  Target %s  |  Guidance %s" % [
-			mission_progress_label(current_mission),
-			mission_target_label(current_mission),
-			mission_direction_text(current_mission),
-		]
+		if is_intro_mission(current_mission):
+			field_mission_description.text = format_guided_popup_text("[%s]\n%s" % [
+				faction_name(str(current_mission.get("faction", ""))),
+				intro_tracker_objective_text(current_mission),
+			])
+			field_mission_progress.text = format_guided_popup_text("Progress %s  |  %s" % [
+				mission_progress_label(current_mission),
+				intro_tracker_guidance_text(current_mission),
+			])
+		else:
+			field_mission_description.text = "[%s] %s" % [faction_name(str(current_mission.get("faction", ""))), current_mission["description"]]
+			field_mission_progress.text = "Progress %s  |  Target %s  |  Guidance %s" % [
+				mission_progress_label(current_mission),
+				mission_target_label(current_mission),
+				mission_direction_text(current_mission),
+			]
 		var delivery_suffix := ""
 		if mission_requires_delivery(current_mission):
 			delivery_suffix = "  |  Turn-in %s" % mission_delivery_status_text(current_mission)
