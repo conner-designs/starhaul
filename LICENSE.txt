@@ -1,0 +1,34 @@
+STARHAUL Proprietary License
+
+Copyright (c) 2026 Conner Designs. All rights reserved.
+
+This repository and all contents of this project, including but not limited to
+source code, game logic, writing, artwork, visual assets, audio assets, music,
+design documents, compiled builds, and branding, are proprietary and protected
+by copyright law.
+
+Permission is granted only to:
+- view this project when access has been explicitly provided by the copyright holder
+- download and use authorized builds of STARHAUL for personal playtesting or personal gameplay
+
+Permission is NOT granted to:
+- copy, reproduce, redistribute, or republish this project or any substantial portion of it
+- modify, adapt, reverse engineer for reuse, or create derivative works for redistribution
+- reuse any code, art, audio, writing, UI, branding, or game assets in another project
+- upload this project or its assets to another site, storefront, repository, archive, or service
+- sell, sublicense, rent, lease, or commercially exploit this project or its contents
+
+No license or ownership rights are transferred by access to this repository or by
+download of any build. All rights not expressly granted in writing by Conner Designs
+are reserved.
+
+If you would like permission for press, collaboration, testing, or other limited use,
+you must obtain written permission from the copyright holder first.
+
+For authorized players and testers:
+You may install and play official STARHAUL builds that have been distributed by
+Conner Designs. You may not extract and reuse assets, redistribute builds, or mirror
+the game files without written permission.
+
+This notice applies unless a separate written agreement signed by Conner Designs
+explicitly states otherwise.
