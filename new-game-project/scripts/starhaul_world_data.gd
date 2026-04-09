@@ -102,9 +102,9 @@ static func build_system_registry(system_grid_size: int, map_resource_base_count
 	for y in range(system_grid_size):
 		for x in range(system_grid_size):
 			var coord := Vector2i(x, y)
-			blackwake_maps[map_key(coord)] = _make_map_data(coord, "Red Wake %d-%d" % [x + 1, y + 1], "contested", "blackwake", false, "", "", 0.92, 0.55, 0.42, "Dangerous fringe territory with broken wreck lanes and raider signatures.", map_resource_base_count, "standard", "raider")
-	blackwake_maps[map_key(Vector2i(2, 1))] = _make_map_data(Vector2i(2, 1), "Raider Anchorage", "controlled", "blackwake", true, "blackwake", "Blackwake Anchorage", 0.88, 0.6, 0.0, "A hostile-controlled anchorage held under Blackwake authority.", map_resource_base_count, "standard", "raider")
-	blackwake_maps[map_key(Vector2i(2, 2))] = _make_map_data(Vector2i(2, 2), "Red Wake Core", "contested", "blackwake", false, "", "", 0.0, 0.0, 0.06, "A red dwarf star wrapped in broken wreck lanes and raider traffic. Valuable, dangerous, and never quiet.", map_resource_base_count, "solar_core", "solar", true)
+			blackwake_maps[map_key(coord)] = _make_map_data(coord, "Othren Verge %d-%d" % [x + 1, y + 1], "contested", "blackwake", false, "", "", 0.92, 0.55, 0.42, "Dangerous fringe territory with broken wreck lanes, hostile cult traffic, and corrupted chatter on the bands.", map_resource_base_count, "standard", "raider")
+	blackwake_maps[map_key(Vector2i(2, 1))] = _make_map_data(Vector2i(2, 1), "Othren Anchorage", "controlled", "blackwake", true, "blackwake", "Othren Anchorage", 0.88, 0.6, 0.0, "A hostile anchorage held under Othren authority, hung with wreckage, signal shrines, and stolen hulls.", map_resource_base_count, "standard", "raider")
+	blackwake_maps[map_key(Vector2i(2, 2))] = _make_map_data(Vector2i(2, 2), "Othren Core", "contested", "blackwake", false, "", "", 0.0, 0.0, 0.06, "A red dwarf star wrapped in broken wreck lanes, cult traffic, and a silence that never feels empty.", map_resource_base_count, "solar_core", "solar", true)
 
 	return {
 		"neutral_reach": {
@@ -174,10 +174,10 @@ static func build_system_registry(system_grid_size: int, map_resource_base_count
 			"maps": paladin_maps,
 		},
 		"blackwake_drift": {
-			"name": "Blackwake Drift",
-			"description": "A dangerous raider-held fringe system with broken wreck lanes and hostile control.",
+			"name": "Othren Verge",
+			"description": "A dangerous fringe system under Othren influence, marked by broken wreck lanes, hostile control, and unnerving signal traffic.",
 			"main_station_map": Vector2i(2, 1),
-			"main_station_name": "Blackwake Anchorage",
+			"main_station_name": "Othren Anchorage",
 			"controller": "blackwake",
 			"star_type": "Red Dwarf Breaker",
 			"resource_biases": {

@@ -9,12 +9,12 @@ const MENU_PLAYER_SHIP_TEXTURES := [
 	preload("res://assets/player/ship_02.png"),
 ]
 const MENU_FAR_SHIP_TEXTURES := [
-	preload("res://assets/objects/ships/freighter_ship_01.png"),
-	preload("res://assets/objects/ships/ship_01.png"),
+	preload("res://assets/ships/freighter_ship_01.png"),
+	preload("res://assets/ships/ship_01.png"),
 ]
 const MENU_DEBRIS_TEXTURES := [
-	preload("res://assets/objects/astroid_iron_01.png"),
-	preload("res://assets/objects/astroid_iron_02.png"),
+	preload("res://assets/resources/astroid_iron_01.png"),
+	preload("res://assets/resources/astroid_iron_02.png"),
 ]
 const TITLE_LOGO_FRAME_COUNT := 4
 const MENU_STARFIELD_SPAN := Vector2(2200.0, 1320.0)

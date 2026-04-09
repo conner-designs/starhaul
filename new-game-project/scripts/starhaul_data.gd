@@ -103,8 +103,8 @@ const FACTIONS := {
 		"color": Color(0.78, 0.94, 0.88),
 	},
 	"blackwake": {
-		"name": "Blackwake",
-		"description": "Ruthless raiders and smugglers with a long reach beyond safe lanes.",
+		"name": "Othren",
+		"description": "A ruthless cult faction whose minds were twisted by something unknown in the void. They ramble about seeing the truth and spreading it to all.",
 		"color": Color(1.0, 0.54, 0.54),
 	},
 	"deepcore_consortium": {
@@ -145,9 +145,9 @@ const FACTION_SERVICE_PLANS := {
 		{"rank": "Veteran", "service": "Merchant lounge and premium freight board"},
 	],
 	"blackwake": [
-		{"rank": "Cadet", "service": "Back-channel raider contacts"},
-		{"rank": "Operative", "service": "Shadow market access"},
-		{"rank": "Veteran", "service": "Command deck favors and contraband refits"},
+		{"rank": "Cadet", "service": "Cult courier contacts and hidden rendezvous routes"},
+		{"rank": "Operative", "service": "Veiled market access and intercepted supply caches"},
+		{"rank": "Veteran", "service": "Shrine-deck favors and forbidden refit privileges"},
 	],
 	"deepcore_consortium": [
 		{"rank": "Cadet", "service": "Industrial foundry contracts"},
@@ -314,7 +314,7 @@ const ITEM_DATA := {
 	QUANTUM_SHARD: {"name": "Quantum Shard", "description": "Exotic crystal fragment pulsing with high-energy resonance.", "value": 50, "weight": 2.5, "fill": Color(0.88, 0.62, 1.0), "accent": Color(0.44, 0.23, 0.65)},
 	HELIUM3: {"name": "Helium-3 Cache", "description": "Rare fusion-grade isotope trapped in deep-space ice.", "value": 35, "weight": 2.0, "fill": Color(0.98, 0.76, 0.54), "accent": Color(0.69, 0.37, 0.15)},
 	ANCIENT_RELIC: {"name": "Ancient Relay", "description": "High-value relic circuitry pulled from derelict wrecks.", "value": 45, "weight": 4.5, "fill": Color(0.9, 0.78, 0.92), "accent": Color(0.48, 0.28, 0.53)},
-	BLACKWAKE_TAG: {"name": "Blackwake Cipher Tag", "description": "A coded raider ident chip accepted at friendly stations as proof of a cleared hostile contact.", "value": 14, "weight": 0.4, "fill": Color(0.98, 0.42, 0.42), "accent": Color(0.42, 0.08, 0.08)},
+	BLACKWAKE_TAG: {"name": "Othren Cipher Tag", "description": "A coded cult ident chip accepted at friendly stations as proof of a cleared hostile contact.", "value": 14, "weight": 0.4, "fill": Color(0.98, 0.42, 0.42), "accent": Color(0.42, 0.08, 0.08)},
 	TARGETING_ARRAY: {"name": "Targeting Array", "description": "Recovered combat avionics stripped from hostile tracking suites.", "value": 32, "weight": 2.2, "fill": Color(0.92, 0.48, 0.38), "accent": Color(0.46, 0.12, 0.1)},
 	PLASMA_COIL: {"name": "Plasma Coil", "description": "Volatile weapon core salvaged from raider strike craft.", "value": 42, "weight": 3.6, "fill": Color(0.98, 0.67, 0.26), "accent": Color(0.58, 0.26, 0.08)},
 }

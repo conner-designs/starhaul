@@ -61,7 +61,7 @@ Space Game Future Updates
   - player mines the mission rare part
   - player returns the part for turn-in
 - Combat slice is live:
-  - Blackwake enemy ships
+  - Othren enemy ships
   - multiple hostile roles
   - lasers
   - missiles
@@ -200,7 +200,7 @@ Space Game Future Updates
 - Add more fully playable systems beyond the current starter implementation:
   - `Deepcore March`
   - `Paladin Front`
-  - `Blackwake Drift`
+  - `Othren Verge`
 - Add region-specific mission boards and spawn logic per system.
 - Add more map looks and visual variants while keeping normal systems broadly readable and grounded.
 - Add rare special systems with stronger environmental stats and events.
@@ -248,9 +248,14 @@ Space Game Future Updates
 ----------------------------------
 - Expand current text-only boarding outcomes into room/interior boarding encounters with faction-specific choices and consequences.
 - Expand derelict combat-recovery missions once real boarding/interiors are in place.
+- Lock in Othren faction lore and presentation:
+  - ruthless cult faction
+  - minds twisted by something unknown in the universe
+  - obsessive sermons about "seeing the truth"
+  - wants to spread that truth to everyone by force
 - Let derelict contracts branch into:
   - salvage and extraction
-  - Blackwake interference / quarantine cleanup
+  - Othren interference / quarantine cleanup
   - distress beacon follow-up
   - sealed cache recovery
 - Tie derelict recovery mission outcomes into faction standing, rare loot tables, and later boarding decisions.
@@ -304,7 +309,7 @@ High priority
   - scrap pickup
   - circuit pickup
   - credits pickup / token
-  - Blackwake cipher tag pickup
+  - Othren cipher tag pickup
 - Station main texture set
   - emissive lights/windows
   - docking ring / decals
@@ -338,26 +343,15 @@ UI and inventory
   - Crystal Lattice
   - Volatile Ice
   - Ship Scrap
-  - Alloy Plate
   - Focus Crystal
   - Fuel Cell
-  - Circuit Bundle
   - Iridium Core
   - Quantum Shard
   - Helium-3 Cache
   - Ancient Relay
-  - Blackwake Cipher Tag
+  - Othren Cipher Tag
   - Targeting Array
   - Plasma Coil
-- Station room button icons
-  - exchange
-  - storage
-  - refinery
-  - training
-  - research
-  - factions
-  - mission board
-  - cargo hold
 - HUD icon set
   - credits
   - cargo
@@ -371,7 +365,7 @@ UI and inventory
 - Faction identity set
   - Paladins logo
   - Freeport Assembly logo
-  - Blackwake logo
+  - Othren logo
   - Deepcore Consortium logo
   - Recovery Corps logo
   - Pathfinder Initiative logo
@@ -379,9 +373,6 @@ UI and inventory
 
 Nice to have
 - Scanning pulse / scan marker effect texture
-- Combat warning / alert banner accents
 - Hull damage / scorch decal overlays for ships
-- Tactical monitor decorative frame pieces
-- Station faction menu theming kit for later faction-owned stations
 - Station interior room art for future walkaround docking scenes
 - Mission board card art / faction logos

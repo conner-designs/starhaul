@@ -1,8 +1,8 @@
 extends Area2D
 
 const DERELICT_TEXTURES := [
-	preload("res://assets/objects/derelict_ship_01.png"),
-	preload("res://assets/objects/derelict_ship_02.png"),
+	preload("res://assets/ships/derelict_ship_01.png"),
+	preload("res://assets/ships/derelict_ship_02.png"),
 ]
 
 var asteroid_polygon := PackedVector2Array([0, -30, 24, -16, 30, 8, 16, 28, -10, 30, -28, 10, -22, -14])

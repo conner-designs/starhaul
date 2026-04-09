@@ -7,32 +7,32 @@ const STARHAUL_RESEARCH_LIB := preload("res://scripts/starhaul_research_data.gd"
 const STARHAUL_WORLD_LIB := preload("res://scripts/starhaul_world_data.gd")
 const RESOURCE_SCENE := preload("res://scenes/resource_node.tscn")
 const ORE_ASTEROID_TEXTURES := [
-	{"texture": preload("res://assets/objects/astroid_iron_01.png"), "scale_bonus": 1.24},
-	{"texture": preload("res://assets/objects/astroid_iron_02.png"), "scale_bonus": 1.1},
+	{"texture": preload("res://assets/resources/astroid_iron_01.png"), "scale_bonus": 1.24},
+	{"texture": preload("res://assets/resources/astroid_iron_02.png"), "scale_bonus": 1.1},
 ]
 const NICKEL_ASTEROID_TEXTURES := [
-	{"texture": preload("res://assets/objects/astroid_nickle_01.png"), "scale_bonus": 1.18},
-	{"texture": preload("res://assets/objects/astroid_nickle_02.png"), "scale_bonus": 1.08},
+	{"texture": preload("res://assets/resources/astroid_nickle_01.png"), "scale_bonus": 1.18},
+	{"texture": preload("res://assets/resources/astroid_nickle_02.png"), "scale_bonus": 1.08},
 ]
 const COPPER_ASTEROID_TEXTURES := [
-	{"texture": preload("res://assets/objects/astroid_copper_01.png"), "scale_bonus": 1.14},
-	{"texture": preload("res://assets/objects/astroid_copper_02.png"), "scale_bonus": 1.06},
+	{"texture": preload("res://assets/resources/astroid_copper_01.png"), "scale_bonus": 1.14},
+	{"texture": preload("res://assets/resources/astroid_copper_02.png"), "scale_bonus": 1.06},
 ]
 const TITANIUM_ASTEROID_TEXTURES := [
-	{"texture": preload("res://assets/objects/astroid_titanium_01.png"), "scale_bonus": 1.12},
-	{"texture": preload("res://assets/objects/astroid_titanium_02.png"), "scale_bonus": 1.06},
+	{"texture": preload("res://assets/resources/astroid_titanium_01.png"), "scale_bonus": 1.12},
+	{"texture": preload("res://assets/resources/astroid_titanium_02.png"), "scale_bonus": 1.06},
 ]
 const ICE_ASTEROID_TEXTURES := [
-	{"texture": preload("res://assets/objects/astroid_ice_01.png"), "scale_bonus": 1.22},
-	{"texture": preload("res://assets/objects/astroid_ice_02.png"), "scale_bonus": 1.08},
+	{"texture": preload("res://assets/resources/astroid_ice_01.png"), "scale_bonus": 1.22},
+	{"texture": preload("res://assets/resources/astroid_ice_02.png"), "scale_bonus": 1.08},
 ]
 const CRYSTAL_ASTEROID_TEXTURES := [
-	{"texture": preload("res://assets/objects/astroid_crystal_01.png"), "scale_bonus": 1.18},
-	{"texture": preload("res://assets/objects/astroid_crystal_02.png"), "scale_bonus": 1.1},
+	{"texture": preload("res://assets/resources/astroid_crystal_01.png"), "scale_bonus": 1.18},
+	{"texture": preload("res://assets/resources/astroid_crystal_02.png"), "scale_bonus": 1.1},
 ]
 const DEBRIS_TEXTURES := [
-	{"texture": preload("res://assets/objects/space_debris_01.png"), "scale_bonus": 1.16},
-	{"texture": preload("res://assets/objects/space_debris_02.png"), "scale_bonus": 1.1},
+	{"texture": preload("res://assets/resources/space_debris_01.png"), "scale_bonus": 1.16},
+	{"texture": preload("res://assets/resources/space_debris_02.png"), "scale_bonus": 1.1},
 ]
 const ENGINE_UPGRADE_ICON := preload("res://assets/icons/engine_upgrade.png")
 const CARGO_UPGRADE_ICON := preload("res://assets/icons/cargo_upgrade.png")
@@ -45,12 +45,19 @@ const MISSILE_UPGRADE_ICON := preload("res://assets/icons/missle_upgrade.png")
 const REPAIR_HULL_ICON := preload("res://assets/icons/repair_hull.png")
 const REFUEL_SHIP_ICON := preload("res://assets/icons/refuel_ship.png")
 const REFINER_ROOM_ICON := preload("res://assets/icons/Refiner_refining_room.png")
-const IRON_ORE_ITEM_ICON := preload("res://assets/objects/iron_ore.png")
-const NICKEL_ORE_ITEM_ICON := preload("res://assets/objects/nickel_ore.png")
-const COPPER_ORE_ITEM_ICON := preload("res://assets/objects/copper_ore.png")
-const TITANIUM_ORE_ITEM_ICON := preload("res://assets/objects/titanium_ore.png")
-const ENEMY_SHIP_TEXTURE_01 := preload("res://assets/objects/ships/enemy_ship_01.png")
-const ENEMY_SHIP_TEXTURE_02 := preload("res://assets/objects/ships/enemy_ship_02.png")
+const IRON_ORE_ITEM_ICON := preload("res://assets/items/iron_ore.png")
+const NICKEL_ORE_ITEM_ICON := preload("res://assets/items/nickel_ore.png")
+const COPPER_ORE_ITEM_ICON := preload("res://assets/items/copper_ore.png")
+const TITANIUM_ORE_ITEM_ICON := preload("res://assets/items/titanium_ore.png")
+const IRON_INGOT_ITEM_ICON := preload("res://assets/items/iron_ingot.png")
+const NICKEL_INGOT_ITEM_ICON := preload("res://assets/items/nickel_ingot.png")
+const COPPER_INGOT_ITEM_ICON := preload("res://assets/items/copper_ingot.png")
+const TITANIUM_INGOT_ITEM_ICON := preload("res://assets/items/titanium_ingot.png")
+const ALLOY_ITEM_ICON := preload("res://assets/items/alloy_plates.png")
+const CIRCUIT_ITEM_ICON := preload("res://assets/items/circuit_board.png")
+const SCRAP_ITEM_ICON := preload("res://assets/items/ship_scrap.png")
+const ENEMY_SHIP_TEXTURE_01 := preload("res://assets/ships/enemy_ship_01.png")
+const ENEMY_SHIP_TEXTURE_02 := preload("res://assets/ships/enemy_ship_02.png")
 const GAME_MUSIC := preload("res://assets/audio/music/Starlite Dreams.ogg")
 const UI_CLICK_SOUND := preload("res://assets/audio/sounds/ui_click_confirm.wav")
 const SCAN_SOUND := preload("res://assets/audio/sounds/scan.wav")
@@ -162,8 +169,15 @@ const ONBOARDING_STEP_DATA := STARHAUL_DATA_LIB.ONBOARDING_STEP_DATA
 @onready var level_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/LevelBlock/LevelValue
 @onready var credits_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/CreditsBlock/CreditsValue
 @onready var cargo_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/CargoBlock/CargoValue
-@onready var fuel_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelValue
-@onready var hull_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullValue
+@onready var fuel_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelStatusRow/FuelValue
+@onready var fuel_bar: ProgressBar = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelStatusRow/FuelBar
+@onready var fuel_bar_label: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelStatusRow/FuelLabel
+@onready var hull_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullStatusRow/HullValue
+@onready var hull_bar: ProgressBar = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullStatusRow/HullBar
+@onready var hull_bar_label: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullStatusRow/HullLabel
+@onready var shield_value: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/ShieldStatusRow/ShieldValue
+@onready var shield_bar: ProgressBar = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/ShieldStatusRow/ShieldBar
+@onready var shield_bar_label: Label = $HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/ShieldStatusRow/ShieldLabel
 @onready var prompt_label: Label = $HUD/PromptPanel/PromptMargin/PromptLabel
 @onready var onboarding_panel: PanelContainer = $HUD/OnboardingPanel
 @onready var onboarding_margin: MarginContainer = $HUD/OnboardingPanel/OnboardingMargin
@@ -1066,7 +1080,7 @@ func handle_ambient_map_events(delta: float) -> void:
 	var enemy_role := "interceptor" if rng.randf() < 0.5 else ("breacher" if rng.randf() < 0.2 else "scout")
 	var spawn_position := random_position_in_current_map(380.0, true)
 	spawn_hostile_contact(spawn_position, "blackwake", 1, enemy_role)
-	push_telemetry_event("Open-space contact spike. Blackwake %s moving through %s." % [enemy_role, current_map_name()], "combat")
+	push_telemetry_event("Open-space contact spike. Othren %s moving through %s." % [enemy_role, current_map_name()], "combat")
 var selected_refinery_input: StringName = &""
 var selected_refinery_amount := 0
 var selected_refinery_source := "ship"
@@ -1095,6 +1109,7 @@ var impact_player: AudioStreamPlayer
 var pickup_player: AudioStreamPlayer
 var alert_player: AudioStreamPlayer
 var ui_hover_audio_block_until := 0
+var resource_gate_warning_block_until := 0
 var active_options_tab := "visuals"
 
 # --- Shared service access ---
@@ -1334,6 +1349,7 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		return
 	handle_flight_systems(delta)
+	refresh_live_status_hud()
 	update_use_skill_progress(delta)
 	handle_market_fluctuation(delta)
 	handle_mission_offer_rotation(delta)
@@ -1906,6 +1922,13 @@ func create_item_icons() -> void:
 	item_icons[NICKEL] = NICKEL_ORE_ITEM_ICON
 	item_icons[COPPER] = COPPER_ORE_ITEM_ICON
 	item_icons[TITANIUM] = TITANIUM_ORE_ITEM_ICON
+	item_icons[IRON_INGOT] = IRON_INGOT_ITEM_ICON
+	item_icons[NICKEL_INGOT] = NICKEL_INGOT_ITEM_ICON
+	item_icons[COPPER_INGOT] = COPPER_INGOT_ITEM_ICON
+	item_icons[TITANIUM_INGOT] = TITANIUM_INGOT_ITEM_ICON
+	item_icons[ALLOY] = ALLOY_ITEM_ICON
+	item_icons[CIRCUIT] = CIRCUIT_ITEM_ICON
+	item_icons[SCRAP] = SCRAP_ITEM_ICON
 
 
 func create_icon_texture(fill: Color, accent: Color) -> ImageTexture:
@@ -3924,8 +3947,24 @@ func apply_ui_polish() -> void:
 	style_heading(level_value)
 	style_heading(credits_value)
 	style_heading(cargo_value)
-	style_heading(fuel_value)
-	style_heading(hull_value)
+	fuel_value.add_theme_font_size_override("font_size", 13)
+	fuel_value.add_theme_color_override("font_color", Color(0.98, 0.92, 0.74))
+	style_label_caption(fuel_bar_label)
+	fuel_bar_label.add_theme_color_override("font_color", Color(0.88, 0.74, 0.44))
+	fuel_bar.add_theme_stylebox_override("fill", make_panel_style(Color(0.72, 0.58, 0.2, 0.96), Color(0.72, 0.58, 0.2, 0.96), 6, 0))
+	fuel_bar.add_theme_stylebox_override("background", make_panel_style(Color(0.08, 0.11, 0.16, 0.95), Color(0.34, 0.28, 0.12, 0.5), 6, 0))
+	hull_value.add_theme_font_size_override("font_size", 13)
+	hull_value.add_theme_color_override("font_color", Color(0.98, 0.94, 0.94))
+	shield_value.add_theme_font_size_override("font_size", 13)
+	shield_value.add_theme_color_override("font_color", Color(0.9, 0.97, 1.0))
+	style_label_caption(hull_bar_label)
+	style_label_caption(shield_bar_label)
+	hull_bar_label.add_theme_color_override("font_color", Color(0.92, 0.78, 0.8))
+	shield_bar_label.add_theme_color_override("font_color", Color(0.62, 0.84, 0.98))
+	hull_bar.add_theme_stylebox_override("fill", make_panel_style(Color(0.28, 0.78, 0.42, 0.96), Color(0.28, 0.78, 0.42, 0.96), 6, 0))
+	hull_bar.add_theme_stylebox_override("background", make_panel_style(Color(0.08, 0.11, 0.16, 0.95), Color(0.26, 0.18, 0.2, 0.5), 6, 0))
+	shield_bar.add_theme_stylebox_override("fill", make_panel_style(Color(0.28, 0.72, 0.96, 0.95), Color(0.28, 0.72, 0.96, 0.95), 6, 0))
+	shield_bar.add_theme_stylebox_override("background", make_panel_style(Color(0.08, 0.11, 0.16, 0.95), Color(0.2, 0.34, 0.46, 0.5), 6, 0))
 	dock_title.add_theme_font_size_override("font_size", 26)
 	dock_title.add_theme_color_override("font_color", Color(0.96, 0.98, 1.0))
 	dock_subtitle_label.add_theme_font_size_override("font_size", 14)
@@ -4138,6 +4177,19 @@ func make_panel_style(bg: Color, border: Color, radius: int, border_width: int) 
 	style.content_margin_right = 2
 	style.content_margin_bottom = 2
 	return style
+
+
+func status_bar_fill_color(percent: float, healthy_color: Color) -> Color:
+	if percent <= 25.0:
+		return Color(0.9, 0.26, 0.28, 0.96)
+	if percent <= 50.0:
+		return Color(0.92, 0.76, 0.28, 0.96)
+	return healthy_color
+
+
+func apply_status_bar_style(bar: ProgressBar, fill_color: Color, background_border: Color) -> void:
+	bar.add_theme_stylebox_override("fill", make_panel_style(fill_color, fill_color, 6, 0))
+	bar.add_theme_stylebox_override("background", make_panel_style(Color(0.08, 0.11, 0.16, 0.95), background_border, 6, 0))
 
 
 func style_button_primary(button: Button, bg: Color = Color(0.16, 0.48, 0.78, 0.96), hover: Color = Color(0.24, 0.62, 0.94, 0.96)) -> void:
@@ -4553,7 +4605,7 @@ func handle_combat_contract_spawns(delta: float) -> void:
 			var contested_enemy_role := "breacher" if hostile_index == 0 and rng.randf() < 0.45 else ("interceptor" if rng.randf() < 0.5 else "scout")
 			spawn_hostile_contact(player.global_position + contested_spawn_offset, "blackwake", 1, contested_enemy_role)
 		combat_contract_spawn_timer = rng.randf_range(7.5, 11.0)
-		push_telemetry_event("Blackwake scavengers dropped into the derelict recovery zone.", "combat")
+		push_telemetry_event("Othren scavengers dropped into the derelict recovery zone.", "combat")
 		return
 
 	if mission_id == "derelict_quarantine":
@@ -4564,7 +4616,7 @@ func handle_combat_contract_spawns(delta: float) -> void:
 			var quarantine_spawn_offset := Vector2.RIGHT.rotated(rng.randf_range(0.0, TAU)) * rng.randf_range(320.0, 460.0)
 			spawn_hostile_contact(player.global_position + quarantine_spawn_offset, "blackwake", 1, quarantine_role)
 		combat_contract_spawn_timer = rng.randf_range(8.0, 11.5)
-		push_telemetry_event("Paladins quarantine ping updated. Blackwake scavengers are clustering around the derelict.", "combat")
+		push_telemetry_event("Paladins quarantine ping updated. Othren scavengers are clustering around the derelict.", "combat")
 		return
 
 	if mission_id == "breacher_breakup":
@@ -4581,14 +4633,14 @@ func handle_combat_contract_spawns(delta: float) -> void:
 		var probe_offset := Vector2.RIGHT.rotated(rng.randf_range(0.0, TAU)) * rng.randf_range(300.0, 420.0)
 		spawn_hostile_contact(player.global_position + probe_offset, "blackwake", 1, probe_role)
 		combat_contract_spawn_timer = rng.randf_range(6.0, 9.0)
-		push_telemetry_event("Threat probe picked up an active Blackwake response. Telemetry lock updated.", "combat")
+		push_telemetry_event("Threat probe picked up an active Othren response. Telemetry lock updated.", "combat")
 		return
 
 	var spawn_offset := Vector2.RIGHT.rotated(rng.randf_range(0.0, TAU)) * rng.randf_range(320.0, 410.0)
 	var enemy_role := "breacher" if rng.randf() < 0.12 else ("marauder" if rng.randf() < 0.28 else ("interceptor" if rng.randf() < 0.55 else "scout"))
 	spawn_hostile_contact(player.global_position + spawn_offset, "blackwake", 1, enemy_role)
 	combat_contract_spawn_timer = rng.randf_range(5.0, 8.0)
-	push_telemetry_event("Blackwake %s warped into the contract zone." % enemy_role, "combat")
+	push_telemetry_event("Othren %s warped into the contract zone." % enemy_role, "combat")
 
 
 func hostile_profile(enemy_role: String, enemy_level: int) -> Dictionary:
@@ -4596,7 +4648,7 @@ func hostile_profile(enemy_role: String, enemy_level: int) -> Dictionary:
 		"breacher":
 			return {
 				"role": "breacher",
-				"display_name": "Blackwake Breacher",
+				"display_name": "Othren Breacher",
 				"hull": 64 + enemy_level * 10,
 				"speed_far": 82.0,
 				"speed_near": 34.0,
@@ -4617,7 +4669,7 @@ func hostile_profile(enemy_role: String, enemy_level: int) -> Dictionary:
 		"marauder":
 			return {
 				"role": "marauder",
-				"display_name": "Blackwake Marauder",
+				"display_name": "Othren Marauder",
 				"hull": 52 + enemy_level * 8,
 				"speed_far": 88.0,
 				"speed_near": 38.0,
@@ -4638,7 +4690,7 @@ func hostile_profile(enemy_role: String, enemy_level: int) -> Dictionary:
 		"interceptor":
 			return {
 				"role": "interceptor",
-				"display_name": "Blackwake Interceptor",
+				"display_name": "Othren Interceptor",
 				"hull": 36 + enemy_level * 6,
 				"speed_far": 138.0,
 				"speed_near": 72.0,
@@ -4659,7 +4711,7 @@ func hostile_profile(enemy_role: String, enemy_level: int) -> Dictionary:
 		_:
 			return {
 				"role": "scout",
-				"display_name": "Blackwake Scout",
+				"display_name": "Othren Scout",
 				"hull": 26 + enemy_level * 4,
 				"speed_far": 95.0,
 				"speed_near": 48.0,
@@ -5188,6 +5240,7 @@ func update_loot_pickups(delta: float) -> void:
 		if str(drop["kind"]) == "credits":
 			credits += int(drop["amount"])
 			play_audio(pickup_player, 1.0)
+			spawn_damage_floater("+%d CR" % int(drop["amount"]), drop["position"] + Vector2(0.0, -16.0), Color(1.0, 0.84, 0.42, 0.96), 14, 0.9)
 			push_telemetry_event("Loot secured: %d credits." % int(drop["amount"]), "combat")
 		else:
 			var item_type: StringName = drop["kind"]
@@ -5195,9 +5248,11 @@ func update_loot_pickups(delta: float) -> void:
 			if amount > 0:
 				cargo[item_type] += amount
 				play_audio(pickup_player, 1.0 + rng.randf_range(-0.04, 0.04))
+				var pickup_name := str(get_item_definition(item_type)["name"])
+				spawn_damage_floater("+%d %s" % [amount, pickup_name], drop["position"] + Vector2(0.0, -16.0), drop.get("color", Color(0.82, 0.9, 1.0, 0.96)), 14, 0.9)
 				if item_type == BLACKWAKE_TAG:
 					update_mission_progress("bounty_tags", amount)
-				push_telemetry_event("Loot recovered: %s x%d." % [get_item_definition(item_type)["name"], amount], "combat")
+				push_telemetry_event("Loot recovered: %s x%d." % [pickup_name, amount], "combat")
 			else:
 				remaining_drops.append(drop)
 				continue
@@ -5217,7 +5272,7 @@ func update_damage_floaters(delta: float) -> void:
 		floater["world_position"] += Vector2(0.0, -26.0) * delta
 		var alpha := clampf(float(floater["time_left"]) / float(floater["duration"]), 0.0, 1.0)
 		label.modulate = Color(label.modulate.r, label.modulate.g, label.modulate.b, alpha)
-		label.position = viewport_transform * Vector2(floater["world_position"]) + Vector2(-12.0, -10.0)
+		label.position = viewport_transform * Vector2(floater["world_position"]) + Vector2(-float(floater.get("width", 24.0)) * 0.5, -10.0)
 		if float(floater["time_left"]) > 0.0:
 			survivors.append(floater)
 		else:
@@ -5382,18 +5437,22 @@ func maybe_spawn_loot(world_position: Vector2, hostile: Dictionary = {}) -> void
 	})
 
 
-func spawn_damage_floater(text: String, world_position: Vector2, color: Color) -> void:
+func spawn_damage_floater(text: String, world_position: Vector2, color: Color, font_size: int = 16, duration: float = 0.85) -> void:
 	var label := Label.new()
 	label.text = text
-	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", color)
+	label.add_theme_color_override("font_outline_color", Color(0.03, 0.05, 0.08, 0.96))
+	label.add_theme_constant_override("outline_size", 4)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud_layer.add_child(label)
+	label.reset_size()
 	damage_floaters.append({
 		"label": label,
 		"world_position": world_position,
-		"time_left": 0.85,
-		"duration": 0.85,
+		"time_left": duration,
+		"duration": duration,
+		"width": max(label.size.x, 24.0),
 	})
 
 
@@ -5714,7 +5773,7 @@ func perform_hostile_scan() -> void:
 			var spawned_contact := get_nearest_hostile()
 			if not spawned_contact.is_empty():
 				track_scan_contact(hostile_display_name(spawned_contact), spawned_contact["position"], Color(1.0, 0.22, 0.22, 0.92), int(spawned_contact["id"]))
-			push_telemetry_event("Hostile sweep triggered a return ping. Blackwake %s inbound %s. Guidance locked." % [enemy_role, scan_bearing_text(player.global_position + spawn_offset)], "combat")
+			push_telemetry_event("Hostile sweep triggered a return ping. Othren %s inbound %s. Guidance locked." % [enemy_role, scan_bearing_text(player.global_position + spawn_offset)], "combat")
 			update_mission_progress("scan_hostiles", 1)
 			return
 		push_telemetry_event("Hostile sweep clean. No active combat signatures in scanner range.", "system")
@@ -5821,10 +5880,10 @@ func perform_bounty_scan() -> void:
 			blackwake_contacts.append(hostile)
 	var tag_count := total_accessible_item_count(BLACKWAKE_TAG)
 	if blackwake_contacts.is_empty():
-		push_telemetry_event("Bounty sweep ready. Stored Blackwake tags: %d. No active raider bounty contacts in range." % tag_count, "system")
+		push_telemetry_event("Bounty sweep ready. Stored Othren tags: %d. No active raider bounty contacts in range." % tag_count, "system")
 		return
 	var nearest := nearest_hostile_contact_from_array(blackwake_contacts)
-	push_telemetry_event("Bounty sweep flags %d Blackwake contact%s. Nearest bounty target: %s %s. Tags on hand: %d." % [
+	push_telemetry_event("Bounty sweep flags %d Othren contact%s. Nearest bounty target: %s %s. Tags on hand: %d." % [
 		blackwake_contacts.size(),
 		"s" if blackwake_contacts.size() != 1 else "",
 		hostile_display_name(nearest),
@@ -6166,7 +6225,7 @@ func resolve_hostile_scan_effect(hostile_id: int) -> void:
 		var role := "interceptor" if rng.randf() < 0.6 else "marauder"
 		var spawn_offset := Vector2.RIGHT.rotated(rng.randf_range(0.0, TAU)) * rng.randf_range(120.0, 180.0)
 		spawn_hostile_contact(source_position + spawn_offset, "blackwake", 1, role)
-		push_telemetry_event("Hostile scan spike detected. Blackwake %s response inbound." % role, "combat")
+		push_telemetry_event("Hostile scan spike detected. Othren %s response inbound." % role, "combat")
 		return
 
 
@@ -9939,7 +9998,7 @@ func build_market_summary_text() -> String:
 	var bounty_total := total_accessible_item_count(BLACKWAKE_TAG)
 	var bounty_line := "No bounty tags secured."
 	if bounty_total > 0:
-		bounty_line = "%d Blackwake tag%s ready for station hand-in." % [bounty_total, "s" if bounty_total != 1 else ""]
+		bounty_line = "%d Othren tag%s ready for station hand-in." % [bounty_total, "s" if bounty_total != 1 else ""]
 	return "[b]Projected Sale[/b]\n%d credits\n\n[b]Market Pulse[/b]\n%s\n\n[b]Bounty Desk[/b]\n%s" % [total_value, movers_text, bounty_line]
 
 
@@ -10036,7 +10095,7 @@ func turn_in_blackwake_bounties() -> void:
 
 	var available_tags: int = total_accessible_item_count(BLACKWAKE_TAG)
 	if available_tags <= 0:
-		last_status_message = "No Blackwake cipher tags ready for turn-in."
+		last_status_message = "No Othren cipher tags ready for turn-in."
 		push_telemetry_event("Bounty desk idle. No faction tags on hand.", "warning")
 		update_hud()
 		return
@@ -10052,13 +10111,13 @@ func turn_in_blackwake_bounties() -> void:
 	credits += credit_reward
 	total_stats["credits_earned"] += credit_reward
 	add_faction_reputation("paladins", rep_reward, "Bounty Desk")
-	last_status_message = "Bounty desk cleared %d Blackwake tag%s for %d credits and +%d Paladins rep." % [
+	last_status_message = "Bounty desk cleared %d Othren tag%s for %d credits and +%d Paladins rep." % [
 		available_tags,
 		"s" if available_tags != 1 else "",
 		credit_reward,
 		rep_reward,
 	]
-	push_telemetry_event("Paladins bounty desk accepted %d Blackwake tag%s." % [
+	push_telemetry_event("Paladins bounty desk accepted %d Othren tag%s." % [
 		available_tags,
 		"s" if available_tags != 1 else "",
 	], "combat")
@@ -10415,11 +10474,14 @@ func pick_resource_texture_variant(template: Dictionary) -> Dictionary:
 
 func handle_resource_gathering(delta: float) -> void:
 	if combat_mode:
+		prompt_label.add_theme_color_override("font_color", Color(1.0, 0.42, 0.42))
 		prompt_label.text = "Combat Mode  |  LMB lasers  |  RMB missiles (%s)  |  Hull %d%%" % [
 			"READY" if special_weapon_cooldown <= 0.0 else "%.1fs" % special_weapon_cooldown,
 			int(round(float(player_hull) / max(float(player_hull_cap()), 1.0) * 100.0)),
 		]
 		return
+
+	prompt_label.add_theme_color_override("font_color", Color(0.89, 0.95, 1.0))
 
 	var nearby_resource = get_nearest_resource(115.0)
 
@@ -10450,12 +10512,20 @@ func handle_resource_gathering(delta: float) -> void:
 
 	if node_requires_higher_mining_stage(nearby_resource):
 		var required_level: int = mining_level_required_for_stage(int(nearby_resource.required_mining_stage))
-		var ore_name: String = str(nearby_resource.node_name)
-		if nearby_resource.resource_type != null:
-			ore_name = str(get_item_definition(nearby_resource.resource_type).get("name", nearby_resource.node_name))
-		prompt_label.text = "%s req lvl %d" % [ore_name, required_level]
+		prompt_label.add_theme_color_override("font_color", Color(1.0, 0.42, 0.42))
+		prompt_label.text = "Resource locked."
 		if Input.is_action_pressed("mine"):
-			last_status_message = "%s req lvl %d" % [ore_name, required_level]
+			var now_msec := Time.get_ticks_msec()
+			if now_msec >= resource_gate_warning_block_until:
+				resource_gate_warning_block_until = now_msec + 450
+				spawn_damage_floater(
+					"Mining Lv %d" % required_level,
+					nearby_resource.global_position + Vector2(rng.randf_range(-10.0, 10.0), -22.0),
+					Color(1.0, 0.34, 0.34, 0.98),
+					14,
+					0.8
+				)
+			last_status_message = "Mining Lv %d" % required_level
 			update_hud()
 		return
 
@@ -10534,6 +10604,14 @@ func handle_resource_gathering(delta: float) -> void:
 				tracked_scan_contact = {}
 				mark_onboarding_step("mine")
 	var item_name: String = str(get_item_definition(resource_type)["name"])
+	var floater_text := "+%d %s" % [amount, item_name]
+	spawn_damage_floater(
+		floater_text,
+		nearby_resource.global_position + Vector2(rng.randf_range(-10.0, 10.0), -22.0),
+		Color(1.0, 0.82, 0.32, 0.98),
+		14,
+		0.9
+	)
 	if harvest.get("rare", false):
 		last_status_message = "Recovered rare find: %s x%d." % [item_name, amount]
 		push_telemetry_event("Rare recovery from %s: %s x%d." % [harvest["node_name"], item_name, amount], "mission")
@@ -10665,7 +10743,7 @@ func sell_item_stack(item_type: StringName, requested_amount: int) -> void:
 		update_hud()
 		return
 	if item_type == BLACKWAKE_TAG:
-		last_status_message = "Blackwake cipher tags must be turned in at the bounty desk."
+		last_status_message = "Othren cipher tags must be turned in at the bounty desk."
 		update_hud()
 		return
 
@@ -11104,30 +11182,43 @@ func update_mission_progress(kind: String, amount: int) -> void:
 	update_hud()
 
 
+func refresh_live_status_hud() -> void:
+	fps_label.text = "FPS %d" % Engine.get_frames_per_second()
+	var fuel_capacity: float = max(float(ship_stats["fuel_capacity"]), 1.0)
+	var fuel_percent := clampf((current_fuel / fuel_capacity) * 100.0, 0.0, 100.0)
+	fuel_bar.value = fuel_percent
+	fuel_value.text = "%.1f%%" % fuel_percent
+	var hull_percent := int(round(float(player_hull) / max(float(player_hull_cap()), 1.0) * 100.0))
+	var shield_percent := int(round(player_shield / max(player_shield_cap(), 1.0) * 100.0))
+	var hull_fill := status_bar_fill_color(float(hull_percent), Color(0.28, 0.78, 0.42, 0.96))
+	var shield_fill := status_bar_fill_color(float(shield_percent), Color(0.28, 0.72, 0.96, 0.95))
+	apply_status_bar_style(hull_bar, hull_fill, Color(0.26, 0.18, 0.2, 0.5))
+	apply_status_bar_style(shield_bar, shield_fill, Color(0.2, 0.34, 0.46, 0.5))
+	hull_bar.value = hull_percent
+	shield_bar.value = shield_percent
+	hull_value.text = "%d%%" % hull_percent
+	shield_value.text = "%d%%" % shield_percent
+	combat_panel.visible = combat_mode and not dock_screen.visible
+	combat_mode_label.text = "Mode: %s  |  Hull %d%%  |  Shield %d%%" % [
+		"Combat" if combat_mode else "Operations",
+		hull_percent,
+		shield_percent,
+	]
+
+
 func update_hud() -> void:
 	ensure_tracked_mission_valid()
 	sync_active_delivery_mission_progress()
 	refresh_onboarding_panel()
 	fps_label.visible = bool(settings_manager().get_value("visuals", "show_fps")) and not dock_screen.visible and not pause_popup.visible and not options_popup.visible
-	fps_label.text = "FPS %d" % Engine.get_frames_per_second()
 	level_value.text = str(level)
 	credits_value.text = str(credits)
 	cargo_value.text = "%s / %s" % [format_weight(total_cargo_weight()), format_weight(ship_stats["cargo_capacity"])]
-	fuel_value.text = "%.0f / %.0f" % [current_fuel, ship_stats["fuel_capacity"]]
-	hull_value.text = "H %d%%  |  S %d%%" % [
-		int(round(float(player_hull) / max(float(player_hull_cap()), 1.0) * 100.0)),
-		int(round(player_shield / max(player_shield_cap(), 1.0) * 100.0)),
-	]
+	refresh_live_status_hud()
 	ship_caption.text = "%s / %s" % [current_system_name(), current_map_name()]
 	ship_class.text = "Prospector Mk-I  |  %s" % ["Combat Mode" if combat_mode else "Operations Mode"]
 	style_arm_indicator(combat_mode)
 	arm_button.text = "ARMED" if combat_mode else "ARM"
-	combat_panel.visible = combat_mode and not dock_screen.visible
-	combat_mode_label.text = "Mode: %s  |  Hull %d%%  |  Shield %d%%" % [
-		"Combat" if combat_mode else "Operations",
-		int(round(float(player_hull) / max(float(player_hull_cap()), 1.0) * 100.0)),
-		int(round(player_shield / max(player_shield_cap(), 1.0) * 100.0)),
-	]
 	combat_weapons_label.text = "Missiles: %d / %d  |  Cooldown %s" % [
 		special_ammo,
 		SPECIAL_MISSILE_MAX_AMMO,

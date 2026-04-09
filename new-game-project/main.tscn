@@ -8,8 +8,8 @@
 [ext_resource type="Shader" uid="uid://c0ws2r5yomt3" path="res://sun/sun_body.gdshader" id="4_efxa6"]
 [ext_resource type="Script" uid="uid://dwav75xwcw2og" path="res://sun/sun_root.gd" id="5_8v1qy"]
 [ext_resource type="Shader" uid="uid://xldgmmbb84hq" path="res://sun/flare_material.gdshader" id="5_dg77c"]
-[ext_resource type="Texture2D" uid="uid://2n00r8xldlci" path="res://assets/objects/station_ring_01.png" id="6_5t7er"]
-[ext_resource type="Texture2D" uid="uid://cquaev05dieye" path="res://assets/objects/Station_inner_02.png" id="7_i3n5a"]
+[ext_resource type="Texture2D" path="res://assets/stations/station_ring_01.png" id="6_5t7er"]
+[ext_resource type="Texture2D" path="res://assets/stations/Station_inner_02.png" id="7_i3n5a"]
 
 [sub_resource type="Image" id="Image_4c57u"]
 data = {
@@ -25,7 +25,7 @@ image = SubResource("Image_4c57u")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vivmo"]
 shader = ExtResource("3_4c57u")
-shader_parameter/time_scale = 7491.500249892383
+shader_parameter/time_scale = 94364.43522157216
 shader_parameter/corona_color = Color(1, 0.72, 0.28, 0.95)
 shader_parameter/inner_radius = 0.34
 shader_parameter/outer_radius = 0.92
@@ -48,7 +48,7 @@ image = SubResource("Image_efxa6")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_074og"]
 shader = ExtResource("4_efxa6")
-shader_parameter/time_scale = 7491.500249892383
+shader_parameter/time_scale = 94364.43522157216
 shader_parameter/core_color = Color(1, 0.95, 0.78, 1)
 shader_parameter/mid_color = Color(1, 0.66, 0.3, 1)
 shader_parameter/edge_color = Color(0.96, 0.2, 0.04, 1)
@@ -176,7 +176,7 @@ shader_parameter/edge_fade = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_seu75"]
 shader = ExtResource("5_dg77c")
-shader_parameter/life_t = 0.9981181592561273
+shader_parameter/life_t = 0.9981181592561272
 shader_parameter/wobble = 14168.279609615716
 shader_parameter/flare_color = Color(1, 0.78, 0.34, 0.88)
 shader_parameter/edge_fade = 0.6506586442603555
@@ -184,7 +184,7 @@ shader_parameter/edge_fade = 0.6506586442603555
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_htxhm"]
 shader = ExtResource("5_dg77c")
 shader_parameter/life_t = 0.3569215326316472
-shader_parameter/wobble = 15850.499788065521
+shader_parameter/wobble = 15850.49978806552
 shader_parameter/flare_color = Color(1, 0.78, 0.34, 0.88)
 shader_parameter/edge_fade = 0.8750774635789235
 
@@ -224,6 +224,62 @@ shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
 shader_parameter/edge_fade = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b1qrp"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_come4"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.5057774075582766
+shader_parameter/wobble = 200130.31232471962
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 0.88)
+shader_parameter/edge_fade = 0.8229779073546032
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h8e4i"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.9432720761538594
+shader_parameter/wobble = 190627.10859320557
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 0.88)
+shader_parameter/edge_fade = 0.6698547733461493
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4lmeg"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0cp0l"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d2t1y"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gngh3"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0n3wm"]
+shader = ExtResource("5_dg77c")
+shader_parameter/life_t = 0.0
+shader_parameter/wobble = 0.0
+shader_parameter/flare_color = Color(1, 0.78, 0.34, 1)
+shader_parameter/edge_fade = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnost"]
 shader = ExtResource("5_dg77c")
 shader_parameter/life_t = 0.0
 shader_parameter/wobble = 0.0
@@ -396,6 +452,48 @@ visible = false
 material = SubResource("ShaderMaterial_b1qrp")
 polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
 
+[node name="@Polygon2D@18817" type="Polygon2D" parent="SunRoot/Flares" unique_id=134941699]
+material = SubResource("ShaderMaterial_come4")
+position = Vector2(-101.98098, 91.481575)
+rotation = 2.4104123
+polygon = PackedVector2Array(0, -9.046722, 48.701607, 0, 0, 9.046722)
+
+[node name="@Polygon2D@18818" type="Polygon2D" parent="SunRoot/Flares" unique_id=1147597821]
+material = SubResource("ShaderMaterial_h8e4i")
+position = Vector2(129.50703, -44.686996)
+rotation = 5.950923
+polygon = PackedVector2Array(0, -9.72851, 25.1668, 0, 0, 9.72851)
+
+[node name="@Polygon2D@18819" type="Polygon2D" parent="SunRoot/Flares" unique_id=360525922]
+visible = false
+material = SubResource("ShaderMaterial_4lmeg")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@18820" type="Polygon2D" parent="SunRoot/Flares" unique_id=1727343708]
+visible = false
+material = SubResource("ShaderMaterial_0cp0l")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@18821" type="Polygon2D" parent="SunRoot/Flares" unique_id=359143795]
+visible = false
+material = SubResource("ShaderMaterial_d2t1y")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@18822" type="Polygon2D" parent="SunRoot/Flares" unique_id=1003985965]
+visible = false
+material = SubResource("ShaderMaterial_gngh3")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@18823" type="Polygon2D" parent="SunRoot/Flares" unique_id=1290394650]
+visible = false
+material = SubResource("ShaderMaterial_0n3wm")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
+[node name="@Polygon2D@18824" type="Polygon2D" parent="SunRoot/Flares" unique_id=1879478740]
+visible = false
+material = SubResource("ShaderMaterial_qnost")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0)
+
 [node name="Resources" type="Node2D" parent="." unique_id=1870580805]
 
 [node name="Player" type="Area2D" parent="." unique_id=498841560]
@@ -549,28 +647,94 @@ layout_mode = 2
 
 [node name="FuelBlock" type="VBoxContainer" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow" unique_id=705747336]
 layout_mode = 2
+custom_minimum_size = Vector2(182, 0)
+theme_override_constants/separation = 4
 
 [node name="FuelCaption" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock" unique_id=1139154679]
 layout_mode = 2
 text = "FUEL"
 
-[node name="FuelValue" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock" unique_id=1549775042]
+[node name="FuelStatusRow" type="HBoxContainer" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FuelLabel" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelStatusRow"]
+custom_minimum_size = Vector2(34, 0)
+layout_mode = 2
+text = ""
+
+[node name="FuelBar" type="ProgressBar" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelStatusRow"]
+custom_minimum_size = Vector2(96, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 0.01
+value = 100.0
+show_percentage = false
+
+[node name="FuelValue" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/FuelBlock/FuelStatusRow" unique_id=1549775042]
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 text = "120 / 120"
+horizontal_alignment = 2
 
 [node name="DividerD" type="VSeparator" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow" unique_id=1508764734]
 layout_mode = 2
 
 [node name="HullBlock" type="VBoxContainer" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow" unique_id=947286755]
 layout_mode = 2
+custom_minimum_size = Vector2(210, 0)
+theme_override_constants/separation = 4
 
 [node name="HullCaption" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock" unique_id=1618162597]
 layout_mode = 2
+text = "STATUS"
+
+[node name="HullStatusRow" type="HBoxContainer" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HullLabel" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullStatusRow"]
+custom_minimum_size = Vector2(34, 0)
+layout_mode = 2
 text = "HULL"
 
-[node name="HullValue" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock" unique_id=1175477366]
+[node name="HullBar" type="ProgressBar" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullStatusRow"]
+custom_minimum_size = Vector2(118, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HullValue" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/HullStatusRow" unique_id=1175477366]
+custom_minimum_size = Vector2(42, 0)
 layout_mode = 2
 text = "100%"
+horizontal_alignment = 2
+
+[node name="ShieldStatusRow" type="HBoxContainer" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ShieldLabel" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/ShieldStatusRow"]
+custom_minimum_size = Vector2(34, 0)
+layout_mode = 2
+text = "SHLD"
+
+[node name="ShieldBar" type="ProgressBar" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/ShieldStatusRow"]
+custom_minimum_size = Vector2(118, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="ShieldValue" type="Label" parent="HUD/MarginContainer/RootLayout/TopBar/StatsPanel/StatsMargin/StatsRow/HullBlock/ShieldStatusRow"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
 
 [node name="PlayArea" type="HBoxContainer" parent="HUD/MarginContainer/RootLayout" unique_id=857761192]
 layout_mode = 2
@@ -790,17 +954,16 @@ horizontal_alignment = 2
 [node name="GuidedMissionPopupStep" type="RichTextLabel" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=2100216008]
 layout_mode = 2
 bbcode_enabled = true
+text = "Step"
 fit_content = true
 scroll_active = false
-text = "Step"
 
 [node name="GuidedMissionPopupBody" type="RichTextLabel" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=1664319728]
 layout_mode = 2
 bbcode_enabled = true
+text = "Body"
 fit_content = true
 scroll_active = false
-text = "Body"
-autowrap_mode = 3
 
 [node name="GuidedMissionPopupButtonsCenter" type="CenterContainer" parent="HUD/GuidedMissionPopup/GuidedMissionPopupMargin/GuidedMissionPopupVBox" unique_id=1080552902]
 layout_mode = 2
@@ -933,18 +1096,16 @@ theme_override_constants/separation = 8
 [node name="FieldMissionDescription" type="RichTextLabel" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=896418392]
 layout_mode = 2
 bbcode_enabled = true
+text = "Mission details."
 fit_content = true
 scroll_active = false
-text = "Mission details."
-autowrap_mode = 3
 
 [node name="FieldMissionProgress" type="RichTextLabel" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=1475742990]
 layout_mode = 2
 bbcode_enabled = true
+text = "Progress"
 fit_content = true
 scroll_active = false
-text = "Progress"
-autowrap_mode = 3
 
 [node name="FieldMissionRewards" type="Label" parent="HUD/FieldConsolePopup/FieldConsoleMargin/FieldConsoleVBox/FieldConsoleBody/FieldMissionPanel/FieldMissionMargin/FieldMissionVBox" unique_id=718205937]
 layout_mode = 2
