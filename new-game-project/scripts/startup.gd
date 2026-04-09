@@ -20,7 +20,7 @@ const TITLE_LOGO_FRAME_COUNT := 4
 const MENU_STARFIELD_SPAN := Vector2(2200.0, 1320.0)
 const SPLASH_STEPS := [
 	{"title": "STARHAUL", "subtitle": "A frontier systems build"},
-	{"title": "PROSPECTOR DIVISION", "subtitle": "Clearance granted for launch | Playtest update 0.1.4"},
+	{"title": "PROSPECTOR DIVISION", "subtitle": "Clearance granted for launch | Playtest update 0.1.5"},
 ]
 const TITLE_LOGO_FRAME_DURATION := 0.28
 

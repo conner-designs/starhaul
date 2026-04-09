@@ -1,8 +1,8 @@
 ﻿{
-    "version":  "0.1.4-playtest",
-    "packageUrl":  "https://github.com/conner-designs/starhaul/releases/download/v0.1.4-playtest/starhaul_windows_build.zip",
-    "sha256":  "9191d8db248a0c6e721eea75f530f0be198f63c7a936a9cc3a442aaf27715518",
-    "sizeBytes":  46712808,
+    "version":  "0.1.5-playtest",
+    "packageUrl":  "https://github.com/conner-designs/starhaul/releases/download/v0.1.5-playtest/starhaul_windows_build.zip",
+    "sha256":  "32982fc8c2fadb9bd1a5c6eba49ac0195cfb87acbae4d92876aa3e9007ce6595",
+    "sizeBytes":  46727787,
     "entryExecutable":  "starhaul_windows.exe",
-    "publishedUtc":  "2026-04-04T00:45:31.8453348Z"
+    "publishedUtc":  "2026-04-09T16:49:44.5412713Z"
 }
